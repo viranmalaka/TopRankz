@@ -1,0 +1,32 @@
+<div class="ui container">
+  <div style="margin-top:110px" class="ui container computer only grid"></div>
+  <div class="ui grid item">
+    <div class="six wide computer ten wide tablet sixteen wide mobile column centered">
+      <div class="ui middle aligned center aligned grid">
+        <div class="column">
+          <h2 class="ui blue image header">
+            <!--img.image(src='assets/images/logo.png')-->
+            <div class="content">Log-in to your account</div>
+          </h2>
+          <form method="POST" action="/users/login" class="ui large form">
+            <div class="ui stacked segment">
+              <div class="field">
+                <div class="ui left icon input"><i class="user icon"></i>
+                  <input type="text" name="username" placeholder="Username"/>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input"><i class="lock icon"></i>
+                  <input type="password" name="password" placeholder="Password"/>
+                </div>
+              </div>
+              <input type="submit" value="Login" class="ui fluid large blue submit button"/>
+            </div>
+            <div class="ui error message"></div>
+          </form>
+          <div class="ui message">New to us?<a href="/../signup">Sign Up</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="ui container">
+  <div style="margin-top:110px" class="ui container computer only grid"></div>
+  <div class="ui grid item">
+    <div class="six wide computer ten wide tablet sixteen wide mobile column centered">
+      <div class="ui middle aligned center aligned grid">
+        <div class="column">
+          <h2 class="ui blue image header">
+            <!--img.image(src='assets/images/logo.png')-->
+            <div class="content">Sign up here</div>
+          </h2>
+          <form id="signupForm" method="POST" action="/users/signup" class="ui form">
+            <div class="ui stacked segment">
+              <div class="inline fields">
+                <label>Sign Up as :</label>
+                <div class="field">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="acc_type" value="student" checked="checked"/>
+                    <label>Student</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="acc_type" value="teachers"/>
+                    <label>Teacher</label>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input"><i class="mail icon"></i>
+                  <input type="text" name="email" placeholder="Email"/>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input"><i class="user icon"></i>
+                  <input type="text" name="username" placeholder="Username"/>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input"><i class="lock icon"></i>
+                  <input type="password" name="password" placeholder="Password"/>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input"><i class="lock icon"></i>
+                  <input type="password" name="password2" placeholder="Confirms"/>
+                </div>
+              </div>
+              <input type="submit" value="Sign up" class="ui fluid large blue submit button"/>
+            </div>
+            <div class="ui error message"></div>
+          </form>
+          <div class="ui message">Already have an account ?<a href="#">Login</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
