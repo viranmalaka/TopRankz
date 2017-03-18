@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import {LoginComponent} from "./auth/login.component";
 import {routing} from "./app.routing";
 import { SignupComponent } from './auth/signup.component';
+import { CreatePaperComponent } from './paper/create-paper.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    CreatePaperComponent
   ],
   imports: [
     BrowserModule,
