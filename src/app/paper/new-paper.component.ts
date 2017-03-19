@@ -1,13 +1,11 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
 declare let $: any;
-
 @Component({
-  selector: 'app-create-paper',
-  templateUrl: './create-paper.component.html',
+  selector: 'app-new-paper',
+  templateUrl: './new-paper.component.html',
   styles: []
 })
-export class CreatePaperComponent implements OnInit, AfterViewInit {
-  allPaperName = ['paper1', 'paper2'];
+export class NewPaperComponent implements OnInit, AfterViewInit {
 
   constructor() { }
 
@@ -15,13 +13,12 @@ export class CreatePaperComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(){
-    // new validation rule for check paper name is available
-    $.fn.form.settings.rules.checkName = function (value) {
-      return $.inArray(value, this.allPaperNames) < 0;
-    };
-    $.fn.form.settings.rules.range = function (value) {
-      return value > 0.2 && value < 3;
-    };
+    // $.fn.form.settings.rules.checkName = function (value) {
+    //   return $.inArray(value, allPaperNames) < 0;
+    // };
+    // $.fn.form.settings.rules.range = function (value) {
+    //   return value > 0.2 & value < 3;
+    // };
 
     $('#newPaper').form({
       fields: {

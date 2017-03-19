@@ -8,13 +8,17 @@ import {LoginComponent} from "./auth/login.component";
 import {routing} from "./app.routing";
 import { SignupComponent } from './auth/signup.component';
 import { CreatePaperComponent } from './paper/create-paper.component';
+import { NewPaperComponent } from './paper/new-paper.component';
+import { NewQuestionComponent } from './paper/new-question.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    CreatePaperComponent
+    CreatePaperComponent,
+    NewPaperComponent,
+    NewQuestionComponent
   ],
   imports: [
     BrowserModule,

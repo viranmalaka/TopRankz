@@ -1,0 +1,64 @@
+<style>
+  div.ans {
+    padding: 10px 10px;
+    border: 1px solid #ccc;
+    border-radius : 16px;
+  }
+</style>
+<form id="oneQuestion" onkeypress="return event.keyCode != 13;" class="ui form">
+  <div class="field inline">
+    <label>01</label>
+    <div class="field">
+      <textarea id="qBody" name="qBody"> </textarea>
+    </div>
+  </div>
+  <div class="ui grid">
+    <div class="eleven wide column">
+      <div class="ui grid">
+        <div class="row">
+          <div class="two wide column">
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="chkAns" id="chkAns" class="hidden"/>
+                <label>kdf</label>
+              </div>
+            </div>
+          </div>
+          <div class="fourteen wide column">
+            <div id="answer" class="ans"> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="five wide column">
+      <div id="topicField" class="field">
+        <label>Topics</label>
+        <select id="topics" multiple="" class="ui dropdown">
+          <option value="">select Topics Here</option>
+          <option value="1">tag1</option>
+          <option value="3">tag2</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Tags</label>
+        <div class="ui fluid multiple search selection dropdown">
+          <input id="tags" name="tags" type="hidden"/><i class="dropdown icon"></i>
+          <div class="default text">Select Tags</div>
+          <div class="menu">
+            <div data-value='1' class="item">topci1</div>
+            <div data-value='2' class="item">topci2</div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui checkbox">
+          <input type="checkbox" name="canMix" class="hidden"/>
+          <label>Mix the answer order.</label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="ui button">Submit Question</div>
+    </div>
+  </div>
+</form>

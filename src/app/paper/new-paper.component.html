@@ -1,0 +1,60 @@
+<form id="newPaper" method="POST" action="/paper/add_details" class="ui form">
+  <h1>Add New Paper</h1>
+  <h4 class="ui dividing header">Common Data about the paper</h4>
+  <div class="field">
+    <label>Name</label>
+    <div class="field seven wide column">
+      <input type="text" name="name" placeholder="Name for the paper (if a pass paper, enter the year)" value=""/>
+    </div>
+  </div>
+  <div class="fields">
+    <div class="field five column wide">
+      <label>Subject</label>
+      <select id="subjectSelect" name="subject" class="ui fluid dropdown">
+        <option value="">Subject</option>
+        <option value="">sub.name</option>
+      </select>
+    </div>
+    <div class="field five column wide">
+      <label>Medium</label>
+      <select id="mediumSelect" name="medium" class="ui fluid dropdown">
+        <option value="">Medium</option>
+        <option value="S">Sinhala</option>
+        <option value="E">English</option>
+      </select>
+    </div>
+  </div>
+  <div class="fields">
+    <div class="three wide field">
+      <label>Number of questions</label>
+      <input type="text" name="nQuestions" maxlength="3" placeholder="# questions" value=""/>
+    </div>
+    <div class="three wide field">
+      <label>Number of Answers</label>
+      <input type="text" name="nAnswers" maxlength="1" placeholder="# answers" value=""/>
+    </div>
+    <div class="six wide field">
+      <label>Total minutes for whole paper</label>
+      <input type="text" name="totalTime" maxlength="3" placeholder="Time" value=""/>
+    </div>
+  </div>
+  <div class="fields">
+    <div class="three wide field">
+      <label>Unit Mark</label>
+      <input type="text" name="unitMark" value=""/>
+    </div>
+  </div>
+  <div class="field">
+    <div class="ui checkbox">
+      <input type="checkbox" name="random" tabindex="0" class="hidden"/>
+      <label>Output a random ordered question list.</label>
+    </div>
+  </div>
+  <input type="hidden" value="" name="paper_id"/>
+  <div class="ui grid">
+    <div class="seven wide column"></div>
+    <div class="three wide column">
+      <input type="submit" tabindex="0" value="Submit" class="ui button blue"/>
+    </div>
+  </div>
+</form>

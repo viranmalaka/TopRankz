@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
-declare var $: any;
+declare let $: any;
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
