@@ -10,6 +10,7 @@ import { SignupComponent } from './auth/signup.component';
 import { CreatePaperComponent } from './paper/create-paper.component';
 import { NewPaperComponent } from './paper/new-paper.component';
 import { NewQuestionComponent } from './paper/new-question.component';
+import { AnswerSheetComponent } from './paper/answer-sheet.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { NewQuestionComponent } from './paper/new-question.component';
     SignupComponent,
     CreatePaperComponent,
     NewPaperComponent,
-    NewQuestionComponent
+    NewQuestionComponent,
+    AnswerSheetComponent
   ],
   imports: [
     BrowserModule,

@@ -1,18 +1,16 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
-import '../../../node_modules/quill/dist/quill.js'
-import '../../../node_modules/quill/dist/quill.core.js'
-
 declare let $: any;
-declare let Quill: any;
+declare let Quill : any;
 
 @Component({
   selector: 'app-new-question',
   templateUrl: './new-question.component.html',
-  styleUrls: ['../../../node_modules/quill/dist/quill.core.css',
-    "../../../node_modules/quill/dist/quill.snow.css"]
+  styleUrls : []
 })
 export class NewQuestionComponent implements OnInit , AfterViewInit{
-
+  numberOfQuestions = 5;
+  questionArray = Array(this.numberOfQuestions).fill(0).map((x,i) => i+1);
+  quillAnsTextboxes = [];
   constructor() { }
 
   ngOnInit() {
@@ -21,16 +19,24 @@ export class NewQuestionComponent implements OnInit , AfterViewInit{
   ngAfterViewInit(){
     $('.ui.checkbox').checkbox();
 
+// $('select.dropdown').dropdown();
+    $('.ui.dropdown').dropdown({
+      allowAdditions: true
+    });
+
+
+
     let options = {
-      debug: 'info',
-      modules: {
-        toolbar: '#toolbar'
-      },
-      placeholder: 'Compose an epic...',
-      readOnly: true,
-      theme: 'snow'
+      theme:'snow'
     };
-    let quill = new Quill('#editor', options);
+    let quill = new Quill('#qBody', options);
+
+    for(let i = 0; i < this.numberOfQuestions; i++) {
+      this.quillAnsTextboxes.push(new Quill('#ans' + (i+1), {
+        bounds: '.ans',
+        theme: 'bubble'
+      }));
+    }
   }
 
 }

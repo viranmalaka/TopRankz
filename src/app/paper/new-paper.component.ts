@@ -1,5 +1,6 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
 declare let $: any;
+
 @Component({
   selector: 'app-new-paper',
   templateUrl: './new-paper.component.html',

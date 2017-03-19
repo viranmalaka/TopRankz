@@ -1,6 +1,6 @@
 <style>
   div.ans {
-    padding: 10px 10px;
+    padding: 3px 3px;
     border: 1px solid #ccc;
     border-radius : 16px;
   }
@@ -15,17 +15,17 @@
   <div class="ui grid">
     <div class="eleven wide column">
       <div class="ui grid">
-        <div class="row">
+        <div class="row" *ngFor="let n of questionArray">
           <div class="two wide column">
             <div class="field">
               <div class="ui checkbox">
                 <input type="checkbox" name="chkAns" id="chkAns" class="hidden"/>
-                <label>kdf</label>
+                <label>{{('0' + n).slice(-2)}}</label>
               </div>
             </div>
           </div>
           <div class="fourteen wide column">
-            <div id="answer" class="ans"> </div>
+            <div id="answer" class="ans" id="ans{{n}}">{{n}}</div>
           </div>
         </div>
       </div>
