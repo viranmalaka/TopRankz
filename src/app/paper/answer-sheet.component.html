@@ -1,0 +1,61 @@
+<style>
+  .edited {
+    background:#00b5ad;
+  }
+</style>
+<h1>Answer Sheet</h1>
+<input type="hidden" id="pid"/>
+<div class="ui equil width grid">
+  <div class="eight wide column right aligned">
+    <table class="ui celled table">
+      <thead>
+      <tr>
+        <th></th>
+        <th *ngFor="let n of arrayOfAnswer">{{("0" + n).slice(-2)}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let q of arrayOfQuestion1">
+        <td>{{('0' + q).slice(-2)}}</td>
+        <td *ngFor="let n of arrayOfAnswer">
+          <div class="ui checkbox">
+            <input type="checkbox" id="chkAns_{{q + '_' + n}}" class="hidden"/>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="eight wide column left aligned">
+    <table class="ui celled table">
+      <thead>
+      <tr>
+        <th></th>
+        <th *ngFor="let n of arrayOfAnswer">{{("0" + n).slice(-2)}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let q of arrayOfQuestion2">
+        <td>{{('0' + q).slice(-2)}}</td>
+        <td *ngFor="let n of arrayOfAnswer">
+          <div class="ui checkbox">
+            <input type="checkbox" id="chkAns_{{q + '_' + n}}" class="hidden"/>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="ui divider"></div>
+<div tabindex="0" class="ui button">Submit Paper</div>
+<div class="ui basic small modal">
+  <div class="ui icon header"><i class="warning icon"></i>Error</div>
+  <div class="content">
+    <p>You have to first fill the questions.</p>
+    <p>This changes will not be saved.</p>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button"><i class="remove icon"></i>OK</div>
+  </div>
+</div>

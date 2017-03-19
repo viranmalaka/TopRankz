@@ -20,7 +20,6 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
     // $.fn.form.settings.rules.range = function (value) {
     //   return value > 0.2 & value < 3;
     // };
-
     $('#newPaper').form({
       fields: {
         name: {
