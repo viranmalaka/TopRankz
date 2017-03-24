@@ -1,4 +1,5 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {PaperService} from "./paper.service";
 declare let $: any;
 
 @Component({
@@ -7,19 +8,26 @@ declare let $: any;
   styles: []
 })
 export class NewPaperComponent implements OnInit, AfterViewInit {
+  private allPaperName = [];
 
-  constructor() { }
+  constructor(private paperServices:PaperService) {  }
 
   ngOnInit() {
+    this.paperServices.getAllPaperNames()
+    .subscribe(resPaperNames => {
+      this.allPaperName = resPaperNames['get_all_paper_names'];
+    });
   }
 
   ngAfterViewInit(){
-    // $.fn.form.settings.rules.checkName = function (value) {
-    //   return $.inArray(value, allPaperNames) < 0;
-    // };
-    // $.fn.form.settings.rules.range = function (value) {
-    //   return value > 0.2 & value < 3;
-    // };
+    // new validation rule for check paper name is available
+    $.fn.form.settings.rules.checkName = function (value) {
+      return $.inArray(value, this.allPaperNames) < 0;
+    };
+    $.fn.form.settings.rules.range = function (value) {
+      return value > 0.2 && value < 3;
+    };
+
     $('#newPaper').form({
       fields: {
         name: {

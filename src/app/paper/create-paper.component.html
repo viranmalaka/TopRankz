@@ -4,7 +4,11 @@
       <div class="ui vertical menu">
         <div class="item">
           <div class="header"><a href="?">Start</a></div>
-          <div class="menu"><a href="?id=1" style="font-size:12px" class="item">Question</a></div>
+          <div class="menu">
+            <a href="?id=1" style="font-size:12px" class="item" *ngFor="let n of arrayQuestions">
+              Question {{n}}
+            </a>
+          </div>
           <div class="header"><a href="?page=answers">Answer sheet</a></div>
           <div class="header"><a href="?page=submit">Submit Paper</a></div>
         </div>
