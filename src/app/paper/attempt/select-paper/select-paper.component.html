@@ -1,0 +1,26 @@
+<style>
+  .box-centerside {
+    background: url("#") repeat-x scroll center top transparent;
+    float: left;
+    min-height: 100px;
+  }
+</style>
+<div class="ui grid">
+  <div ng-app="myApp" ng-controller="mainController" class="sixteen wide column">
+    <div class="ui grid">
+      <div class="four wide column">
+        <div class="ui vertical fluid left tabular menu">
+          <a class="item" *ngFor="let sub of arraySubjects">{{sub}}</a>
+        </div>
+      </div>
+      <div class="twelve wide stretched column">
+        <div class="ui segment box-centerside">
+          <div class="ui segment">
+            <div class="ui secondary pointing menu"><a id="pp" class="item">Pass paper</a><a id="rq" class="item">Random Questions</a><a id="cg" class="item">Class Group</a></div>
+          </div>
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

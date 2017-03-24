@@ -1,10 +1,10 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
-import {PaperService} from "./paper.service";
+import {PaperService} from "../paper.service";
 declare let $: any;
 
 @Component({
   selector: 'app-new-paper',
-  templateUrl: './new-paper.component.html',
+  templateUrl: 'new-paper.component.html',
   styles: []
 })
 export class NewPaperComponent implements OnInit, AfterViewInit {

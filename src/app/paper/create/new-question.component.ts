@@ -5,7 +5,7 @@ declare let $: any;
 declare let tinyMCE:any;
 @Component({
   selector: 'app-new-question',
-  templateUrl: './new-question.component.html',
+  templateUrl: 'new-question.component.html',
   styleUrls : []
 })
 export class NewQuestionComponent implements OnInit , AfterViewInit{

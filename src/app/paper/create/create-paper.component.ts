@@ -4,7 +4,7 @@ declare let $: any;
 
 @Component({
   selector: 'app-create-paper',
-  templateUrl: './create-paper.component.html',
+  templateUrl: 'create-paper.component.html',
   styles: []
 })
 export class CreatePaperComponent implements OnInit, AfterViewInit {

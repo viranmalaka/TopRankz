@@ -4,7 +4,7 @@ declare let $: any;
 
 @Component({
   selector: 'app-answer-sheet',
-  templateUrl: './answer-sheet.component.html',
+  templateUrl: 'answer-sheet.component.html',
   styles: []
 })
 export class AnswerSheetComponent implements OnInit , AfterViewInit{

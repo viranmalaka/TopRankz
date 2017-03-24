@@ -7,10 +7,12 @@ import { AppComponent } from './app.component';
 import {LoginComponent} from "./auth/login.component";
 import {routing} from "./app.routing";
 import { SignupComponent } from './auth/signup.component';
-import { CreatePaperComponent } from './paper/create-paper.component';
-import { NewPaperComponent } from './paper/new-paper.component';
-import { NewQuestionComponent } from './paper/new-question.component';
-import { AnswerSheetComponent } from './paper/answer-sheet.component';
+import { CreatePaperComponent } from './paper/create/create-paper.component';
+import { NewPaperComponent } from './paper/create/new-paper.component';
+import { NewQuestionComponent } from './paper/create/new-question.component';
+import { AnswerSheetComponent } from './paper/create/answer-sheet.component';
+import { SelectPaperComponent } from './paper/attempt/select-paper/select-paper.component';
+import { StartPaperComponent } from './paper/attempt/start-paper.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { AnswerSheetComponent } from './paper/answer-sheet.component';
     CreatePaperComponent,
     NewPaperComponent,
     NewQuestionComponent,
-    AnswerSheetComponent
+    AnswerSheetComponent,
+    SelectPaperComponent,
+    StartPaperComponent
   ],
   imports: [
     BrowserModule,
