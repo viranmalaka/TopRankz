@@ -19,5 +19,6 @@ export const PAPER_CREATE_ROUTER : Routes = [
 ];
 
 export const PAPER_ATTEMPT_ROUTER : Routes = [
+  { path : '', component : SelectPaperComponent},
   { path : ':paper_id', component : StartPaperComponent }
 ];
