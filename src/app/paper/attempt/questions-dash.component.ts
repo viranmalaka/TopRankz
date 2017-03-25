@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+declare let $:any;
 
 @Component({
   selector: 'app-questions-dash',
   template: `
-<div class="fourteen wide column">
+<div class="fourteen wide column" >
     <div class="ui segment">
       <div style="font-size:15px" class="ui top attached label">
         <div class="ui grid">
@@ -19,17 +20,19 @@ import { Component, OnInit } from '@angular/core';
           </div>
         </div>
       </div>
+      <div class="autumn">
         <app-question-container></app-question-container>
-      <pre>{{formData}}</pre>
-      <div class="one wide column">
-        <div class="ui lable">a</div>
       </div>
+      <pre></pre>
       <div class="ui bottom attached label">
         <div style="float:left">Tag list here</div>
         <div style="float:right">you have done this 3 times before</div>
       </div>
     </div>
   </div>
+  <br>
+  <button class="ui button">Answer Sheet</button>
+  <button class="ui button">Finish Attempt</button>
   `,
   styles: []
 })
@@ -40,4 +43,18 @@ export class QuestionsDashComponent implements OnInit {
   ngOnInit() {
   }
 
+  back(){
+    console.log('back');
+    $('.autumn')
+      .transition('fade left','200ms')
+      .transition('fade right', '200ms')
+    ;
+  }
+
+  next(){
+    $('.autumn')
+      .transition('fade right')
+      .transition('fade left')
+    ;
+  }
 }

@@ -13,6 +13,8 @@ import {RandomComponent} from "./attempt/select-paper/random.component";
 import {OneQuestionComponent} from "./attempt/one-question.component";
 import {QuestionContainerComponent} from "./attempt/question-container.component";
 import {QuestionsDashComponent} from "./attempt/questions-dash.component";
+import {ViewPaperComponent} from "./view/view-paper.component";
+import {ViewQuestionComponent} from "./view/view-question.component";
 
 export const PAPER_CREATE_ROUTER : Routes = [
   // { path : '', redirectTo : '/new', pathMatch:'full'},
@@ -30,7 +32,7 @@ export const PAPER_ATTEMPT_ROUTER : Routes = [
 
 export const PAPER_VIEW_ROUTER : Routes = [
   { path : '', component : RandomComponent},
-  { path : ':paper_id', component : StartPaperComponent }
+  { path : ':paper_id', component : ViewQuestionComponent }
 
 ];
 
