@@ -20,6 +20,9 @@ import { OneQuestionComponent } from './paper/attempt/one-question.component';
 import { SubmitPaperComponent } from './paper/create/submit-paper.component';
 import { AttemptComponent } from './paper/attempt/attempt.component';
 import { PaperCardComponent } from './paper/attempt/select-paper/paper-card.component';
+import { CardListComponent } from './paper/attempt/select-paper/card-list.component';
+import { QuestionContainerComponent } from './paper/attempt/question-container.component';
+import { QuestionsDashComponent } from './paper/attempt/questions-dash.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { PaperCardComponent } from './paper/attempt/select-paper/paper-card.comp
     OneQuestionComponent,
     SubmitPaperComponent,
     AttemptComponent,
-    PaperCardComponent
+    PaperCardComponent,
+    CardListComponent,
+    QuestionContainerComponent,
+    QuestionsDashComponent
   ],
   imports: [
     BrowserModule,

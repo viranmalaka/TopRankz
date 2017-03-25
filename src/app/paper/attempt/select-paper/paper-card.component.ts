@@ -5,10 +5,10 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <div class="ui raised link card" >
       <div class="content">
-        <div class="header">{{  }}</div>
-        <div class="meta"><span class="category">you have done this {{doneBefore}}</span></div>
+        <div class="header">{{ cardData.name }}</div>
+        <div class="meta"><span class="category">you have done this {{cardData.doneBefore}}</span></div>
         <div class="description">
-          p {{numberOfQuestions}} - questions : {{timeLimit}} - minites
+          p {{cardData.numberOfQuestions}} - questions : {{cardData.timeLimit}} - minites
         </div>
       </div>
       <div class="extra content">
@@ -21,13 +21,17 @@ import { Component, OnInit } from '@angular/core';
       </div>
     </div>
   `,
-  styles: []
+  styles: [],
+  inputs : ['cardData']
 })
 export class PaperCardComponent implements OnInit {
-  name = 'Demo Name';
-  doneBefore = 3;
-  numberOfQuestions = 60;
-  timeLimit = 120;
+  cardData = {
+    name: 'Demo Name',
+    doneBefore: 3,
+    numberOfQuestions: 60,
+    timeLimit: 120
+  };
+
   constructor() { }
 
   ngOnInit() {

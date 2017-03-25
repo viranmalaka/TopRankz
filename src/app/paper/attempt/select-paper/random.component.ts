@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, AfterViewInit} from '@angular/core';
+declare let $: any;
 
 @Component({
   selector: 'app-random',
-  template: `<form class="ui form sixteen wide column">
+  template: `
+<form class="ui form sixteen wide column">
   <h4 class="ui dividing header">Filters</h4>
   <div class="fields">
     <div class="field sixteen column wide">
-      <label>Subject</label>
+      <label>Topics</label>
       <select name="subject" id="" class="ui fluid dropdown">
-        <option value="">Subject</option>
-        <option value="01">Sinhala</option>
-        <option value="02">Physics</option>
+        <option value="">Topic</option>
+        <option value="01">Topic 1</option>
+        <option value="02">Topic 2</option>
       </select>
     </div>
     <div class="field sixteen column wide">
@@ -18,7 +20,7 @@ import { Component, OnInit } from '@angular/core';
       <select name="subject" id="" class="ui fluid dropdown">
         <option value="">Subject</option>
         <option value="01">Sinhala</option>
-        <option value="02">Physics</option>
+        <option value="02">English</option>
       </select>
     </div>
   </div>
@@ -33,56 +35,20 @@ import { Component, OnInit } from '@angular/core';
   <div class="ui active inline loader"></div>
 </form>
 <h4 class="ui dividing header">Search Results</h4>
-<div class="ui grid">
-  <div class="five wide column">
-    <div class="ui raised link card">
-      <div class="content">
-        <div class="header">2014 Sinhala</div>
-        <div class="meta">
-          <span class="category">
-            you have never done this before
-          </span>
-        </div>
-        <div class="description">
-          p 60 - questions : 120 - minites
-        </div>
-      </div>
-      <div class="extra content">
-        <div class="right floated author">
-          <button class="ui tiny button disabled">show results</button>
-        </div>
-        <div class="left floated author">
-          <button class="ui tiny button">take attempt</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="five wide column">
-    <div class="ui raised link card">
-      <div class="content">
-        <div class="header">2015 physics</div>
-        <div class="meta"><span class="category">you have done this 3 times</span></div>
-        <div class="description">p 60 - questions : 120 - minites</div>
-      </div>
-      <div class="extra content">
-        <div class="right floated author">
-          <button class="ui tiny button disabled">show results</button>
-        </div>
-        <div class="left floated author">
-          <button class="ui tiny button">take attempt</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<br>
+<app-card-list></app-card-list>
 `,
   styles: []
 })
-export class RandomComponent implements OnInit {
-
+export class RandomComponent implements OnInit, AfterViewInit{
+  viewPage = false;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(){
+    $('.dropdown').dropdown();
   }
 
 }
