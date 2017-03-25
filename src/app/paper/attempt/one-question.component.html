@@ -1,0 +1,127 @@
+<style>
+  .textLeft {text-align: left}
+  .textRight {text-align: right}
+  .textCenter {text-align: center}
+  .fontSize {font-size: 20px}
+</style>
+<div class="ui grid">
+  <div style="overflow-y:scroll; height:90vh;" class="three wide column">
+    <div class="ui vertical pointing menu">
+      <a ng-repeat="x in getnQuestions()" id="qLink{{x}}" class="item">
+        Question {{('0' + x).slice(-2)}}
+      </a>
+      <a class="item">Answer Sheet</a>
+      <a class="item">Submit Paper</a>
+    </div>
+  </div>
+  <div class="twelve wide column">
+    <div class="ui segment">
+      <div style="font-size:15px" class="ui top attached label">
+        <div class="ui grid">
+          <div class="one wide column">01</div>
+          <div class="nine wide column"></div>
+          <div class="three wide right floated column textRight">
+            {{('0' + min).slice(-2)}} : {{('0' + sec).slice(-2)}}
+          </div>
+          <div style="height:10px" class="three wide right floated column">
+            <div id="timePrg" class="ui indicating small progress">
+              <div class="bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ui segment">Question
+        <div class="ui divider"></div>
+        <div class="ui grid">
+          <div class="one wide column"></div>
+          <div class="fifteen wide column">
+            <div class="ui grid">
+              <div class="row">
+                <div class="one wide column">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="fruit" checked="checked"
+                           ng-model="formData.ans1" class="hidden"/>
+                    <label>01</label>
+                  </div>
+                </div>
+                <div class="fifteen wide column">answer</div>
+              </div>
+              <div class="row">
+                <div class="one wide column">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="fruit" checked=""
+                           ng-model="formData.ans2" class="hidden"/>
+                    <label>01</label>
+                  </div>
+                </div>
+                <div class="fifteen wide column">answer</div>
+              </div>
+              <div class="row">
+                <div class="one wide column">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="fruit" checked=""
+                           ng-model="formData.ans3" class="hidden"/>
+                    <label>01</label>
+                  </div>
+                </div>
+                <div class="fifteen wide column">answer</div>
+              </div>
+              <div class="row">
+                <div class="one wide column">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="fruit" checked=""
+                           ng-model="formData.ans4" class="hidden"/>
+                    <label>01</label>
+                  </div>
+                </div>
+                <div class="fifteen wide column">answer</div>
+              </div>
+              <div class="row">
+                <div class="one wide column">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="fruit" checked=""
+                           ng-model="formData.ans5" class="hidden"/>
+                    <label>01</label>
+                  </div>
+                </div>
+                <div class="fifteen wide column">answer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="ui grid">
+          <div class="six wide column">
+            <div class="ui buttons">
+              <button class="ui button"><i class="left arrow icon"></i></button>
+              <!--.or-->
+              <button class="ui positive button"><i class="right arrow icon"></i></button>
+            </div>
+          </div>
+          <div class="seven wide column">
+            <button class="ui right labeled icon green button"><i class="right arrow icon"></i>
+              <div class="visible content">Submit</div>
+            </button>
+          </div>
+          <div class="one wide column right floated">
+            <div class="ui icon buttons">
+              <button class="ui toggle button"><i class="flag icon"></i></button>
+            </div>
+          </div>
+        </div>
+        <div id="quePrg" style="margin-bottom:-10px" data-value="10"
+             data-total="20" class="ui green bottom attached progress">
+          <div class="bar"></div>
+        </div>
+      </div>
+      <pre>{{formData}}</pre>
+      <div class="one wide column">
+        <div class="ui lable">a</div>
+      </div>
+      <div class="ui bottom attached label">
+        <div style="float:left">Tag list here</div>
+        <div style="float:right">you have done this 3 times before</div>
+      </div>
+    </div>
+  </div>
+</div>

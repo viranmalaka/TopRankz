@@ -34,7 +34,7 @@ import { Component, OnInit } from '@angular/core';
 </form>
 <h4 class="ui dividing header">Search Results</h4>
 <div class="ui grid">
-  <div class="eight wide column">
+  <div class="five wide column">
     <div class="ui raised link card">
       <div class="content">
         <div class="header">2014 Sinhala</div>
@@ -57,7 +57,7 @@ import { Component, OnInit } from '@angular/core';
       </div>
     </div>
   </div>
-  <div class="eight wide column">
+  <div class="five wide column">
     <div class="ui raised link card">
       <div class="content">
         <div class="header">2015 physics</div>

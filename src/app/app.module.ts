@@ -16,6 +16,8 @@ import { StartPaperComponent } from './paper/attempt/start-paper.component';
 import { PassPaperComponent } from './paper/attempt/select-paper/pass-paper.component';
 import { ClassGroupComponent } from './paper/attempt/select-paper/class-group.component';
 import { RandomComponent } from './paper/attempt/select-paper/random.component';
+import { OneQuestionComponent } from './paper/attempt/one-question.component';
+import { SubmitPaperComponent } from './paper/create/submit-paper.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { RandomComponent } from './paper/attempt/select-paper/random.component';
     StartPaperComponent,
     PassPaperComponent,
     ClassGroupComponent,
-    RandomComponent
+    RandomComponent,
+    OneQuestionComponent,
+    SubmitPaperComponent
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-pass-paper',
   template: `<div class="ui grid">
-  <div class="eight wide column">
+  <div class="five wide column">
     <div class="ui raised link card">
       <div class="content">
         <div class="header">2014 Sinhala</div>
@@ -26,7 +26,7 @@ import { Component, OnInit } from '@angular/core';
       </div>
     </div>
   </div>
-  <div class="eight wide column">
+  <div class="five wide column">
     <div class="ui raised link card">
       <div class="content">
         <div class="header">2015 physics</div>
