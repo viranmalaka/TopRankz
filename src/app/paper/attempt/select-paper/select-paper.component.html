@@ -10,15 +10,27 @@
     <div class="ui grid">
       <div class="four wide column">
         <div class="ui vertical fluid left tabular menu">
-          <a class="item" *ngFor="let sub of arraySubjects">{{sub}}</a>
+          <a class="item" *ngFor="let sub of arraySubjects" id="{{sub.id}}">{{sub.name}}</a>
         </div>
       </div>
       <div class="twelve wide stretched column">
         <div class="ui segment box-centerside">
           <div class="ui segment">
-            <div class="ui secondary pointing menu"><a id="pp" class="item">Pass paper</a><a id="rq" class="item">Random Questions</a><a id="cg" class="item">Class Group</a></div>
+            <div class="ui secondary pointing menu">
+              <a id="pp" class="item" (click)="activeContent = 'pp'">Pass Paper</a>
+              <a id="rq" class="item" (click)="activeContent = 'rq'">Random Questions</a>
+              <a id="cg" class="item" (click)="activeContent = 'cg'">Class Group</a>
+            </div>
           </div>
-          <router-outlet></router-outlet>
+          <div *ngIf="activeContent == 'pp'">
+            <app-pass-paper></app-pass-paper>
+          </div>
+          <div *ngIf="activeContent == 'cg'">
+            <app-class-group></app-class-group>
+          </div>
+          <div *ngIf="activeContent == 'rq'">
+            <app-random></app-random>
+          </div>
         </div>
       </div>
     </div>

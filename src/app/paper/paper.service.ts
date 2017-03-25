@@ -16,4 +16,10 @@ export class PaperService {
     return this._http.get("http://localhost:3000/api")
       .map((res : Response) => res.json());
   }
+
+  getUsersSubject(){
+    return {subjects: [{id : '01', name : 'Sinhala'},
+      {id: '02', name :'Chemistry'},
+      {id : '03', name : 'Bio'} ]};
+  }
 }

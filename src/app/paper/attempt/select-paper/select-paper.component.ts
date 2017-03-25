@@ -1,4 +1,5 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {PaperService} from "../../paper.service";
 declare let $:any;
 
 @Component({
@@ -7,13 +8,17 @@ declare let $:any;
   styles: []
 })
 export class SelectPaperComponent implements OnInit, AfterViewInit{
-  arraySubjects = ['Physics', 'Chemistry', 'Bio'];
-  constructor() { }
+  arraySubjects;
+  private activeContent = 'pp';
+  constructor(private paperService:PaperService) { }
 
   ngOnInit() {
+    this.arraySubjects = this.paperService.getUsersSubject().subjects;
   }
 
   ngAfterViewInit(){
+    $('#' + this.arraySubjects[0].id).addClass('active');
+    $('#pp').addClass('active');
     $('.ui.menu')
       .on('click', '.item', function () {
         if (!$(this).hasClass('dropdown')) {
@@ -36,5 +41,10 @@ export class SelectPaperComponent implements OnInit, AfterViewInit{
           }
         }
       });
+  }
+
+  setActiveContent(name){
+    this.activeContent = name;
+    console.log(name);
   }
 }

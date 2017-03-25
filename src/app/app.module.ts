@@ -13,6 +13,9 @@ import { NewQuestionComponent } from './paper/create/new-question.component';
 import { AnswerSheetComponent } from './paper/create/answer-sheet.component';
 import { SelectPaperComponent } from './paper/attempt/select-paper/select-paper.component';
 import { StartPaperComponent } from './paper/attempt/start-paper.component';
+import { PassPaperComponent } from './paper/attempt/select-paper/pass-paper.component';
+import { ClassGroupComponent } from './paper/attempt/select-paper/class-group.component';
+import { RandomComponent } from './paper/attempt/select-paper/random.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { StartPaperComponent } from './paper/attempt/start-paper.component';
     NewQuestionComponent,
     AnswerSheetComponent,
     SelectPaperComponent,
-    StartPaperComponent
+    StartPaperComponent,
+    PassPaperComponent,
+    ClassGroupComponent,
+    RandomComponent
   ],
   imports: [
     BrowserModule,
