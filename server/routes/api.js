@@ -6,6 +6,7 @@ router.get('/', function (req, res) {
   res.json({title : 'Hello World..!'});
 });
 
-router.get('/paper', require('./paper'));
+router.use('/paper', require('./paper'));
+router.use('/user', require('./user'));
 
 module.exports = router;

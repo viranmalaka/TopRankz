@@ -4,7 +4,8 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class PaperService {
-  private domainUrl = "http://localhost:3000/api/paper/";
+  private domainUrl = require('../config').domainUrl;
+
   constructor(private _http : Http) { }
 
   getAllPaperNames(){

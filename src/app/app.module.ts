@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
@@ -26,6 +26,9 @@ import { QuestionsDashComponent } from './paper/attempt/questions-dash.component
 import { ViewPaperComponent } from './paper/view/view-paper.component';
 import { ViewQuestionComponent } from './paper/view/view-question.component';
 import { ViewQuestionContentComponent } from './paper/view/view-question-content.component';
+import { EditUserDetailsComponent } from './auth/edit-user-details.component';
+import { UserDetailsBioComponent } from './auth/user-details-bio.component';
+import { UserDetailsEnrollComponent } from './auth/user-details-enroll.component';
 
 @NgModule({
   declarations: [
@@ -50,13 +53,18 @@ import { ViewQuestionContentComponent } from './paper/view/view-question-content
     QuestionsDashComponent,
     ViewPaperComponent,
     ViewQuestionComponent,
-    ViewQuestionContentComponent
+    ViewQuestionContentComponent,
+    EditUserDetailsComponent,
+    UserDetailsBioComponent,
+    UserDetailsBioComponent,
+    UserDetailsEnrollComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    routing
+    routing,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
