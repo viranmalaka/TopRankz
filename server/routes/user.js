@@ -11,7 +11,7 @@ var usrCntl = require('../controllers/userController');
 
 router.post('/login',
   passport.authenticate('local', {
-    session : false
+    session : true
   }),
   generateToken,
   function(req, res) {
@@ -53,10 +53,16 @@ router.post('/signup', function (req, res) {
             throw err;
           }else{
             console.log(user);
-            res.json({acc_id : user.acc_id,
-              username: user.username,
-              email : user.email,
-              acc_type: user.acc_type });
+            generateToken(req, res, function () {
+              res.json({
+                user: {
+                  acc_id: user.acc_id,
+                  username: user.username,
+                  email: user.email,
+                  acc_type: user.acc_type
+                }, token : req.token
+              });
+            });
           }
         });
       }
@@ -64,6 +70,15 @@ router.post('/signup', function (req, res) {
   }
 });
 
+router.get('/who', function (req, res) {
+  console.log(req.token);
+  console.log(req.validToken);
+  res.json(req.user);
+});
+
+router.get('/check', validAuth, function (req, res) {
+  res.send(req.validToken);
+});
 
 router.get('/checkUserName', function (req, res) {
   usrCntl.checkUserName({checkUserName : {username : req.query.username}}, function (val) {
@@ -111,6 +126,16 @@ function generateToken(req, res, next) {
   }, 'secret', {
     expiresIn: '10h'
   });
+  next();
+}
+
+function validAuth(req, res, next) {
+  try{
+    var genID = jwt.verify((req.method =='GET' ? req.query.token : req.body.token), 'secret');
+    req.validToken = genID.id == req.user._id;
+  }catch (err){
+    req.validToken = false;
+  }
   next();
 }
 

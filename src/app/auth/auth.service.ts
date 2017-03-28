@@ -17,6 +17,7 @@ export class AuthService {
   }
 
   postSignUp(data){
+    console.log(data);
     return this._http.post(this.authDomain + 'signup', data)
       .map((response: Response) => response.json());
   }

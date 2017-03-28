@@ -29,14 +29,14 @@ export class SignupComponent implements OnInit, AfterViewInit{
       console.log('valid');
       this.authService.postSignUp(this.signupForm.value)
         .subscribe(res => {
-          if(res.success){
             console.log(res);
-          }
+            localStorage.setItem('token', res.token);
+            localStorage.setItem('user', JSON.stringify(res.user));
+            this.router.navigate([res.user.username, 'edit']);
         }, err => {
           console.log(err);
         });
     }
-    console.log(this.signupForm.value);
   }
 
   ngAfterViewInit(){
