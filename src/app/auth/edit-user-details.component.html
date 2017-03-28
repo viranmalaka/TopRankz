@@ -7,14 +7,21 @@
         <input type="file" class="inputfile" id="imgUpload" name='imgUpload'>
       </form>
       <div class="ui vertical fluid tabular menu">
-        <a href="" class="active item" id="mnuBio">Bio</a>
-        <a href="" class="item" id="mnuEnroll">Enrollments</a>
-        <a href="" class="item" id="mnuClasses">Classes</a>
+        <a class="item" id="mnuBio"
+           (click)="activeTab = 'bio'" [class.active]="activeTab == 'bio'">Bio</a>
+        <a class="item" id="mnuEnroll"
+           (click)="activeTab = 'enroll'" [class.active]="activeTab == 'enroll'">Enrollments</a>
+        <a class="item" id="mnuClasses"
+           (click)="activeTab = 'class'" [class.active]="activeTab == 'class'">Classes</a>
       </div>
     </div>
     <div class="ui ten wide computer sixteen wide mobile column" id="block">
-
-
+      <div *ngIf="activeTab == 'bio'">
+        <app-user-details-bio></app-user-details-bio>
+      </div>
+      <div *ngIf="activeTab == 'enroll'">
+        <app-user-details-enroll></app-user-details-enroll>
+      </div>
     </div>
   </div>
 </div>

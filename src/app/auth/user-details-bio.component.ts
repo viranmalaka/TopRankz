@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, AfterViewInit} from '@angular/core';
+declare let $:any;
 
 @Component({
   selector: 'app-user-details-bio',
   template: `
 <div id="Bio">
   <h1 class="ui header">Personal Information</h1>
-  <h3 class="ui header"> Hay.. Welcome. Give us more details about you.></h3>
+  <h3 class="ui header" *ngIf="newUser"> Hay.. Welcome. Give us more details about you.</h3>
   <form action="" class="ui form" id="personalInfoForm">
     <div class="ui stacked segment">
       <div class="two fields">
@@ -19,16 +20,16 @@ import { Component, OnInit } from '@angular/core';
         </div>
       </div>
       <div class="two fields">
-        <div class="field">
-          <label for="vName">Visible Name :</label>
+        <div class="field" *ngIf="acc_type=='T'">
+          <label for="vName" >Visible Name :</label>
           <input type="text" id="vName">
         </div>
       </div>
       <div class="field">
-        <label for="email"></label>
+        <label for="email">Email :</label>
         <input type="email" id="email">
       </div>
-      <div class="two field">
+      <div class="two fields">
         <div class="field">
           <label for="selDistrict">District :</label>
           <select name="district" id="selDistrict" class="ui dropdown">
@@ -38,14 +39,15 @@ import { Component, OnInit } from '@angular/core';
           </select>
         </div>
         <div class="field">
-          <label for="school">School</label><select name="school" id="school">
-          <option value="">Select School</option>
-          <option value="01">askdfj</option>
-          <option value="02">sadfas</option>
-        </select>
+          <label for="school">School</label>
+          <select name="school" id="school" class="ui dropdown">
+            <option value="">Select School</option>
+            <option value="01">askdfj</option>
+            <option value="02">sadfas</option>
+          </select>
         </div>
-      </div>
-      <div class="two field">
+      </div>  
+      <div class="two fields">
         <div class="field">
           <label for="birthDay">Birthday :</label>
           <div class="ui calender">
@@ -56,8 +58,8 @@ import { Component, OnInit } from '@angular/core';
           </div>
         </div>
       </div>
-      <div class="two field">
-        <div class="field">
+      <div class="two fields">
+        <div class="field" *ngIf="acc_type=='T'">
           <label for="selDistrict">Subject :</label>
           <select name="subject" id="selSubject" class="ui dropdown">
             <option value="">Select Subject</option>
@@ -66,7 +68,7 @@ import { Component, OnInit } from '@angular/core';
           </select>
         </div>
       </div>
-      <div class="two field">
+      <div class="two fields">
         <div class="field">
           <label for="address">Address</label>
           <input id="address" type="text">
@@ -76,25 +78,33 @@ import { Component, OnInit } from '@angular/core';
           <input id="telephone" type="text">
         </div>
       </div>
-      <div class="three field">
+      <div class="three fields">
         <div class="field"></div>
         <div class="field">
           <input type="submit" class="ui fluid button">
         </div>
       </div>
     </div>
-  
   </form>
 </div>
-
 `,
   styles: []
 })
-export class UserDetailsBioComponent implements OnInit {
+export class UserDetailsBioComponent implements OnInit , AfterViewInit{
+  acc_type = localStorage.getItem('acc_type');
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(){
+    $('.ui.dropdown').dropdown();
+    $('.ui.calender').calendar({
+      type: 'date',
+      startMode : 'year'
+    });
+
   }
 
 }

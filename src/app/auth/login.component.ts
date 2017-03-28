@@ -18,8 +18,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router : Router,
-    private msgAlert : ElementRef) { }
+    private router : Router) { }
 
   ngOnInit() {
 
@@ -28,7 +27,7 @@ export class LoginComponent implements OnInit {
   onSubmit(){
     this.authService.postLogin(this.loginForm.value)
       .subscribe(res => {
-        this.router.navigateByUrl('/');
+        this.router.navigate(['/']);
         localStorage.setItem('user', res.user);
         localStorage.setItem('auth-token', res.token);
       }, (err) => {

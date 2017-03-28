@@ -25,16 +25,6 @@ import { Component, OnInit } from '@angular/core';
     </div>
   </div>
 </div>
-.ui.link.three.cards
-          each s in res.subjects
-              .card
-                  .content
-                      .header #{s.name}
-                  button.ui.toggle.button(id = s._id, onClick="$(this).toggleClass('green'); setEnroll('" + s._id + "');") Enroll
-      .ui.grid
-          .six.wide.column
-          .eight.wide.column
-              button.ui.button#enrolSubmitBtn(onclick='submitEnrollments();') Submit Changes
   `,
   styles: []
 })

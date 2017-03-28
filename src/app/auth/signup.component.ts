@@ -1,4 +1,7 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {AuthService} from "./auth.service";
+import {FormGroup, FormControl} from "@angular/forms";
+import {Router} from "@angular/router";
 declare let $: any;
 @Component({
   selector: 'app-signup',
@@ -6,29 +9,75 @@ declare let $: any;
   styles: []
 })
 export class SignupComponent implements OnInit, AfterViewInit{
+  acc_type = 'student';
 
-  constructor() { }
+  private signupForm = new FormGroup({
+    username : new FormControl(),
+    email : new FormControl(),
+    password : new FormControl(),
+    password2 : new FormControl()
+  });
+
+  constructor(private authService : AuthService, private router : Router) { }
 
   ngOnInit() {
   }
 
+  onSubmit(){
+    this.signupForm.value.acc_type = this.acc_type;
+    if($('.ui.form').form('is valid')){
+      console.log('valid');
+      this.authService.postSignUp(this.signupForm.value)
+        .subscribe(res => {
+          if(res.success){
+            console.log(res);
+          }
+        }, err => {
+          console.log(err);
+        });
+    }
+    console.log(this.signupForm.value);
+  }
+
   ngAfterViewInit(){
+
     $('.ui.radio.checkbox').checkbox();
     // new validation rule for check username availability
     $.fn.form.settings.rules.checkName = function (value) {
-      return $.ajax({
-        url : '/api/user/checkUserName',
-        method : 'POST',
-        data : {userName : value},
+      let x = $.ajax({
+        url : require('../config')['development'].domainURL + 'user/checkUserName',
+        method : 'GET',
+        data : {username : value},
         async : false,
         success : function (data) {
-          return data;
+          return data.responseJSON;
         }
       }).responseJSON;
+      if(x){
+        return !x.exist;
+      }else{
+        return false;
+      }
+    };
+    $.fn.form.settings.rules.checkEmail = function (value) {
+      let x = $.ajax({
+        url : require('../config')['development'].domainURL + 'user/checkEmail',
+        method : 'GET',
+        data : {email : value},
+        async : false,
+        success : function (data) {
+          return data.responseJSON;
+        }
+      }).responseJSON;
+      if(x){
+        return !x.exist;
+      }else{
+        return false;
+      }
     };
 
 
-    $('#signupForm').form({
+    $('.ui.form').form({
       fields:{
         email: {
           identifier: 'email', rules: [{
@@ -37,6 +86,9 @@ export class SignupComponent implements OnInit, AfterViewInit{
           }, {
             type: 'email',
             prompt: 'Invalid Email Address'
+          }, {
+            type : 'checkEmail',
+            prompt: 'This email address is already in use'
           }]
         },
         username: {

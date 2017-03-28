@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router, ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-edit-user-details',
@@ -15,10 +16,11 @@ import { Component, OnInit } from '@angular/core';
 `]
 })
 export class EditUserDetailsComponent implements OnInit {
-
+  activeTab = 'bio';
   constructor() { }
 
   ngOnInit() {
   }
+
 
 }

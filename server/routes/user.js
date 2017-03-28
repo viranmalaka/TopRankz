@@ -7,6 +7,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var jwt = require('jsonwebtoken');
 
+var usrCntl = require('../controllers/userController');
+
 router.post('/login',
   passport.authenticate('local', {
     session : false
@@ -37,7 +39,7 @@ router.post('/signup', function (req, res) {
       username : req.body.username,
       password : req.body.password,
       email : req.body.email,
-      acc_type : (req.body.acc_type == 'student' ? 'S' : 'T')
+      acc_type : (req.body.acc_type == 'Student' ? 'S' : 'T')
     });
 
     User.createUser(newUser, function (err, user) {
@@ -51,12 +53,28 @@ router.post('/signup', function (req, res) {
             throw err;
           }else{
             console.log(user);
-            res.json(user);
+            res.json({acc_id : user.acc_id,
+              username: user.username,
+              email : user.email,
+              acc_type: user.acc_type });
           }
         });
       }
     });
   }
+});
+
+
+router.get('/checkUserName', function (req, res) {
+  usrCntl.checkUserName({checkUserName : {username : req.query.username}}, function (val) {
+    res.json({exist : !val._checkUserName});
+  });
+});
+
+router.get('/checkEmail', function (req, res) {
+  usrCntl.checkEmail({checkEmail : {email : req.query.email}}, function (val) {
+    res.json({exist : !val._checkEmail});
+  });
 });
 
 
