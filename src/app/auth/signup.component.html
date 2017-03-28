@@ -8,48 +8,52 @@
             <!--img.image(src='assets/images/logo.png')-->
             <div class="content">Sign up here</div>
           </h2>
-          <form id="signupForm" method="POST" action="/users/signup" class="ui form">
+          <form class="ui form" [formGroup]="signupForm" (submit)="onSubmit()">
             <div class="ui stacked segment">
               <div class="inline fields">
                 <label>Sign Up as :</label>
                 <div class="field">
-                  <div class="ui radio checkbox">
-                    <input type="radio" name="acc_type" value="student" checked="checked"/>
+                  <div class="ui radio checkbox" (click)="acc_type = 'student'">
+                    <input type="radio" name="acc_type"  [checked]="acc_type === 'student'">
                     <label>Student</label>
                   </div>
                 </div>
                 <div class="field">
-                  <div class="ui radio checkbox">
-                    <input type="radio" name="acc_type" value="teachers"/>
+                  <div class="ui radio checkbox" (click)="acc_type = 'teacher'">
+                    <input type="radio" name="acc_type"  [checked]="acc_type === 'teacher'">
                     <label>Teacher</label>
                   </div>
                 </div>
               </div>
               <div class="field">
-                <div class="ui left icon input"><i class="mail icon"></i>
-                  <input type="text" name="email" placeholder="Email"/>
+                <div class="ui left icon input"><i class="mail icon" ></i>
+                  <input type="text" name="email" placeholder="Email"  formControlName="email"/>
                 </div>
               </div>
               <div class="field">
                 <div class="ui left icon input"><i class="user icon"></i>
-                  <input type="text" name="username" placeholder="Username"/>
+                  <input type="text" name="username" placeholder="Username"  formControlName="username"/>
                 </div>
               </div>
               <div class="field">
                 <div class="ui left icon input"><i class="lock icon"></i>
-                  <input type="password" name="password" placeholder="Password"/>
+                  <input type="password" name="password" placeholder="Password"  formControlName="password"/>
                 </div>
               </div>
               <div class="field">
                 <div class="ui left icon input"><i class="lock icon"></i>
-                  <input type="password" name="password2" placeholder="Confirms"/>
+                  <input type="password" name="password2" placeholder="Confirms"  formControlName="password2"/>
                 </div>
               </div>
               <input type="submit" value="Sign up" class="ui fluid large blue submit button"/>
             </div>
             <div class="ui error message"></div>
+
+
+            <br>
+
           </form>
-          <div class="ui message">Already have an account ?<a href="#">Login</a></div>
+          <div class="ui message">Already have an account ?<a routerLink="/login">Login</a></div>
         </div>
       </div>
     </div>

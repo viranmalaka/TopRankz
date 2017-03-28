@@ -1,0 +1,27 @@
+<div class="ui container">
+  <div class="ui grid">
+    <div class="ui three wide computer ten wide mobile column">
+      <img src="" alt="" class="ui image" id="profImg">
+      <form action="" id="formProfImage" enctype="multipart/form-data">
+        <label class="fluid ui blue basic button" for='imgUpload'>Change</label>
+        <input type="file" class="inputfile" id="imgUpload" name='imgUpload'>
+      </form>
+      <div class="ui vertical fluid tabular menu">
+        <a class="item" id="mnuBio"
+           (click)="activeTab = 'bio'" [class.active]="activeTab == 'bio'">Bio</a>
+        <a class="item" id="mnuEnroll"
+           (click)="activeTab = 'enroll'" [class.active]="activeTab == 'enroll'">Enrollments</a>
+        <a class="item" id="mnuClasses"
+           (click)="activeTab = 'class'" [class.active]="activeTab == 'class'">Classes</a>
+      </div>
+    </div>
+    <div class="ui ten wide computer sixteen wide mobile column" id="block">
+      <div *ngIf="activeTab == 'bio'">
+        <app-user-details-bio></app-user-details-bio>
+      </div>
+      <div *ngIf="activeTab == 'enroll'">
+        <app-user-details-enroll></app-user-details-enroll>
+      </div>
+    </div>
+  </div>
+</div>
