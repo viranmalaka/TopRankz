@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
+import {AuthService} from "./auth.service";
 
 @Component({
   selector: 'app-edit-user-details',
@@ -17,9 +18,15 @@ import {Router, ActivatedRoute} from "@angular/router";
 })
 export class EditUserDetailsComponent implements OnInit {
   activeTab = 'bio';
-  constructor() { }
+  constructor(private authService : AuthService, private router: Router) { }
 
   ngOnInit() {
+    console.log('auth-token', localStorage.getItem('auth-token'));
+    this.authService.getCheckToken().subscribe(res => {
+      if(!res.validity){
+        this.router.navigate(['login']);
+      }
+    });
   }
 
 

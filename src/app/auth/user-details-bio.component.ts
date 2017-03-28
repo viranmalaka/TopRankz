@@ -20,7 +20,7 @@ declare let $:any;
         </div>
       </div>
       <div class="two fields">
-        <div class="field" *ngIf="acc_type=='T'">
+        <div class="field" *ngIf="user.acc_type=='T'">
           <label for="vName" >Visible Name :</label>
           <input type="text" id="vName">
         </div>
@@ -59,7 +59,7 @@ declare let $:any;
         </div>
       </div>
       <div class="two fields">
-        <div class="field" *ngIf="acc_type=='T'">
+        <div class="field" *ngIf="user.acc_type=='T'">
           <label for="selDistrict">Subject :</label>
           <select name="subject" id="selSubject" class="ui dropdown">
             <option value="">Select Subject</option>
@@ -91,11 +91,13 @@ declare let $:any;
   styles: []
 })
 export class UserDetailsBioComponent implements OnInit , AfterViewInit{
-  acc_type = localStorage.getItem('acc_type');
+  user = JSON.parse(localStorage.getItem('user'));
+  listOfDistrict = [];
 
   constructor() { }
 
   ngOnInit() {
+
   }
 
   ngAfterViewInit(){
@@ -105,6 +107,7 @@ export class UserDetailsBioComponent implements OnInit , AfterViewInit{
       startMode : 'year'
     });
 
+    console.log(this.user.acc_type == 'T');
   }
 
 }

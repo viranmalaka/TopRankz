@@ -27,12 +27,14 @@ export class LoginComponent implements OnInit {
   onSubmit(){
     this.authService.postLogin(this.loginForm.value)
       .subscribe(res => {
-        this.router.navigate(['/']);
-        localStorage.setItem('user', res.user);
+        console.log('res', res);
+        localStorage.setItem('user', JSON.stringify(res.user));
         localStorage.setItem('auth-token', res.token);
+        this.router.navigate([res.user.username, 'edit']);
       }, (err) => {
         this.hasLoginError = true;
         this.loginForm.reset();
       });
+
   }
 }

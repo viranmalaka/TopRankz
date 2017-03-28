@@ -17,8 +17,12 @@ export class AuthService {
   }
 
   postSignUp(data){
-    console.log(data);
     return this._http.post(this.authDomain + 'signup', data)
       .map((response: Response) => response.json());
+  }
+
+  getCheckToken(){
+    return this._http.get(this.authDomain + 'check?token=' + localStorage.getItem('auth-token'))
+      .map((res : Response) => res.json());
   }
 }

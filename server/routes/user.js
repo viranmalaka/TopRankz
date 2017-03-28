@@ -16,10 +16,13 @@ router.post('/login',
   generateToken,
   function(req, res) {
     res.json({
-      success : true,
-      user : req.user,
-      toke : req.token
-      });
+      user: {
+        acc_id: req.user.acc_id,
+        username: req.user.username,
+        email: req.user.email,
+        acc_type: req.user.acc_type
+      }, token : req.token
+    });
   });
 
 router.post('/signup', function (req, res) {
@@ -70,14 +73,8 @@ router.post('/signup', function (req, res) {
   }
 });
 
-router.get('/who', function (req, res) {
-  console.log(req.token);
-  console.log(req.validToken);
-  res.json(req.user);
-});
-
 router.get('/check', validAuth, function (req, res) {
-  res.send(req.validToken);
+  res.json({validity: req.validToken});
 });
 
 router.get('/checkUserName', function (req, res) {
