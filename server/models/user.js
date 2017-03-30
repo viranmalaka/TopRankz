@@ -8,6 +8,8 @@ var bycrypt = require('bcryptjs');
 var Student = require('./student');
 var Teacher = require('./teacher');
 
+
+// Define mongoose Data model
 var user = new schema({
     username: {type: String, required: true, unique : true},
     password : {type: String, required: true},
@@ -24,13 +26,14 @@ var user = new schema({
 
 module.exports = mongoose.model('User', user);
 
+// create new user
 module.exports.createUser = function (newUser, cb) {
-    bycrypt.genSalt(10, function (err, salt) {
-        bycrypt.hash(newUser.password, salt, function (err, hash) {
-            newUser.password = hash;
-            newUser.save(function (err, user) {
+    bycrypt.genSalt(10, function (err, salt) {                          // generate salt to encrypt
+        bycrypt.hash(newUser.password, salt, function (err, hash) {     // generate has with salt
+            newUser.password = hash;                                    // replace hash with password
+            newUser.save(function (err, user) {                         // save the user
                 if(err){
-                    console.log(err);
+                    console.log(err);                                   // log errors
                     throw err;
                 }else{
                     if(user.acc_type == 'S'){
@@ -63,6 +66,8 @@ module.exports.createUser = function (newUser, cb) {
     });
 };
 
+
+// compare password
 module.exports.comparePassword = function (candidatePassword, hash, cb) {
     bycrypt.compare(candidatePassword, hash, function (err, isMatch) {
         if(err){

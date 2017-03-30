@@ -1,4 +1,5 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {OtherService} from "../other.services";
 declare let $:any;
 
 @Component({
@@ -32,18 +33,16 @@ declare let $:any;
       <div class="two fields">
         <div class="field">
           <label for="selDistrict">District :</label>
-          <select name="district" id="selDistrict" class="ui dropdown">
+          <select name="district" id="selDistrict" class="ui dropdown" [(ngModel)]="selectedDistrict">
             <option value="">Select District</option>
-            <option value="01">asdfasdf</option>
-            <option value="02">asdfasdf</option>
+            <option  *ngFor="let d of listOfDistrict" [value]="d">{{d}}</option>
           </select>
         </div>
         <div class="field">
           <label for="school">School</label>
-          <select name="school" id="school" class="ui dropdown">
+          <select name="school" id="selSchool" class="ui dropdown" [(ngModel)]="selectedSchool">
             <option value="">Select School</option>
-            <option value="01">askdfj</option>
-            <option value="02">sadfas</option>
+            <option *ngFor="let s of listOfSchools" [value]="s.id">{{s.name}}</option>
           </select>
         </div>
       </div>  
@@ -93,21 +92,33 @@ declare let $:any;
 export class UserDetailsBioComponent implements OnInit , AfterViewInit{
   user = JSON.parse(localStorage.getItem('user'));
   listOfDistrict = [];
+  listOfSchools = [];
+  selectedDistrict = '';
+  selectedSchool = '';
 
-  constructor() { }
+  constructor(private otherService : OtherService) { }
 
   ngOnInit() {
+    this.otherService.getAllDistrict().subscribe(res => {
+      this.listOfDistrict = res['districts'];
+    });
+    this.otherService.getAllSchools().subscribe(res => {
+      this.listOfSchools = res['schools'];
+    });
+    // this.otherService.getAllSchoolsByDistrict().subscribe(res => {
+    //   this.listOfSchools = res['schools'];
+    // });
 
   }
 
   ngAfterViewInit(){
-    $('.ui.dropdown').dropdown();
     $('.ui.calender').calendar({
       type: 'date',
       startMode : 'year'
     });
+    $('.ui.dropdown').dropdown();
 
-    console.log(this.user.acc_type == 'T');
+
   }
 
 }

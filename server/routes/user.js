@@ -7,15 +7,17 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var jwt = require('jsonwebtoken');
 
+// import user controller
 var usrCntl = require('../controllers/userController');
 
+// create post route for login form
 router.post('/login',
-  passport.authenticate('local', {
+  passport.authenticate('local', {        // passport auth
     session : true
   }),
-  generateToken,
+  generateToken,                          // generate token
   function(req, res) {
-    res.json({
+    res.json({                            // send the user with the token
       user: {
         acc_id: req.user.acc_id,
         username: req.user.username,
@@ -25,7 +27,11 @@ router.post('/login',
     });
   });
 
+
+// post route to signup
 router.post('/signup', function (req, res) {
+
+  // express validator
   req.checkBody('acc_type', "no account type is given").notEmpty();
   req.checkBody('email', 'Email cannot be empty').notEmpty();
   req.checkBody('email', 'Not a valid email').isEmail();
@@ -35,28 +41,28 @@ router.post('/signup', function (req, res) {
   req.checkBody('password2', 'Password is not match').equals(req.body.password);
 
   var valErrors = req.validationErrors();
-  if (valErrors){
+  if (valErrors){                           // check for any validation errors
     // TODO handle
   }else{
-    var newUser = new User({
+    var newUser = new User({                // create new user
       username : req.body.username,
       password : req.body.password,
       email : req.body.email,
       acc_type : (req.body.acc_type == 'Student' ? 'S' : 'T')
     });
 
-    User.createUser(newUser, function (err, user) {
+    User.createUser(newUser, function (err, user) {   // call user create method
       if(err){
         console.log(err);
         throw  err;
       }else{
-        req.login(user, function (err) {
+        req.login(user, function (err) {              // after signup automatic login
           if(err){
             console.log(err);
             throw err;
           }else{
             console.log(user);
-            generateToken(req, res, function () {
+            generateToken(req, res, function () {     // generate token
               res.json({
                 user: {
                   acc_id: user.acc_id,
@@ -73,16 +79,20 @@ router.post('/signup', function (req, res) {
   }
 });
 
+
+// check a user toke whether a valid token or not
 router.get('/check', validAuth, function (req, res) {
   res.json({validity: req.validToken});
 });
 
+// find a username is exist or not
 router.get('/checkUserName', function (req, res) {
   usrCntl.checkUserName({checkUserName : {username : req.query.username}}, function (val) {
     res.json({exist : !val._checkUserName});
   });
 });
 
+// find a email address is exist or not
 router.get('/checkEmail', function (req, res) {
   usrCntl.checkEmail({checkEmail : {email : req.query.email}}, function (val) {
     res.json({exist : !val._checkEmail});

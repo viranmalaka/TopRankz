@@ -17,6 +17,7 @@ const multer = require('multer');
 // Get our API routes
 const api = require('./server/routes/api');
 
+// create express app
 const app = express();
 
 // MongoDB connections
@@ -26,7 +27,7 @@ var con = require('./server/controllers/dbController');
 app.use(logger('common', {
   stream: fs.createWriteStream('./access.log', {flags: 'a'})
 }));
-app.use(logger('dev'));
+app.use(logger('dev')); // set logger level
 
 // Parsers for POST data
 app.use(bodyParser.json());
@@ -44,7 +45,7 @@ app.use(session({
   resave : true
 }));
 
-//Express validator
+//Express validator Initialization
 app.use(expValidator({
   errorFormatter: function(param, msg, value) {
     var namespace = param.split('.')
@@ -62,7 +63,7 @@ app.use(expValidator({
   }
 }));
 
-//Passport
+//Passport init
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -107,7 +108,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.send('error');
 });
-
 
 /**
  * Get port from environment and store in Express.
