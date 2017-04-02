@@ -3,10 +3,6 @@
  */
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
-var bycrypt = require('bcryptjs');
-
-var Student = require('./student');
-var Teacher = require('./teacher');
 
 
 // Define mongoose Data model
@@ -26,54 +22,6 @@ var user = new schema({
 
 module.exports = mongoose.model('User', user);
 
-// create new user
-module.exports.createUser = function (newUser, cb) {
-    bycrypt.genSalt(10, function (err, salt) {                          // generate salt to encrypt
-        bycrypt.hash(newUser.password, salt, function (err, hash) {     // generate has with salt
-            newUser.password = hash;                                    // replace hash with password
-            newUser.save(function (err, user) {                         // save the user
-                if(err){
-                    console.log(err);                                   // log errors
-                    throw err;
-                }else{
-                    if(user.acc_type == 'S'){
-                        var thisStudent = new Student();
-                        thisStudent.save(function (err, std) {
-                            if(err){
-                                console.log(err);
-                                throw err;
-                            }else{
-                                user.acc_id = std._id;
-                                user.save(cb);
-                            }
-                        })
-                    }else if(user.acc_type == 'T'){
-                        var thisTeacher = new Teacher();
-                        thisTeacher.save(function (err, tch) {
-                            if(err){
-                                console.log(err);
-                                throw err;
-                            }else{
-                                user.acc_id = tch._id;
-                                user.save(cb);
-                            }
-                        })
-
-                    }
-                }
-            });
-        })
-    });
-};
 
 
-// compare password
-module.exports.comparePassword = function (candidatePassword, hash, cb) {
-    bycrypt.compare(candidatePassword, hash, function (err, isMatch) {
-        if(err){
-            console.log(err);
-        }else{
-            cb(null, isMatch);
-        }
-    });
-};
+

@@ -6,5 +6,4 @@ var Paper = require('../models/paper');
 
 
 
-
 module.exports = router;

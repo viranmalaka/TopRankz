@@ -4,7 +4,7 @@
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 var autoInc = require('mongoose-auto-increment');
-var con = require('../controller/dbController').Connection;
+var con = require('../controllers/dbController').Connection;
 
 autoInc.initialize(con);
 

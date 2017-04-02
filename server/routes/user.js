@@ -51,7 +51,7 @@ router.post('/signup', function (req, res) {
       acc_type : (req.body.acc_type == 'Student' ? 'S' : 'T')
     });
 
-    User.createUser(newUser, function (err, user) {   // call user create method
+    usrCntl.createUser(newUser, function (err, user) {   // call user create method
       if(err){
         console.log(err);
         throw  err;
@@ -100,6 +100,24 @@ router.get('/checkEmail', function (req, res) {
 });
 
 
+router.get('/extended', validAuth, function (req, res) {
+  if(req.validToken){
+    usrCntl.getExtendedAccount(req.user, function (user, acc){
+      res.json({eUser: acc, user : user});
+    });
+  }else{
+    res.json({success : 'false'})
+  }
+
+});
+
+router.post('/details', validAuth, function (req, res) {
+  if(req.validToken){
+    usrCntl.saveDetails(req.user, req.body, function (val) {
+      res.json({success : val});
+    })
+  }
+});
 
 /**
  * Passport things
@@ -112,7 +130,7 @@ passport.use(new LocalStrategy(function (username, password, done) {
       if (!user){
         return done(null, false, {message: 'Unknown user'});
       }
-      User.comparePassword(password, user.password, function (err, isMatch) {
+      usrCntl.comparePassword(password, user.password, function (err, isMatch) {
         if (err){
           console.log(err);
         } else{
@@ -137,13 +155,15 @@ function generateToken(req, res, next) {
 }
 
 function validAuth(req, res, next) {
-  try{
+  console.log('validating the token');
+  if (req.user){
     var genID = jwt.verify((req.method =='GET' ? req.query.token : req.body.token), 'secret');
     req.validToken = genID.id == req.user._id;
-  }catch (err){
+    next();
+  }else{
     req.validToken = false;
+    res.json({auth : false});
   }
-  next();
 }
 
 passport.serializeUser(function (user, done) {

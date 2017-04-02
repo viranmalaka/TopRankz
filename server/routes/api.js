@@ -10,5 +10,6 @@ router.get('/', function (req, res) {
 router.use('/paper', require('./paper'));
 router.use('/user', require('./user'));
 router.use('/school', require('./school'));
+router.use('/subject', require('./subject'));
 
 module.exports = router;

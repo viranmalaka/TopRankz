@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 export class OtherService {
   private domainUrl = require('./config')['development'].domainURL;
   private schDomain = this.domainUrl + "school/";
+  private subjectDomain = this.domainUrl + "subject/";
 
   constructor(private _http : Http){}
 
@@ -19,6 +20,11 @@ export class OtherService {
   }
   getAllSchoolsByDistrict(data){
     return this._http.get(this.schDomain + 'allSchoolsByDistricts?district=' + data)
+      .map((res : Response) => res.json());
+  }
+
+  getAllSubjectNames(){
+    return this._http.get(this.subjectDomain + 'allSubjectNames')
       .map((res : Response) => res.json());
   }
 }

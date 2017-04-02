@@ -9,7 +9,7 @@ declare let $: any;
   styles: []
 })
 export class SignupComponent implements OnInit, AfterViewInit{
-  acc_type = 'student';
+  acc_type = 'Student';
 
   private signupForm = new FormGroup({
     username : new FormControl(),
@@ -32,7 +32,7 @@ export class SignupComponent implements OnInit, AfterViewInit{
         .subscribe(res => {
           localStorage.setItem('auth-token', res.token);
           localStorage.setItem('user', JSON.stringify(res.user));
-          //this.router.navigate([res.user.username, 'edit']);
+          this.router.navigate([res.user.username, 'edit']);
         }, err => {
           console.log(err);
         });
@@ -66,6 +66,7 @@ export class SignupComponent implements OnInit, AfterViewInit{
         data : {email : value},
         async : false,
         success : function (data) {
+          console.log(data);
           return data.responseJSON;
         }
       }).responseJSON;
@@ -75,7 +76,6 @@ export class SignupComponent implements OnInit, AfterViewInit{
         return false;
       }
     };
-
 
     $('.ui.form').form({
       fields:{
