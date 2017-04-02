@@ -3,7 +3,7 @@ var schools = require('./school-seeder').schools;
 
 var seeds = {
     'schools' : schools,
-    // 'subject' : subjects,
+    'subject' : require('./subject-seeder').subjects
     // 'question' : require('./questions-seeder').questions
 };
 
