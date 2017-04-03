@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {PaperService} from "./paper/paper.service";
 import {AuthService} from "./auth/auth.service";
 import {OtherService} from "./other.services";
@@ -9,10 +9,14 @@ import {OtherService} from "./other.services";
   styleUrls: ['./app.component.css'],
   providers : [PaperService, AuthService, OtherService]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, AfterViewInit{
   constructor(){}
 
   ngOnInit(){
+
+  }
+
+  ngAfterViewInit(){
 
   }
 }

@@ -11,8 +11,8 @@ import {Router} from "@angular/router";
 
 export class LoginComponent implements OnInit {
   loginForm = new FormGroup({
-    username : new FormControl(),
-    password : new FormControl()
+    username : new FormControl('viranmalaka'),
+    password : new FormControl('test123')
   });
   hasLoginError = false;
 

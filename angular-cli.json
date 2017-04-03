@@ -19,6 +19,7 @@
       "prefix": "app",
       "styles": [
         "../node_modules/semantic-ui-css/semantic2.min.css",
+        "../node_modules/toastr/build/toastr.min.css",
         "styles.css"
       ],
       "scripts": [
@@ -28,7 +29,8 @@
         "../node_modules/tinymce/themes/modern/theme.js",
         "../node_modules/tinymce/plugins/link/plugin.js",
         "../node_modules/tinymce/plugins/paste/plugin.js",
-        "../node_modules/tinymce/plugins/table/plugin.js"
+        "../node_modules/tinymce/plugins/table/plugin.js",
+        "../node_modules/toastr/build/toastr.min.js"
       ],
       "environments": {
         "source": "environments/environment.ts",

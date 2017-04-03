@@ -109,18 +109,22 @@ export class UserDetailsBioComponent implements OnInit , AfterViewInit{
   }
 
   initForm(){
-    return (new FormGroup({
+    let formGroup = new FormGroup({
       fName : new FormControl(this.user['first_name']),
       lName : new FormControl(this.user['last_name']),
-      vName : new FormControl(this.extendedUser['visibleName']),
       email : new FormControl(this.user['email']),
       subject : new FormControl(),
       telephone : new FormControl(this.user['telephone']),
       address : new FormControl(this.user['address']),
       school : new FormControl(),
       district : new FormControl(),
-      birthday : new FormControl()
-    }));
+      birthday : new FormControl(),
+    });
+
+    if(this.user.acc_type == "T" && this.extendedUser){
+      formGroup.addControl('vName' ,new FormControl(this.extendedUser['visibleName']));
+    }
+    return formGroup;
   }
 
   ngOnInit() {

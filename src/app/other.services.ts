@@ -27,4 +27,6 @@ export class OtherService {
     return this._http.get(this.subjectDomain + 'allSubjectNames')
       .map((res : Response) => res.json());
   }
+
+
 }

@@ -5,7 +5,7 @@
 var Subject = require('../models/subject');
 
 module.exports.getAllSubjectNames = function (next) {
-  Subject.find().select('id name -_id').exec(function (err, subs) {
+  Subject.find().select('id name').exec(function (err, subs) {
     if(err){
         console.log(err);
         throw err;

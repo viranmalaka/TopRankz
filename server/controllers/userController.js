@@ -61,6 +61,23 @@ module.exports.getExtendedAccount = function (account, next) {
 
 };
 
+module.exports.getEnrollments = function (user, next) {
+  Student.findById(user.acc_id, function (err, e) {
+    if(err){
+        console.log(err);
+        throw err;
+    }else{
+        next(e.enroll);
+    }
+  })
+};
+
+module.exports.setEnrollments = function (user, data, next) {
+  Student.update({_id : user.acc_id}, {$set : {enroll : data.enroll}}, function (err, std) {
+    next(std);
+  })
+};
+
 // create new user
 module.exports.createUser = function (newUser, cb) {
   bycrypt.genSalt(10, function (err, salt) {                          // generate salt to encrypt

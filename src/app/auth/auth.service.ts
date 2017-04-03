@@ -42,4 +42,15 @@ export class AuthService {
       .map((response: Response) => response.json());
   }
 
+  getUserEnrollments(){
+    let token = localStorage.getItem('auth-token');
+    return this._http.get(this.authDomain + 'Enrollments?token=' + token)
+      .map((response: Response) => response.json());
+  }
+
+  postUserEnrollments(data){
+    data.token = localStorage.getItem('auth-token');
+    return this._http.post(this.authDomain + "Enrollments", data)
+      .map((response : Response) => response.json());
+  }
 }

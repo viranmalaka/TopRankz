@@ -119,6 +119,26 @@ router.post('/details', validAuth, function (req, res) {
   }
 });
 
+router.get('/Enrollments', validAuth, function (req, res) {
+  if(req.validToken && req.user.acc_type == 'S'){
+    usrCntl.getEnrollments(req.user, function (enrolls) {
+      res.json({enrollments : enrolls});
+    })
+  }else{
+    res.json({success : false});
+  }
+});
+
+router.post('/Enrollments', validAuth, function (req, res) {
+  if(req.validToken && req.user.acc_type == 'S'){
+    usrCntl.setEnrollments(req.user, req.body, function (enrl) {
+      if(enrl.ok){
+        res.json({success : true})
+      }
+    });
+  }
+});
+
 /**
  * Passport things
  * */

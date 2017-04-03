@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {OtherService} from "../other.services";
+import {AuthService} from "./auth.service";
 
 @Component({
   selector: 'app-user-details-enroll',
@@ -6,12 +8,15 @@ import { Component, OnInit } from '@angular/core';
 <div id="Enroll">
   <h1 class="ui header">Select Subject to Enroll</h1>
   <div class="ui link three cards">
-    <div class="card">
+    <div class="card" *ngFor="let s of subjectList">
       <div class="content">
-        <div class="header">Name
-          <button class="ui toggle button">
-            Enroll
-          </button>
+        <div class="header">{{s.name}}</div>
+        <div class="ui divider"></div>
+        <div class="extra content">
+          <div class="fluid ui green button"  (click)="enroll(s._id)" 
+            [class.basic]="enrollList.indexOf(s._id) < 0">
+            {{enrollList.indexOf(s._id) < 0 ? 'Enroll' : 'Enrolled'}}
+          </div>
         </div>
       </div>
     </div>
@@ -19,7 +24,7 @@ import { Component, OnInit } from '@angular/core';
   <div class="ui grid">
     <div class="six wide column"></div>
     <div class="eight wide column">
-      <button class="ui button">
+      <button class="ui button" (click)="onSubmit()">
         Submit Changes
       </button>
     </div>
@@ -28,11 +33,41 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles: []
 })
-export class UserDetailsEnrollComponent implements OnInit {
+export class UserDetailsEnrollComponent implements OnInit , AfterViewInit{
+  subjectList = [];
+  enrollList = [];
 
-  constructor() { }
+  constructor(private otherService : OtherService, private authService : AuthService) {
+    this.otherService.getAllSubjectNames().subscribe(res => {
+      this.subjectList = res['subjects'];
+      console.log(res);
+    });
+    this.authService.getUserEnrollments().subscribe(res => {
+      this.enrollList = res['enrollments'];
+      console.log('enr' ,res);
+    })
+  }
 
   ngOnInit() {
   }
 
+  enroll(id){
+    if(this.enrollList.indexOf(id) > -1){
+      this.enrollList.splice(this.enrollList.indexOf(id), 1);
+    }else{
+      this.enrollList.push(id);
+    }
+    console.log(this.enrollList);
+  }
+
+  onSubmit(){
+    this.authService.postUserEnrollments({enroll : this.enrollList}).subscribe(res => {
+      console.log(res);
+      toastr['success']('save you request');
+    });
+  }
+
+  ngAfterViewInit(){
+
+  }
 }
