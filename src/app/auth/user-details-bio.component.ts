@@ -105,6 +105,7 @@ export class UserDetailsBioComponent implements OnInit , AfterViewInit{
       this.extendedUser = res['eUser'];
       this.user = res['user'];
       this.detailsForm = this.initForm();
+      console.log(this.extendedUser);
     });
   }
 
@@ -141,9 +142,6 @@ export class UserDetailsBioComponent implements OnInit , AfterViewInit{
         this.listOfSubject = res['subjects'];
       });
     }
-
-
-
   }
 
 
@@ -283,10 +281,15 @@ export class UserDetailsBioComponent implements OnInit , AfterViewInit{
       this.detailsForm.value.school = $('#selSchool').val();
       this.detailsForm.value.birthday = new Date($('#birthDay').val());
     }
+
     console.log(this.detailsForm.value);
     if($('#personalInfoForm').form('is valid')){
       this.authService.postDetails(this.detailsForm.value).subscribe(res => {
-        console.log(res);
+        if(res.success){
+          toastr.success('Data Saved');
+        }else{
+          toastr.error('Something went wrong. Not Saved.')
+        }
       });
     }
   }

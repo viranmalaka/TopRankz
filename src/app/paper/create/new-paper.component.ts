@@ -1,5 +1,6 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {PaperService} from "../paper.service";
+import {FormControl, FormGroup} from "@angular/forms";
 declare let $: any;
 
 @Component({
@@ -9,6 +10,7 @@ declare let $: any;
 })
 export class NewPaperComponent implements OnInit, AfterViewInit {
   private allPaperName = [];
+
 
   constructor(private paperServices:PaperService) {  }
 

@@ -35,15 +35,14 @@ module.exports.checkEmail = function (val, next) {
 };
 
 module.exports.getExtendedAccount = function (account, next) {
-
   User.findById(account._id, function (err, user) {
-    if(account.type == 'S'){
-      console.log(account.acc_id);
-      Student.findById(account.acc_id, function (err, student) {
+    if(account.acc_type == 'S'){
+      Student.findById(account.acc_id).populate('school').exec(function (err, student) {
         if(err){
           console.log(err);
           throw err;
         }else{
+          student.school = {id : student.school.id, district : student.school.district};
           next(user,student);
         }
       })
