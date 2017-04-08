@@ -10,7 +10,10 @@ var jwt = require('jsonwebtoken');
 // import user controller
 var usrCntl = require('../controllers/userController');
 
-// create post route for login form
+/**
+ * Creating Login post
+ * p - username, password
+ */
 router.post('/login',
   passport.authenticate('local', {        // passport auth
     session : true
@@ -23,12 +26,18 @@ router.post('/login',
         username: req.user.username,
         email: req.user.email,
         acc_type: req.user.acc_type
-      }, token : req.token
+      },
+      token : req.token,
+      success : true
     });
   });
 
 
-// post route to signup
+/**
+ * SignUp post router
+ *
+ * p - acc_type, email, username, password, password2
+ */
 router.post('/signup', function (req, res) {
 
   // express validator
@@ -42,7 +51,7 @@ router.post('/signup', function (req, res) {
 
   var valErrors = req.validationErrors();
   if (valErrors){                           // check for any validation errors
-    // TODO handle
+    throw valErrors;
   }else{
     var newUser = new User({                // create new user
       username : req.body.username,
@@ -54,7 +63,7 @@ router.post('/signup', function (req, res) {
     usrCntl.createUser(newUser, function (err, user) {   // call user create method
       if(err){
         console.log(err);
-        throw  err;
+        throw err;
       }else{
         req.login(user, function (err) {              // after signup automatic login
           if(err){
@@ -69,7 +78,9 @@ router.post('/signup', function (req, res) {
                   username: user.username,
                   email: user.email,
                   acc_type: user.acc_type
-                }, token : req.token
+                },
+                token : req.token,
+                success : true
               });
             });
           }
@@ -80,68 +91,87 @@ router.post('/signup', function (req, res) {
 });
 
 
-// check a user toke whether a valid token or not
+/**
+ * check a user toke whether a valid token or not
+ * q - token
+ */
 router.get('/check', validAuth, function (req, res) {
-  res.json({validity: req.validToken});
+  res.jsonp({success : true, validity: req.validToken});
 });
 
-// find a username is exist or not
-router.get('/checkUserName', function (req, res) {
+/**
+ * find a username is exist or not
+ * q - username
+ */
+router.get('/check_username', function (req, res) {
   usrCntl.checkUserName({checkUserName : {username : req.query.username}}, function (val) {
-    res.json({exist : !val._checkUserName});
+    res.jsonp({success : true, exist : !val._checkUserName});
   });
 });
 
-// find a email address is exist or not
-router.get('/checkEmail', function (req, res) {
+/**
+ * find a email address is exist or not
+ * q - email
+ */
+router.get('/check_email', function (req, res) {
   usrCntl.checkEmail({checkEmail : {email : req.query.email}}, function (val) {
-    res.json({exist : !val._checkEmail});
+    res.jsonp({success : true, exist : !val._checkEmail});
   });
 });
 
-
-router.get('/extended', validAuth, function (req, res) {
+/**
+ * get full user account (user + teacher or student)
+ * p - token
+ */
+router.get('/full_user_account', validAuth, function (req, res) {
   if(req.validToken){
     usrCntl.getExtendedAccount(req.user, function (user, acc){
-      res.json({eUser: acc, user : user});
-    });
-  }else{
-    res.json({success : 'false'})
-  }
-
-});
-
-router.post('/details', validAuth, function (req, res) {
-  if(req.validToken){
-    usrCntl.saveDetails(req.user, req.body, function (val) {
-      res.json({success : val});
-    })
-  }
-});
-
-router.get('/Enrollments', validAuth, function (req, res) {
-  if(req.validToken && req.user.acc_type == 'S'){
-    usrCntl.getEnrollments(req.user, function (enrolls) {
-      res.json({enrollments : enrolls});
-    })
-  }else{
-    res.json({success : false});
-  }
-});
-
-router.post('/Enrollments', validAuth, function (req, res) {
-  if(req.validToken && req.user.acc_type == 'S'){
-    usrCntl.setEnrollments(req.user, req.body, function (enrl) {
-      if(enrl.ok){
-        res.json({success : true})
-      }
+      res.jsonp({success : true, eUser: acc, user : user});
     });
   }
 });
 
 /**
- * Passport things
- * */
+ * Save details of the user
+ * p - token, address, email, fName, lName, telephone
+ */
+router.post('/post_details', validAuth, function (req, res) {
+  if(req.validToken){
+    usrCntl.saveDetails(req.user, req.body, function (val) {
+      res.jsonp({success : true, data : val});
+    })
+  }
+});
+
+/**
+ * Get enrollments of a student
+ * q - token
+ */
+router.get('/get_enrollments', validAuth, function (req, res) {
+  if(req.user.acc_type == 'S'){
+    usrCntl.getEnrollments(req.user, function (enrolls) {
+      res.jsonp({success : true, enrollments : enrolls});
+    })
+  }else{
+    throw {message : 'user must be a student'};
+  }
+});
+
+/**
+ * save enrollments
+ * p - token, enroll
+ */
+router.post('/post_enrollments', validAuth, function (req, res) {
+  if(req.user.acc_type == 'S'){
+    usrCntl.setEnrollments(req.user, req.body, function (enrl) {
+      res.jsonp({success : enrl.ok})
+    });
+  }else{
+    throw {message : 'user must be a student'};
+  }
+});
+
+//<editor-fold desc="Passport Things">
 passport.use(new LocalStrategy(function (username, password, done) {
   User.findOne({username : username}, function (err, user) {
     if(err){
@@ -164,7 +194,6 @@ passport.use(new LocalStrategy(function (username, password, done) {
     }
   });
 }));
-
 function generateToken(req, res, next) {
   req.token = jwt.sign({
     id: req.user.id
@@ -181,11 +210,9 @@ function validAuth(req, res, next) {
     req.validToken = genID.id == req.user._id;
     next();
   }else{
-    req.validToken = false;
-    res.json({auth : false});
+    throw {message : 'token error'}
   }
 }
-
 passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
@@ -195,6 +222,8 @@ passport.deserializeUser(function (id, done) {
     done(err, user);
   });
 });
+
+//</editor-fold>
 
 
 module.exports = router;

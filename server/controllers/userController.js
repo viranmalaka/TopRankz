@@ -35,7 +35,7 @@ module.exports.checkEmail = function (val, next) {
 };
 
 module.exports.getExtendedAccount = function (account, next) {
-  User.findById(account._id, function (err, user) {
+  User.findById(account._id).select('-password').exec(function (err, user) {
     if(account.acc_type == 'S'){
       Student.findById(account.acc_id).populate('school').exec(function (err, student) {
         if(err){
