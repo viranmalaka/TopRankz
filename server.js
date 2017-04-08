@@ -85,7 +85,7 @@ app.use('/api', api);
 // Catch all other routes and return the index file
 app.get('*', function(req, res) {
   if(process.argv[2] == 'api'){
-    res.send('only api server is running...');
+    throw {message : 'Only api server is running'}
   }else{
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   }
@@ -106,7 +106,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({error : true, message : err.message});
+  res.json({success : false, err : err});
 });
 
 /**
