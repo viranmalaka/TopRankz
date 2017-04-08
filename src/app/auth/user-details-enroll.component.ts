@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit, isDevMode} from '@angular/core';
 import {OtherService} from "../other.services";
 import {AuthService} from "./auth.service";
 
@@ -41,10 +41,14 @@ export class UserDetailsEnrollComponent implements OnInit , AfterViewInit{
     this.otherService.getAllSubjectNames().subscribe(res => {
       this.subjectList = res['subjects'];
       console.log(res);
+    }, err => {
+      console.log(err);
     });
     this.authService.getUserEnrollments().subscribe(res => {
       this.enrollList = res['enrollments'];
       console.log('enr' ,res);
+    }, err => {
+      console.log(err);
     })
   }
 
@@ -63,7 +67,15 @@ export class UserDetailsEnrollComponent implements OnInit , AfterViewInit{
   onSubmit(){
     this.authService.postUserEnrollments({enroll : this.enrollList}).subscribe(res => {
       console.log(res);
-      toastr['success']('save you request');
+      if(res.success){
+        toastr['success']('save you enrollments');
+      }else{
+        if(isDevMode()){
+          toastr['error'](res.err);
+        }else{
+          toastr['error']('Something when wrong..!');
+        }
+      }
     });
   }
 

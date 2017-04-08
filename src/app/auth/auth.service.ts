@@ -29,28 +29,31 @@ export class AuthService {
   getExtendedUser() {
     let token = localStorage.getItem('auth-token');
     let user = JSON.parse(localStorage.getItem('user'));
-    return this._http.get(this.authDomain + 'extended?token=' + token)
+    return this._http.get(this.authDomain + 'full_user_account?token=' + token)
       .map((res : Response) => res.json());
   }
+
 
   postDetails(data) {
     let token = localStorage.getItem('auth-token');
     data.token = token;
     console.log(data);
     // return data;
-    return this._http.post(this.authDomain + "details", data)
+    return this._http.post(this.authDomain + "post_details", data)
       .map((response: Response) => response.json());
   }
 
   getUserEnrollments(){
     let token = localStorage.getItem('auth-token');
-    return this._http.get(this.authDomain + 'Enrollments?token=' + token)
+    return this._http.get(this.authDomain + 'get_enrollments?token=' + token)
       .map((response: Response) => response.json());
   }
 
   postUserEnrollments(data){
     data.token = localStorage.getItem('auth-token');
-    return this._http.post(this.authDomain + "Enrollments", data)
+    return this._http.post(this.authDomain + "post_enrollments", data)
       .map((response : Response) => response.json());
   }
+
+
 }

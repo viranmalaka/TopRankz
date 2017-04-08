@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, isDevMode} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
 import {AuthService} from "./auth.service";
 
@@ -18,16 +18,21 @@ import {AuthService} from "./auth.service";
 })
 export class EditUserDetailsComponent implements OnInit {
   activeTab = 'bio';
+  user = JSON.parse(localStorage.getItem('user'));
+
   constructor(private authService : AuthService, private router: Router) { }
 
   ngOnInit() {
-    console.log('auth-token', localStorage.getItem('auth-token'));
     this.authService.getCheckToken().subscribe(res => {
       if(!res.validity){
         this.router.navigate(['login']);
       }
+    }, err => {
+      if(isDevMode()){
+        toastr.error(err._body);    // toastr the server error messages
+      }else{
+        toastr.error('Error');      // toastr custome msg
+      }
     });
   }
-
-
 }

@@ -42,7 +42,9 @@ module.exports.getExtendedAccount = function (account, next) {
           console.log(err);
           throw err;
         }else{
-          student.school = {id : student.school.id, district : student.school.district};
+          if(student.school){
+            student.school = {id : student.school.id, district : student.school.district};
+          }
           next(user,student);
         }
       })

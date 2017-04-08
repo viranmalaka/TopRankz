@@ -30,9 +30,14 @@ export class SignupComponent implements OnInit, AfterViewInit{
       console.log('valid');
       this.authService.postSignUp(this.signupForm.value)
         .subscribe(res => {
-          localStorage.setItem('auth-token', res.token);
-          localStorage.setItem('user', JSON.stringify(res.user));
-          this.router.navigate([res.user.username, 'edit']);
+          if(res.success){
+            localStorage.setItem('auth-token', res.token);
+            localStorage.setItem('user', JSON.stringify(res.user));
+            toastr.success('Singup successful.');
+            this.router.navigate([res.user.username, 'edit']);
+          }else{
+            toastr.error('something went wrong');
+          }
         }, err => {
           console.log(err);
         });
@@ -40,12 +45,11 @@ export class SignupComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(){
-
     $('.ui.radio.checkbox').checkbox();
     // new validation rule for check username availability
     $.fn.form.settings.rules.checkName = function (value) {
       let x = $.ajax({
-        url : require('../config')['development'].domainURL + 'user/checkUserName',
+        url : require('../config')['development'].domainURL + 'user/check_username',
         method : 'GET',
         data : {username : value},
         async : false,
@@ -61,7 +65,7 @@ export class SignupComponent implements OnInit, AfterViewInit{
     };
     $.fn.form.settings.rules.checkEmail = function (value) {
       let x = $.ajax({
-        url : require('../config')['development'].domainURL + 'user/checkEmail',
+        url : require('../config')['development'].domainURL + 'user/check_email',
         method : 'GET',
         data : {email : value},
         async : false,

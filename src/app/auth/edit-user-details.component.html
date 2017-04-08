@@ -9,7 +9,7 @@
       <div class="ui vertical fluid tabular menu">
         <a class="item" id="mnuBio"
            (click)="activeTab = 'bio'" [class.active]="activeTab == 'bio'">Bio</a>
-        <a class="item" id="mnuEnroll"
+        <a class="item" id="mnuEnroll" *ngIf="user.acc_type == 'S'"
            (click)="activeTab = 'enroll'" [class.active]="activeTab == 'enroll'">Enrollments</a>
         <a class="item" id="mnuClasses"
            (click)="activeTab = 'class'" [class.active]="activeTab == 'class'">Classes</a>

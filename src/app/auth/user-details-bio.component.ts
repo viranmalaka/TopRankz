@@ -106,6 +106,8 @@ export class UserDetailsBioComponent implements OnInit , AfterViewInit{
       this.user = res['user'];
       this.detailsForm = this.initForm();
       console.log(this.extendedUser);
+    }, err =>{
+      console.log(err);
     });
   }
 

@@ -194,25 +194,7 @@ passport.use(new LocalStrategy(function (username, password, done) {
     }
   });
 }));
-function generateToken(req, res, next) {
-  req.token = jwt.sign({
-    id: req.user.id
-  }, 'secret', {
-    expiresIn: '10h'
-  });
-  next();
-}
 
-function validAuth(req, res, next) {
-  console.log('validating the token');
-  if (req.user){
-    var genID = jwt.verify((req.method =='GET' ? req.query.token : req.body.token), 'secret');
-    req.validToken = genID.id == req.user._id;
-    next();
-  }else{
-    throw {message : 'token error'}
-  }
-}
 passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
@@ -225,5 +207,23 @@ passport.deserializeUser(function (id, done) {
 
 //</editor-fold>
 
+function generateToken(req, res, next) {
+  req.token = jwt.sign({
+    id: req.user.id
+  }, 'secret', {
+    expiresIn: '10h'
+  });
+  next();
+}
+
+function validAuth(req, res, next) {
+  if (req.user){
+    var genID = jwt.verify((req.method =='GET' ? req.query.token : req.body.token), 'secret');
+    req.validToken = genID.id == req.user._id;
+  }else{
+    req.validToken = false;
+  }
+  next();
+}
 
 module.exports = router;
