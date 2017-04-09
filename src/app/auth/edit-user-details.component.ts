@@ -45,6 +45,7 @@ export class EditUserDetailsComponent implements OnInit {
       data.append('profImg', file, file.name);
       this.authService.postProfileImage(data).subscribe(res => {
         console.log(res);
+        this.user.profile_picture = res.filename;
         $("#profImg").attr("src", "assets/prof-pic/" + this.user.profile_picture +
           "?" +(new Date()).getTime());
       })
