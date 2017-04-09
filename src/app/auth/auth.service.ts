@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Response} from "@angular/http";
+import {Http, Response, RequestOptions, Headers} from "@angular/http";
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -22,38 +22,55 @@ export class AuthService {
   }
 
   getCheckToken(){
-    return this._http.get(this.authDomain + 'check?token=' + localStorage.getItem('auth-token'))
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.get(this.authDomain + 'check', options)
       .map((res : Response) => res.json());
   }
 
   getExtendedUser() {
-    let token = localStorage.getItem('auth-token');
-    let user = JSON.parse(localStorage.getItem('user'));
-    return this._http.get(this.authDomain + 'full_user_account?token=' + token)
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.get(this.authDomain + 'full_user_account', options)
       .map((res : Response) => res.json());
   }
 
 
   postDetails(data) {
-    let token = localStorage.getItem('auth-token');
-    data.token = token;
-    console.log(data);
-    // return data;
-    return this._http.post(this.authDomain + "post_details", data)
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.post(this.authDomain + "post_details", data, options)
       .map((response: Response) => response.json());
   }
 
   getUserEnrollments(){
-    let token = localStorage.getItem('auth-token');
-    return this._http.get(this.authDomain + 'get_enrollments?token=' + token)
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.get(this.authDomain + 'get_enrollments', options)
       .map((response: Response) => response.json());
   }
 
   postUserEnrollments(data){
-    data.token = localStorage.getItem('auth-token');
-    return this._http.post(this.authDomain + "post_enrollments", data)
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.post(this.authDomain + "post_enrollments", data, options)
       .map((response : Response) => response.json());
   }
 
+  postProfileImage(data){
+    let options = new RequestOptions({
+      headers : new Headers({
+        token : localStorage.getItem('auth-token'),
+        // 'Content-Type' : 'multipart/form-data'
+      })
+    });
+    return this._http.post(this.authDomain + "post_profile_picture", data, options)
+      .map((response : Response) => response.json());
+  }
 
 }

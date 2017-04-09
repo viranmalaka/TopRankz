@@ -1,6 +1,7 @@
 import {Component, OnInit, isDevMode} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
 import {AuthService} from "./auth.service";
+import {Headers, RequestOptions} from "@angular/http";
 
 @Component({
   selector: 'app-edit-user-details',
@@ -34,5 +35,20 @@ export class EditUserDetailsComponent implements OnInit {
         toastr.error('Error');      // toastr custome msg
       }
     });
+  }
+
+  changeImg(event){
+    let files = event.target.files;
+    if(files.length > 0){
+      let file = files[0];
+      let data : FormData = new FormData();
+      data.append('profImg', file, file.name);
+      this.authService.postProfileImage(data).subscribe(res => {
+        console.log(res);
+        $("#profImg").attr("src", "assets/prof-pic/" + this.user.profile_picture +
+          "?" +(new Date()).getTime());
+      })
+
+    }
   }
 }

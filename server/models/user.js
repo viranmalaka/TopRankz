@@ -16,8 +16,9 @@ var user = new schema({
     last_name : {type :String},
     address : {type : String},
     telephone : {type : String},
-    resetPasswordToken: {type : String},
-    resetPasswordExpires: {type : Date}
+    profile_picture : {type : String},
+    reset_password_token: {type : String},
+    reset_password_expires: {type : Date}
 });
 
 module.exports = mongoose.model('User', user);

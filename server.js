@@ -12,7 +12,6 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStratagy = require('passport-local');
 const flash = require('connect-flash');
-const multer = require('multer');
 
 // Get our API routes
 const api = require('./server/routes/api');
@@ -36,7 +35,7 @@ app.use(cookieParser());
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, 'dist')));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'server/public')));
 
 // init Sessions
 app.use(session({

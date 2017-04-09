@@ -7,9 +7,19 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var jwt = require('jsonwebtoken');
 var multer = require('multer');
+var path = require('path');
+
+var storage = multer.diskStorage({
+  destination : function (req, file, cb) {
+    cb(null, "src/assets/prof-pic");
+  },
+  filename: function (req, file, cb) {
+    cb(null, req.user.username + path.extname(file.originalname));
+  }
+});
 
 var upload = multer({
-  dest : "server/public/prof-pic"
+  storage : storage
 });
 
 // import user controller
@@ -30,7 +40,8 @@ router.post('/login',
         acc_id: req.user.acc_id,
         username: req.user.username,
         email: req.user.email,
-        acc_type: req.user.acc_type
+        acc_type: req.user.acc_type,
+        profile_picture : req.user.profile_picture
       },
       token : req.token,
       success : true
@@ -179,8 +190,20 @@ router.post('/post_enrollments', validAuth, function (req, res) {
  * Save profile picture
  */
 router.post('/post_profile_picture', upload.single('profImg'), function (req, res) {
-  console.log(req.file);
-  res.jsonp({ok : 'OK'});
+  var u = req.user;
+  u.profile_picture = req.file.filename;
+
+  u.save(function (err, user) {
+    if(err){
+      console.log(err);
+      throw err;
+    }else{
+      res.jsonp({
+        success : true,
+        filename : req.file.filename
+      });
+    }
+  });
 });
 
 //<editor-fold desc="Passport Things">

@@ -1,58 +1,40 @@
-<div class="ui grid">
-  <div class="computer tablet only row">
-    <div class="ui inverted fixed menu navbar page grid">
-      <a href="" class="brand item"> TopRankz </a>
-      <a href="" class="active item">Home</a>
-      <a href="" class="item">About</a>
-      <a href="" class="item">Contact</a>
-      <a class="ui dropdown item">Dropdown
-        <i class="dropdown icon"></i>
-        <div class="menu">
-          <div class="item">Action</div>
-          <div class="item">Another action</div>
-          <div class="item">Something else here</div>
-          <div class="ui divider"></div>
-          <div class="item">Seperated link</div>
-          <div class="item">One more seperated link</div>
-        </div>
-      </a>
-      <div class="right menu">
-        <a href="" class="item">Fixed top</a>
-      </div>
+<div class="ui menu icon borderless grid" data-color="inverted white">
+  <div class="item ui colhidden">
+    <div class="ui icon input">
+      <input type="text" placeholder="Search...">
+      <i class="search icon"></i>
     </div>
   </div>
-  <div class="mobile only row">
-    <div class="ui fixed inverted navbar menu">
-      <a href="" class="brand item">Project Name</a>
-      <div class="right menu open">
-        <a href="" class="menu item">
-          <i class="content icon"></i>
-        </a>
-      </div>
+  <div class="right menu colhidden">
+
+    <div class="ui dropdown item labeled icon">
+      <i class="bell icon"></i>
+      <div class="ui red label mini circular">6</div>
     </div>
-    <div class="ui vertical navbar menu">
-      <a href="" class="active item">Home</a>
-      <a href="" class="item">About</a>
-      <a href="" class="item">Contact</a>
-      <div class="ui item">
-        <div class="text">Dropdown</div>
-        <div class="menu">
-          <a class="item">Action</a>
-          <a class="item">Another action</a>
-          <a class="item">Something else here</a>
-          <a class="ui aider"></a>
-          <a class="item">Seperated link</a>
-          <a class="item">One more seperated link</a>
-        </div>
-      </div>
+    <div class="ui dropdown item">
+      Language <i class="dropdown icon"></i>
       <div class="menu">
-        <a href="" class="active item">Default</a>
-        <a href="" class="item">Static top</a>
-        <a href="" class="item">Fixed top</a>
+        <a class="item"><i class="united kingdom flag"></i>English</a>
+        <a class="item"><i class="turkey flag"></i>Turkish</a>
+        <a class="item"><i class="spain flag"></i>Spanish</a>
       </div>
     </div>
+    <div class="ui dropdown item">
+      <img class="ui mini circular image" src="assets/prof-pic/demo-user-picture.png" alt="label-image">
+      <div class="menu">
+        <a class="item" href="mail.html">Inbox</a>
+        <a class="item" href="profile.html">Profile</a>
+        <a class="item" href="settings.html">Settings</a>
+        <div class="ui divider"></div>
+        <a class="item">Need Help?</a>
+        <a class="item" href="login.html">Sign Out</a>
+      </div>
+    </div>
+    <a class="item labeled rightsidebar computer only">
+      <i class="ion-wrench large icon"></i>
+    </a>
+
   </div>
 </div>
-<div style="margin-top: 35px">
-  <router-outlet></router-outlet>
-</div>
+<router-outlet></router-outlet>
+
