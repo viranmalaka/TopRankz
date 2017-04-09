@@ -6,6 +6,11 @@ var router = require('express').Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var jwt = require('jsonwebtoken');
+var multer = require('multer');
+
+var upload = multer({
+  dest : "server/public/prof-pic"
+});
 
 // import user controller
 var usrCntl = require('../controllers/userController');
@@ -90,7 +95,6 @@ router.post('/signup', function (req, res) {
   }
 });
 
-
 /**
  * check a user toke whether a valid token or not
  * q - token
@@ -171,6 +175,14 @@ router.post('/post_enrollments', validAuth, function (req, res) {
   }
 });
 
+/**
+ * Save profile picture
+ */
+router.post('/post_profile_picture', upload.single('profImg'), function (req, res) {
+  console.log(req.file);
+  res.jsonp({ok : 'OK'});
+});
+
 //<editor-fold desc="Passport Things">
 passport.use(new LocalStrategy(function (username, password, done) {
   User.findOne({username : username}, function (err, user) {
@@ -218,8 +230,8 @@ function generateToken(req, res, next) {
 
 function validAuth(req, res, next) {
   if (req.user){
-    var genID = jwt.verify((req.method =='GET' ? req.query.token : req.body.token), 'secret');
-    req.validToken = genID.id == req.user._id;
+    var genID = jwt.verify(req.get('token'), 'secret');
+    req.validToken = (genID.id == req.user._id);
   }else{
     req.validToken = false;
   }
