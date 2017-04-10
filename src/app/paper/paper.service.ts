@@ -4,15 +4,15 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class PaperService {
-  private domainUrl = require('../config').domainUrl;
+  private domainUrl = require('../config')['development'].domainURL;
+  private paperDomain = this.domainUrl + 'paper/';
 
   constructor(private _http : Http) { }
 
   getAllPaperNames(){
-    return this._http.get("http://localhost:3000/api/paper/get_all_paper_names")
+    return this._http.get(this.paperDomain + "/get_all_paper_names")
       .map((response: Response) => response.json());
   }
-
   getTitle(){
     return this._http.get("http://localhost:3000/api")
       .map((res : Response) => res.json());
@@ -22,5 +22,10 @@ export class PaperService {
     return {subjects: [{id : '01', name : 'Sinhala'},
       {id: '02', name :'Chemistry'},
       {id : '03', name : 'Bio'} ]};
+  }
+
+  postCreateNewPaper(data){
+    return this._http.post(this.paperDomain + "new_paper",data)
+      .map((res : Response) => res.json());
   }
 }

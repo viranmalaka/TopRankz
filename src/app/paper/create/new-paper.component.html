@@ -1,23 +1,26 @@
-<form id="newPaper" method="POST" action="/paper/add_details" class="ui form">
+<form id="newPaper" [formGroup]="paperCreateForm" class="ui form" (submit)="onSubmit()">
   <h1>Add New Paper</h1>
   <h4 class="ui dividing header">Common Data about the paper</h4>
   <div class="field">
     <label>Name</label>
     <div class="field seven wide column">
-      <input type="text" name="name" placeholder="Name for the paper (if a pass paper, enter the year)" value=""/>
+      <input type="text" name="name" placeholder="Name for the paper (if a pass paper, enter the year)"
+          formControlName="name"/>
     </div>
   </div>
   <div class="fields">
     <div class="field five column wide">
       <label>Subject</label>
-      <select id="subjectSelect" name="subject" class="ui fluid dropdown">
+      <select id="subjectSelect" name="subject" class="ui fluid dropdown"
+              formControlName="subject">
         <option value="">Subject</option>
-        <option value="">sub.name</option>
+        <option *ngFor="let s of allSubject" value="{{s._id}}">{{s.name}}</option>
       </select>
     </div>
     <div class="field five column wide">
       <label>Medium</label>
-      <select id="mediumSelect" name="medium" class="ui fluid dropdown">
+      <select id="mediumSelect" name="medium" class="ui fluid dropdown"
+              formControlName="medium">
         <option value="">Medium</option>
         <option value="S">Sinhala</option>
         <option value="E">English</option>
@@ -27,26 +30,31 @@
   <div class="fields">
     <div class="three wide field">
       <label>Number of questions</label>
-      <input type="text" name="nQuestions" maxlength="3" placeholder="# questions" value=""/>
+      <input type="text" name="nQuestions" maxlength="3" placeholder="# questions"
+             formControlName="nQuestions"/>
     </div>
     <div class="three wide field">
       <label>Number of Answers</label>
-      <input type="text" name="nAnswers" maxlength="1" placeholder="# answers" value=""/>
+      <input type="text" name="nAnswers" maxlength="1" placeholder="# answers"
+             formControlName="nAnswers"/>
     </div>
     <div class="six wide field">
       <label>Total minutes for whole paper</label>
-      <input type="text" name="totalTime" maxlength="3" placeholder="Time" value=""/>
+      <input type="text" name="totalTime" maxlength="3" placeholder="Time"
+             formControlName="timeLimit"/>
     </div>
   </div>
   <div class="fields">
     <div class="three wide field">
       <label>Unit Mark</label>
-      <input type="text" name="unitMark" value=""/>
+      <input type="text" name="unitMark"
+             formControlName="unitMark"/>
     </div>
   </div>
   <div class="field">
-    <div class="ui checkbox">
-      <input type="checkbox" name="random" tabindex="0" class="hidden"/>
+    <div class="ui checkbox" id="random">
+      <input type="checkbox"  tabindex="0" class="hidden"
+             formControlName="random"/>
       <label>Output a random ordered question list.</label>
     </div>
   </div>

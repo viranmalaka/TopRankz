@@ -4,7 +4,7 @@
 var router = require('express').Router();
 var subCtrl = require('../controllers/subjectController');
 
-router.get('/allSubjectNames', function (req, res) {
+router.get('/all_subject_names', function (req, res) {
   subCtrl.getAllSubjectNames(function (subs) {
     res.json({subjects : subs});
   })
