@@ -5,6 +5,7 @@
 const User = require('../models/user');
 const Teacher = require('../models/teacher');
 const Student = require('../models/student');
+const DataEntry = require('../models/dataentry');
 const Subject = require('../models/subject');
 const School = require('../models/school');
 
@@ -111,7 +112,17 @@ module.exports.createUser = function (newUser, cb) {
                 user.save(cb);
               }
             })
-
+          }else if(user.acc_type == "D"){
+            var thisDataEntry = new DataEntry();
+            thisDataEntry.save(function (err, de) {
+              if(err){
+                console.log(err);
+                throw err;
+              }else{
+                user.acc_id = de._id;
+                user.save(cb);
+              }
+            })
           }
         }
       });
