@@ -4,7 +4,7 @@
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 var autoInc = require('mongoose-auto-increment');
-var con = require('../controller/dbController').Connection;
+var con = require('../controllers/dbController').Connection;
 
 autoInc.initialize(con);
 
@@ -18,7 +18,6 @@ var question = new schema({
     topics: {type : [String]},                      // array of if of topics from Subject table
     paper: {type : schema.ObjectId,ref : 'Paper'},
     proofBy: {type : schema.ObjectId, ref : 'User'},
-    addedBy: {type : schema.ObjectId, ref : 'User'},
     difficulty : {type : [{}]},                     //{studentId, difficultyRate}
     comments: {type : [{}]},                         //{username, body, likes[], dislikes[]}
     mixOrder : {type : Boolean, default : true},

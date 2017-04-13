@@ -1,15 +1,57 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
-import {AuthService} from "./auth.service";
-import {FormGroup, FormControl} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
+import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
-declare let $: any;
+
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
+  selector: 'app-signup-data-entry',
+  template: `
+<div class="ui container">
+  <div style="margin-top:50px" class="ui container computer only grid"></div>
+  <div class="ui grid item">
+    <div class="six wide computer ten wide tablet sixteen wide mobile column centered">
+      <div class="ui middle aligned center aligned grid">
+        <div class="column">
+          <h2 class="ui blue image header">
+            <!--img.image(src='assets/images/logo.png')-->
+            <div class="content">Sign up here</div>
+          </h2>
+          <form class="ui form" [formGroup]="signupForm" (submit)="onSubmit()">
+            <div class="ui stacked segment">
+              <div class="field">
+                <div class="ui left icon input"><i class="mail icon" ></i>
+                  <input type="text" name="email" placeholder="Email"  formControlName="email"/>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input"><i class="user icon"></i>
+                  <input type="text" name="username" placeholder="Username"  formControlName="username"/>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input"><i class="lock icon"></i>
+                  <input type="password" name="password" placeholder="Password"  formControlName="password"/>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input"><i class="lock icon"></i>
+                  <input type="password" name="password2" placeholder="Confirms"  formControlName="password2"/>
+                </div>
+              </div>
+              <input type="submit" value="Sign up" class="ui fluid large blue submit button"/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  `,
   styles: []
 })
-export class SignupComponent implements OnInit, AfterViewInit{
-  acc_type = 'Student';
+export class SignupDataEntryComponent implements OnInit, AfterViewInit {
+
 
   private signupForm = new FormGroup({
     username : new FormControl(),
@@ -20,12 +62,8 @@ export class SignupComponent implements OnInit, AfterViewInit{
 
   constructor(private authService : AuthService, private router : Router) { }
 
-  ngOnInit() {
-
-  }
-
   onSubmit(){
-    this.signupForm.value.acc_type = this.acc_type;
+    this.signupForm.value.acc_type = "D";
     if($('.ui.form').form('is valid')){
       console.log('valid');
       this.authService.postSignUp(this.signupForm.value)
@@ -34,7 +72,7 @@ export class SignupComponent implements OnInit, AfterViewInit{
             localStorage.setItem('auth-token', res.token);
             localStorage.setItem('user', JSON.stringify(res.user));
             toastr.success('Singup successful.');
-            this.router.navigate([res.user.username, 'edit']);
+            this.router.navigate(["/"]);
           }else{
             toastr.error('something went wrong');
           }
@@ -44,12 +82,13 @@ export class SignupComponent implements OnInit, AfterViewInit{
     }
   }
 
+  ngOnInit() {
+  }
+
   ngAfterViewInit(){
-    $('.ui.radio.checkbox').checkbox();
-    // new validation rule for check username availability
     $.fn.form.settings.rules.checkName = function (value) {
       let x = $.ajax({
-        url : require('../config')['development'].domainURL + 'user/check_username',
+        url : require('../../config')['development'].domainURL + 'user/check_username',
         method : 'GET',
         data : {username : value},
         async : false,
@@ -65,7 +104,7 @@ export class SignupComponent implements OnInit, AfterViewInit{
     };
     $.fn.form.settings.rules.checkEmail = function (value) {
       let x = $.ajax({
-        url : require('../config')['development'].domainURL + 'user/check_email',
+        url : require('../../config')['development'].domainURL + 'user/check_email',
         method : 'GET',
         data : {email : value},
         async : false,
@@ -130,5 +169,4 @@ export class SignupComponent implements OnInit, AfterViewInit{
       on : 'blur'
     });
   }
-
 }

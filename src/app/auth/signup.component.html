@@ -1,5 +1,5 @@
 <div class="ui container">
-  <div style="margin-top:110px" class="ui container computer only grid"></div>
+  <div style="margin-top:50px" class="ui container computer only grid"></div>
   <div class="ui grid item">
     <div class="six wide computer ten wide tablet sixteen wide mobile column centered">
       <div class="ui middle aligned center aligned grid">
@@ -14,13 +14,13 @@
                 <label>Sign Up as :</label>
                 <div class="field">
                   <div class="ui radio checkbox" (click)="acc_type = 'student'">
-                    <input type="radio" name="acc_type"  [checked]="acc_type === 'student'">
+                    <input type="radio" name="acc_type"  [checked]="acc_type === 'Student'">
                     <label>Student</label>
                   </div>
                 </div>
                 <div class="field">
                   <div class="ui radio checkbox" (click)="acc_type = 'teacher'">
-                    <input type="radio" name="acc_type"  [checked]="acc_type === 'teacher'">
+                    <input type="radio" name="acc_type"  [checked]="acc_type === 'Teacher'">
                     <label>Teacher</label>
                   </div>
                 </div>
@@ -47,11 +47,6 @@
               </div>
               <input type="submit" value="Sign up" class="ui fluid large blue submit button"/>
             </div>
-            <div class="ui error message"></div>
-
-
-            <br>
-
           </form>
           <div class="ui message">Already have an account ?<a routerLink="/login">Login</a></div>
         </div>

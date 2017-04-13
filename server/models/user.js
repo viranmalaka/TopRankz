@@ -3,11 +3,9 @@
  */
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
-var bycrypt = require('bcryptjs');
 
-var Student = require('./student');
-var Teacher = require('./teacher');
 
+// Define mongoose Data model
 var user = new schema({
     username: {type: String, required: true, unique : true},
     password : {type: String, required: true},
@@ -18,57 +16,13 @@ var user = new schema({
     last_name : {type :String},
     address : {type : String},
     telephone : {type : String},
-    resetPasswordToken: {type : String},
-    resetPasswordExpires: {type : Date}
+    profile_picture : {type : String},
+    reset_password_token: {type : String},
+    reset_password_expires: {type : Date}
 });
 
 module.exports = mongoose.model('User', user);
 
-module.exports.createUser = function (newUser, cb) {
-    bycrypt.genSalt(10, function (err, salt) {
-        bycrypt.hash(newUser.password, salt, function (err, hash) {
-            newUser.password = hash;
-            newUser.save(function (err, user) {
-                if(err){
-                    console.log(err);
-                    throw err;
-                }else{
-                    if(user.acc_type == 'S'){
-                        var thisStudent = new Student();
-                        thisStudent.save(function (err, std) {
-                            if(err){
-                                console.log(err);
-                                throw err;
-                            }else{
-                                user.acc_id = std._id;
-                                user.save(cb);
-                            }
-                        })
-                    }else if(user.acc_type == 'T'){
-                        var thisTeacher = new Teacher();
-                        thisTeacher.save(function (err, tch) {
-                            if(err){
-                                console.log(err);
-                                throw err;
-                            }else{
-                                user.acc_id = tch._id;
-                                user.save(cb);
-                            }
-                        })
 
-                    }
-                }
-            });
-        })
-    });
-};
 
-module.exports.comparePassword = function (candidatePassword, hash, cb) {
-    bycrypt.compare(candidatePassword, hash, function (err, isMatch) {
-        if(err){
-            console.log(err);
-        }else{
-            cb(null, isMatch);
-        }
-    });
-};
+

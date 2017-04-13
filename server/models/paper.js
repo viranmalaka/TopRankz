@@ -10,16 +10,17 @@ autoInc.initialize(con);
 
 
 var paper = new schema({
-    id: {type: Number, required: true},
-    name : {type: String, required: true},
-    medium : {type: String},                        // {'S','E','T'}
-    subject: { type : schema.ObjectId,ref: 'Subject'},
-    time_limit: {type : Number, required : true},   // in minutes
-    unit_mark : {type : Number, default : 1},
-    questions : {type : Number ,required : true},
-    finished : {type : Boolean, default : false},
-    numAnswer : {type : Number, required : true},
-    mixOrder : {type : Boolean, default : true}
+  id: {type: Number, required: true},
+  name : {type: String, required: true},
+  medium : {type: String},                        // {'S','E','T'}
+  subject: { type : schema.ObjectId,ref: 'Subject'},
+  time_limit: {type : Number, required : true},   // in minutes
+  unit_mark : {type : Number, default : 1},
+  questions : {type : Number ,required : true},
+  finished : {type : Boolean, default : false},
+  numAnswer : {type : Number, required : true},
+  mixOrder : {type : Boolean, default : true},
+  addedBy: {type : schema.ObjectId, ref : 'User'}
 });
 
 paper.plugin(autoInc.plugin, {

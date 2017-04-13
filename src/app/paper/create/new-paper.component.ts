@@ -1,5 +1,8 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Output, EventEmitter} from '@angular/core';
 import {PaperService} from "../paper.service";
+import {FormControl, FormGroup} from "@angular/forms";
+import {OtherService} from "../../other.services";
+import {Router, ActivatedRoute} from "@angular/router";
 declare let $: any;
 
 @Component({
@@ -8,24 +11,51 @@ declare let $: any;
   styles: []
 })
 export class NewPaperComponent implements OnInit, AfterViewInit {
-  private allPaperName = [];
+  private allSubject =[];
+  @Output() onSubmitState = new EventEmitter<string>();
 
-  constructor(private paperServices:PaperService) {  }
+  paperCreateForm = new FormGroup({
+    name : new FormControl(),
+    subject : new FormControl(),
+    medium : new FormControl(),
+    nQuestions : new FormControl(),
+    nAnswers : new FormControl(),
+    timeLimit : new FormControl(),
+    unitMark : new FormControl(),
+    random : new FormControl()
+  });
+
+  constructor(private paperServices:PaperService, private otherServices : OtherService,
+              private router : Router, private route : ActivatedRoute) {  }
 
   ngOnInit() {
-    this.paperServices.getAllPaperNames()
-    .subscribe(resPaperNames => {
-      this.allPaperName = resPaperNames['get_all_paper_names'];
+    this.otherServices.getAllSubjectNames().subscribe(res => {
+      this.allSubject = res.subjects;
     });
   }
 
   ngAfterViewInit(){
     // new validation rule for check paper name is available
-    $.fn.form.settings.rules.checkName = function (value) {
-      return $.inArray(value, this.allPaperNames) < 0;
-    };
     $.fn.form.settings.rules.range = function (value) {
       return value > 0.2 && value < 3;
+    };
+
+    $.fn.form.settings.rules.checkName = function (value) {
+      let x = $.ajax({
+        url : require('../../config')['development'].domainURL + 'paper/check_paper_name',
+        method : 'GET',
+        data : {name : value},
+        async : false,
+        success : function (data) {
+          console.log(data);
+          return data.responseJSON;
+        }
+      }).responseJSON;
+      if(x){
+        return !x.exist;
+      }else{
+        return false;
+      }
     };
 
     $('#newPaper').form({
@@ -94,6 +124,26 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
       inline: true,
       on: 'blur'
     });
+
+    $('.ui.dropdown').dropdown();
+    $('#random').checkbox();
   }
 
+  onSubmit(){
+    this.paperCreateForm.value.medium = $('#mediumSelect').val();
+    this.paperCreateForm.value.subject = $('#subjectSelect').val();
+    this.paperCreateForm.value.random = $('#random').checkbox('is checked');
+    this.paperServices.postCreateNewPaper(this.paperCreateForm.value)
+      .subscribe(res => {
+        if(res.success){
+          toastr.success("success");
+          this.onSubmitState.emit('Q');
+          localStorage.setItem("paper", JSON.stringify(res['paper']));
+          localStorage.setItem("action", "create paper");
+          this.router.navigate([res['paper'].id]);
+        }else{
+          toastr.error('error');
+        }
+      });
+  }
 }

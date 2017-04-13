@@ -12,11 +12,11 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStratagy = require('passport-local');
 const flash = require('connect-flash');
-const multer = require('multer');
 
 // Get our API routes
 const api = require('./server/routes/api');
 
+// create express app
 const app = express();
 
 // MongoDB connections
@@ -26,7 +26,7 @@ var con = require('./server/controllers/dbController');
 app.use(logger('common', {
   stream: fs.createWriteStream('./access.log', {flags: 'a'})
 }));
-app.use(logger('dev'));
+app.use(logger('dev')); // set logger level
 
 // Parsers for POST data
 app.use(bodyParser.json());
@@ -35,7 +35,7 @@ app.use(cookieParser());
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, 'dist')));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'server/public')));
 
 // init Sessions
 app.use(session({
@@ -44,7 +44,7 @@ app.use(session({
   resave : true
 }));
 
-//Express validator
+//Express validator Initialization
 app.use(expValidator({
   errorFormatter: function(param, msg, value) {
     var namespace = param.split('.')
@@ -62,7 +62,7 @@ app.use(expValidator({
   }
 }));
 
-//Passport
+//Passport init
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -84,7 +84,7 @@ app.use('/api', api);
 // Catch all other routes and return the index file
 app.get('*', function(req, res) {
   if(process.argv[2] == 'api'){
-    res.send('only api server is running...');
+    throw {message : 'Only api server is running'}
   }else{
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   }
@@ -104,10 +104,8 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.send('error');
+  res.status(err.status || 500).send('SERVER - ' + err.message);
 });
-
 
 /**
  * Get port from environment and store in Express.

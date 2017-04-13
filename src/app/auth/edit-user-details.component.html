@@ -1,15 +1,16 @@
 <div class="ui container">
   <div class="ui grid">
     <div class="ui three wide computer ten wide mobile column">
-      <img src="" alt="" class="ui image" id="profImg">
-      <form action="" id="formProfImage" enctype="multipart/form-data">
-        <label class="fluid ui blue basic button" for='imgUpload'>Change</label>
-        <input type="file" class="inputfile" id="imgUpload" name='imgUpload'>
-      </form>
+      <img src="assets/prof-pic/{{
+          user.profile_picture == undefined ? 'demo-user-picture.png' : user.profile_picture
+      }}" alt="" class="ui image" id="profImg">
+      <label class="fluid ui blue basic button" for='imgUpload'>Change</label>
+      <input type="file" class="inputfile" id="imgUpload" name='imgUpload' (change)="changeImg($event)"
+            accept=".jpg, .png, .jpge">
       <div class="ui vertical fluid tabular menu">
         <a class="item" id="mnuBio"
            (click)="activeTab = 'bio'" [class.active]="activeTab == 'bio'">Bio</a>
-        <a class="item" id="mnuEnroll"
+        <a class="item" id="mnuEnroll" *ngIf="user.acc_type == 'S'"
            (click)="activeTab = 'enroll'" [class.active]="activeTab == 'enroll'">Enrollments</a>
         <a class="item" id="mnuClasses"
            (click)="activeTab = 'class'" [class.active]="activeTab == 'class'">Classes</a>

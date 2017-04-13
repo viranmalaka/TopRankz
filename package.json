@@ -8,7 +8,8 @@
     "start": "ng serve",
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
-    "e2e": "protractor"
+    "e2e": "protractor",
+    "api": "nodemon server.js api"
   },
   "private": true,
   "dependencies": {
@@ -30,6 +31,7 @@
     "express-session": "^1.15.1",
     "express-validator": "^3.1.2",
     "jquery": "^3.2.0",
+    "jquery.nicescroll": "^3.6.8",
     "jsonwebtoken": "^7.3.0",
     "mongoose": "^4.8.3",
     "mongoose-auto-increment": "^5.0.1",
@@ -41,6 +43,7 @@
     "rxjs": "^5.0.1",
     "semantic-ui-css": "^2.2.9",
     "tinymce": "^4.5.5",
+    "toastr": "^2.1.2",
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.7.2"
   },

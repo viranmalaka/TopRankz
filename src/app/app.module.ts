@@ -4,8 +4,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import {LoginComponent} from "./auth/login.component";
-import {routing} from "./app.routing";
+import { LoginComponent } from "./auth/login.component";
+import { routing} from "./app.routing";
 import { SignupComponent } from './auth/signup.component';
 import { CreatePaperComponent } from './paper/create/create-paper.component';
 import { NewPaperComponent } from './paper/create/new-paper.component';
@@ -29,6 +29,7 @@ import { ViewQuestionContentComponent } from './paper/view/view-question-content
 import { EditUserDetailsComponent } from './auth/edit-user-details.component';
 import { UserDetailsBioComponent } from './auth/user-details-bio.component';
 import { UserDetailsEnrollComponent } from './auth/user-details-enroll.component';
+import {SignupDataEntryComponent} from "./auth/admins/signup-data-entry.component";
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { UserDetailsEnrollComponent } from './auth/user-details-enroll.component
     EditUserDetailsComponent,
     UserDetailsBioComponent,
     UserDetailsBioComponent,
-    UserDetailsEnrollComponent
+    UserDetailsEnrollComponent,
+    SignupDataEntryComponent,
   ],
   imports: [
     BrowserModule,
