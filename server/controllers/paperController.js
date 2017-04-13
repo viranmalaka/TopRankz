@@ -12,18 +12,32 @@ module.exports.checkPaperName = function (name, next) {
   })
 };
 
-module.exports.tempAddPaper = function (user, data, next) {
-  var t = new Temp();
-  t.userId = user._id;
-  t.data = {paper : data, questions : {}};
-  t.save(function (err, t) {
+module.exports.createPaper = function (user, data, next) {
+  var paper = new Paper();
+  paper.name = data.name;
+  paper.medium = data.medium;
+  paper.subject = data.subject;
+  paper.time_limit = data.timeLimit;
+  paper.questions = data.nQuestions;
+  paper.unit_mark = data.unitMark;
+  paper.numAnswer = data.nAnswers;
+  paper.mixOrder = data.random;
+  paper.addedBy = user._id;
+
+  paper.save(function (err, p) {
     if(err){
       console.log(err);
       throw err;
-    }else{
-      next(t);
+    }else {
+      var temp = new Temp();
+      temp.userId = user._id;
+      temp.data = {paper : p};
+      temp.save(function (err, t) {
+        require('../states').states[user._id] = p._id;
+        next(p);
+      });
     }
-  })
+  });
 };
 
 module.exports.tempAddQuestions = function (user, data, next) {
@@ -56,5 +70,15 @@ module.exports.tempGetPaper = function (user, next) {
     }else{
       next(temp);
     }
+  })
+};
+
+module.exports.canEditThis = function (user, paper_id,next) {
+  Paper.findOne({id : paper_id}, function (err, paper) {
+    console.log('user', user._id);
+    console.log('paper_id', paper_id);
+    console.log('paper', paper);
+    console.log('state', require('../states').states);
+    next(paper.addedBy == user._id && paper._id == require('../states').states[user._id]);
   })
 };

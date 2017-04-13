@@ -1,7 +1,8 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Output, EventEmitter} from '@angular/core';
 import {PaperService} from "../paper.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {OtherService} from "../../other.services";
+import {Router, ActivatedRoute} from "@angular/router";
 declare let $: any;
 
 @Component({
@@ -10,8 +11,8 @@ declare let $: any;
   styles: []
 })
 export class NewPaperComponent implements OnInit, AfterViewInit {
-  private allPaperName = [];
   private allSubject =[];
+  @Output() onSubmitState = new EventEmitter<string>();
 
   paperCreateForm = new FormGroup({
     name : new FormControl(),
@@ -24,7 +25,8 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
     random : new FormControl()
   });
 
-  constructor(private paperServices:PaperService, private otherServices : OtherService) {  }
+  constructor(private paperServices:PaperService, private otherServices : OtherService,
+              private router : Router, private route : ActivatedRoute) {  }
 
   ngOnInit() {
     this.otherServices.getAllSubjectNames().subscribe(res => {
@@ -133,7 +135,15 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
     this.paperCreateForm.value.random = $('#random').checkbox('is checked');
     this.paperServices.postCreateNewPaper(this.paperCreateForm.value)
       .subscribe(res => {
-        console.log(res);
+        if(res.success){
+          toastr.success("success");
+          this.onSubmitState.emit('Q');
+          localStorage.setItem("paper", JSON.stringify(res['paper']));
+          localStorage.setItem("action", "create paper");
+          this.router.navigate([res['paper'].id]);
+        }else{
+          toastr.error('error');
+        }
       });
   }
 }

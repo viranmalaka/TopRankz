@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Response} from "@angular/http";
+import {Http, Response, Headers, RequestOptions} from "@angular/http";
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -26,6 +26,14 @@ export class PaperService {
 
   postCreateNewPaper(data){
     return this._http.post(this.paperDomain + "new_paper",data)
+      .map((res : Response) => res.json());
+  }
+
+  getCanEditThisPaper(paperId){
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.get(this.paperDomain + "can_edit_this?paper_id=" + paperId, options)
       .map((res : Response) => res.json());
   }
 }

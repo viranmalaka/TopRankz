@@ -262,3 +262,4 @@ function validAuth(req, res, next) {
 }
 
 module.exports = router;
+module.exports.validAuth = validAuth;
