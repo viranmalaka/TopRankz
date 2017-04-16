@@ -29,11 +29,11 @@ export class PaperService {
       .map((res : Response) => res.json());
   }
 
-  getCanEditThisPaper(paperId){
+  editThisPaper(paperId){
     let options = new RequestOptions({
       headers : new Headers({token : localStorage.getItem('auth-token')})
     });
-    return this._http.get(this.paperDomain + "can_edit_this?paper_id=" + paperId, options)
+    return this._http.get(this.paperDomain + "edit_this_paper?paper_id=" + paperId, options)
       .map((res : Response) => res.json());
   }
 }

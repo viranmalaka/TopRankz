@@ -15,11 +15,12 @@ router.get('/check_paper_name', function (req, res) {
 
 router.post('/new_paper', function (req, res) {
   // server side validation should be done
-  pprCtrl.createPaper(req.user, req.body, function (t) {
-    // console.log(err,t);
+  pprCtrl.createPaper(req.user, req.body, function (p, q) {
+    console.log(q);
     res.jsonp({
       success : true,
-      paper : t
+      paper : p,
+      questions : q
     });
   });
 });
@@ -34,11 +35,13 @@ router.post('/new_question', function (req, res) {
   })
 });
 
-router.get('/can_edit_this', require('./user').validAuth, function (req, res) {
-  pprCtrl.canEditThis(req.user, req.query['paper_id'], function (possible) {
+router.get('/edit_this_paper', require('./user').validAuth, function (req, res) {
+  pprCtrl.getEditThisPaper(req.user, req.query['paper_id'], function (possible, p, q) {
     res.jsonp({
       success : true,
-      can : possible
+      can : possible,
+      paper : p,
+      questions : q
     })
   });
 });

@@ -7,7 +7,7 @@
 </style>
 <form id="oneQuestion" onkeypress="return event.keyCode != 13;" class="ui form">
   <div class="field inline">
-    <label>{{('0' + questionId).slice(-2)}}</label>
+    <label>{{('0' + question.questionNumber).slice(-2)}}</label>
     <div class="field">
       <textarea name="qBody" id="qBody">
         Questions here
@@ -17,17 +17,17 @@
   <div class="ui grid">
     <div class="eleven wide column">
       <div class="ui grid">
-        <div class="row" *ngFor="let n of answerArray">
+        <div class="row" *ngFor="let n of question.answers">
           <div class="two wide column">
             <div class="field">
               <div class="ui checkbox">
                 <input type="checkbox" name="chkAns" id="chkAns" class="hidden" tabindex="-1"/>
-                <label>{{('0' + n).slice(-2)}}</label>
+                <label>{{('0' + n.id).slice(-2)}}</label>
               </div>
             </div>
           </div>
           <div class="fourteen wide column">
-            <div class="ans" id="ans{{n}}">{{n}}</div>
+            <div class="ans" id="ans{{n.id}}">{{n.body}}</div>
           </div>
         </div>
       </div>

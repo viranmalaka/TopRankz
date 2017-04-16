@@ -12,7 +12,7 @@ declare let $: any;
 })
 export class NewPaperComponent implements OnInit, AfterViewInit {
   private allSubject =[];
-  @Output() onSubmitState = new EventEmitter<string>();
+  @Output() onSubmitForm = new EventEmitter<FormGroup>();
 
   paperCreateForm = new FormGroup({
     name : new FormControl(),
@@ -121,8 +121,7 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
           }]
         }
       },
-      inline: true,
-      on: 'blur'
+      inline: true
     });
 
     $('.ui.dropdown').dropdown();
@@ -130,20 +129,11 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(){
-    this.paperCreateForm.value.medium = $('#mediumSelect').val();
-    this.paperCreateForm.value.subject = $('#subjectSelect').val();
-    this.paperCreateForm.value.random = $('#random').checkbox('is checked');
-    this.paperServices.postCreateNewPaper(this.paperCreateForm.value)
-      .subscribe(res => {
-        if(res.success){
-          toastr.success("success");
-          this.onSubmitState.emit('Q');
-          localStorage.setItem("paper", JSON.stringify(res['paper']));
-          localStorage.setItem("action", "create paper");
-          this.router.navigate([res['paper'].id]);
-        }else{
-          toastr.error('error');
-        }
-      });
+    if($('#newPaper').form('is valid')){
+      this.paperCreateForm.value.medium = $('#mediumSelect').val();
+      this.paperCreateForm.value.subject = $('#subjectSelect').val();
+      this.paperCreateForm.value.random = $('#random').checkbox('is checked');
+      this.onSubmitForm.emit(this.paperCreateForm);
+    }
   }
 }

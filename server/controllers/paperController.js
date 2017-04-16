@@ -31,11 +31,30 @@ module.exports.createPaper = function (user, data, next) {
     }else {
       var temp = new Temp();
       temp.userId = user._id;
-      temp.data = {paper : p};
-      temp.save(function (err, t) {
-        require('../states').states[user._id] = p._id;
-        next(p);
-      });
+      var questionArray = [];
+      for (var i = 0; i < p.questions; i++) {
+        var ans = [];
+        for (var j = 0; j < p.numAnswer; j++) {
+          ans.push({id : j + 1, body : 'test'});
+        }
+        questionArray.push({
+          body : "",
+          answers : ans,
+          correct : [],
+          tags : [],
+          topics : [],
+          questionNumber : i + 1,
+          mixOrder : true
+        });
+      }
+      temp.data = {paper : p._id, questions : questionArray};
+      Temp.update({userId : user._id}, temp, {upsert : true}).exec(function (err, res) {
+        Temp.findOne({userId : user._id}, function (err, t) {
+          console.log(p);
+          console.log(t);
+          next(p, t['data'].questions);
+        })
+      })
     }
   });
 };
@@ -73,12 +92,22 @@ module.exports.tempGetPaper = function (user, next) {
   })
 };
 
-module.exports.canEditThis = function (user, paper_id,next) {
+module.exports.getEditThisPaper = function (user, paper_id, next) {
   Paper.findOne({id : paper_id}, function (err, paper) {
-    console.log('user', user._id);
-    console.log('paper_id', paper_id);
-    console.log('paper', paper);
-    console.log('state', require('../states').states);
-    next(paper.addedBy == user._id && paper._id == require('../states').states[user._id]);
+    if(paper){
+      Temp.findOne({userId : user._id}, function (err, temp) {
+        if(temp){
+          if(temp.data.paper.equals(paper._id)){
+            next(true, paper, temp.data.questions);
+          }else{
+            next(false);
+          }
+        }else{
+          next(false);
+        }
+      })
+    }else{
+      next(false);
+    }
   })
 };
