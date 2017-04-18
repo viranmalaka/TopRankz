@@ -14,3 +14,14 @@ module.exports.getAllSubjectNames = function (next) {
     }
   })
 };
+
+module.exports.getAllTopics = function (sub, next) {
+  Subject.findById(sub).select('topics').exec(function (err, tops) {
+    if(err){
+      console.log(err);
+      throw err;
+    }else{
+      next(tops.topics);
+    }
+  })
+};

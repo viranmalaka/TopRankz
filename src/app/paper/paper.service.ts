@@ -36,4 +36,10 @@ export class PaperService {
     return this._http.get(this.paperDomain + "edit_this_paper?paper_id=" + paperId, options)
       .map((res : Response) => res.json());
   }
+
+
+  getAllTags(){
+    return this._http.get(this.paperDomain + 'get_all_tags')
+      .map((res : Response) => res.json());
+  }
 }

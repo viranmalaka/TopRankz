@@ -10,4 +10,12 @@ router.get('/all_subject_names', function (req, res) {
   })
 });
 
+router.get('/all_topics', function (req, res) {
+  subCtrl.getAllTopics(req.query['subject'], function (topics) {
+    res.jsonp({
+      success : true,
+      topics : topics
+    });
+  })
+});
 module.exports = router;

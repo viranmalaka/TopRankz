@@ -111,3 +111,10 @@ module.exports.getEditThisPaper = function (user, paper_id, next) {
     }
   })
 };
+
+
+module.exports.getAllTags = function (next) {
+  Question.distinct('tags', function (err, tags) {
+    next(tags);
+  });
+};

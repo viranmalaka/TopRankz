@@ -15,7 +15,7 @@ import {FormControl} from "@angular/forms";
           <div class="header cursorHand" ><a (click)="state == 'C'">Start</a></div>
           <div class="menu" style="margin-left: 1px">
             <button style="margin-top:3px;font-size:12px" class="ui icon button" *ngFor="let q of questionsArray"
-                  (click)="state = 'Q'; currentQuestionIndex = q.questionNumber - 1">
+                  (click)="state = 'Q'; currentQuestionIndex = q.questionNumber - 1; loadOnes = true">
               {{('0' + q.questionNumber).slice(-2)}}
             </button>
           </div>
@@ -33,14 +33,16 @@ import {FormControl} from "@angular/forms";
     <app-answer-sheet *ngIf="state == 'A' && started" ></app-answer-sheet>
     <app-submit-paper *ngIf="state == 'S' && started"></app-submit-paper>
     
-    <app-new-question *ngIf="state == 'Q' && started" 
-        [question]="questionsArray[currentQuestionIndex]"></app-new-question>
+    <app-new-question *ngIf="(state == 'Q' && started) || loadOnes" 
+        [question]="questionsArray[currentQuestionIndex]"
+        [subject]="paper.subject"
+        [class.hideMe]="!(state == 'Q' && started)"></app-new-question>
         
   </div>
 </div>
 `,
 
-  styles: [".cursorHand { cursor: pointer }"]
+  styles: [".cursorHand { cursor: pointer } .hideMe{visibility: hidden;}"]
 })
 
 export class CreatePaperComponent implements OnInit, AfterViewInit {
@@ -50,6 +52,8 @@ export class CreatePaperComponent implements OnInit, AfterViewInit {
   private questionsArray = [];
   private user = JSON.parse(localStorage.getItem('user'));
   private currentQuestionIndex = -1;
+  private loadOnes = false;
+
 
   constructor(private route:ActivatedRoute, private paperService : PaperService,
             private authService : AuthService, private router : Router){}

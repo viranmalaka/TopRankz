@@ -37,32 +37,33 @@
     <div class="five wide column">
       <div id="topicField" class="field">
         <label>Topics</label>
-        <select id="topics" multiple="" class="ui dropdown">
+        <select id="topics" multiple="" class="ui dropdown" (change)="onTopicsChanged()">
           <option value="">select Topics Here</option>
-          <option value="1">tag1</option>
-          <option value="3">tag2</option>
+          <option *ngFor="let t of topicsArray" value="{{t.id}}">{{t['english']}}</option>
         </select>
       </div>
       <div class="field">
         <label>Tags</label>
         <div class="ui fluid multiple search selection dropdown">
-          <input id="tags" name="tags" type="hidden"/><i class="dropdown icon"></i>
+          <input id="tags" name="tags" type="hidden" (change)="onTagsChanged()"/>
+          <i class="dropdown icon"></i>
           <div class="default text">Select Tags</div>
           <div class="menu">
-            <div data-value='1' class="item">topci1</div>
-            <div data-value='2' class="item">topci2</div>
+            <div *ngFor="let t of tagsArray" data-value='t' class="item">{{t}}</div>
           </div>
         </div>
       </div>
       <div class="field">
         <div class="ui checkbox">
-          <input type="checkbox" name="canMix" class="hidden"/>
+          <input type="checkbox" name="canMix" class="hidden"
+                 [ngModel]="question.mixOrder"
+                  (change)="question.mixOrder = !question.mixOrder"/>
           <label>Mix the answer order.</label>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="ui button" (click)="onSubmit()">Submit Question</div>
+      <div class="ui button" (click)="onSubmit()">Submit Changes</div>
     </div>
   </div>
 </div>

@@ -46,4 +46,13 @@ router.get('/edit_this_paper', require('./user').validAuth, function (req, res) 
   });
 });
 
+router.get('/get_all_tags', function (req, res) {
+  pprCtrl.getAllTags(function (tags) {
+    res.jsonp({
+      success : true,
+      tags : tags
+    })
+  })
+});
+
 module.exports = router;
