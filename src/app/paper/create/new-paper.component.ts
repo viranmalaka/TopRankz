@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Output, EventEmitter, Input} from '@angular/core';
 import {PaperService} from "../paper.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {OtherService} from "../../other.services";
@@ -13,6 +13,7 @@ declare let $: any;
 export class NewPaperComponent implements OnInit, AfterViewInit {
   private allSubject =[];
   @Output() onSubmitForm = new EventEmitter<FormGroup>();
+  @Input() paper;
 
   paperCreateForm = new FormGroup({
     name : new FormControl(),
@@ -34,7 +35,20 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
     });
   }
 
+
   ngAfterViewInit(){
+    if(this.paper){
+      this.paperCreateForm = new FormGroup({
+        name : new FormControl(this.paper.name),
+        subject : new FormControl(this.paper.subject),
+        medium : new FormControl(this.paper.medium),
+        nQuestions : new FormControl(this.paper.questions),
+        nAnswers : new FormControl(this.paper.numAnswer),
+        timeLimit : new FormControl(this.paper.time_limit),
+        unitMark : new FormControl(this.paper.unit_mark),
+        random : new FormControl(this.paper.random)
+      });
+    }
     // new validation rule for check paper name is available
     $.fn.form.settings.rules.range = function (value) {
       return value > 0.2 && value < 3;

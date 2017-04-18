@@ -18,9 +18,6 @@ import {FormControl} from "@angular/forms";
                   (click)="state = 'Q'; currentQuestionIndex = q.questionNumber - 1">
               {{('0' + q.questionNumber).slice(-2)}}
             </button>
-            <button class="ui icon button green" style="margin-top:2px;font-size:12px">
-              007
-            </button>
           </div>
           <div class="header cursorHand" style="margin-top: 10px;"><a (click)="state = 'A'">Answer sheet</a></div>
           <div class="header cursorHand"><a (click)="state = 'S'">Submit Paper</a></div>
@@ -29,12 +26,16 @@ import {FormControl} from "@angular/forms";
     </div>
   </div>
   <div style="margin-top : 20px" class="ui eleven wide column">
-    <app-new-paper *ngIf="state == 'C'" (onSubmitForm)="onSubmitNewPaper($event)"></app-new-paper>
+    <app-new-paper *ngIf="state == 'C'" 
+            (onSubmitForm)="onSubmitNewPaper($event)"
+            [paper]="paper"></app-new-paper>
+            
     <app-answer-sheet *ngIf="state == 'A' && started" ></app-answer-sheet>
     <app-submit-paper *ngIf="state == 'S' && started"></app-submit-paper>
+    
     <app-new-question *ngIf="state == 'Q' && started" 
-        [question]="questionsArray[currentQuestionIndex]"
-        ></app-new-question>
+        [question]="questionsArray[currentQuestionIndex]"></app-new-question>
+        
   </div>
 </div>
 `,
@@ -43,7 +44,7 @@ import {FormControl} from "@angular/forms";
 })
 
 export class CreatePaperComponent implements OnInit, AfterViewInit {
-  state = 'C';
+  state = '';
   started = false;
   private paper;
   private questionsArray = [];
@@ -68,9 +69,10 @@ export class CreatePaperComponent implements OnInit, AfterViewInit {
               .subscribe(res => {
                 console.log(res);
                 if(res['can']){
-                  this.started = true;
                   this.paper = res['paper'];
                   this.questionsArray = res['questions'];
+                  this.started = true;
+                  this.state = 'C';
                 }
               })
           }else{
