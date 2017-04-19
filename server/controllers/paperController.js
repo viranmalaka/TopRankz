@@ -35,7 +35,7 @@ module.exports.createPaper = function (user, data, next) {
       for (var i = 0; i < p.questions; i++) {
         var ans = [];
         for (var j = 0; j < p.numAnswer; j++) {
-          ans.push({id : j + 1, body : 'test'});
+          ans.push({id : j + 1, body : ''});
         }
         questionArray.push({
           body : "",
@@ -57,6 +57,38 @@ module.exports.createPaper = function (user, data, next) {
       })
     }
   });
+};
+
+module.exports.addDescription = function (data, next) {
+  // Paper.update({_id : data.paperId}, {$set : {descriptionText : data.description}}, function (err, paper) {
+  //   if(err){
+  //       console.log(err);
+  //       throw err;
+  //   }else{
+  //     console.log(paper);
+  //     next(paper);
+  //   }
+  // });
+  console.log(data);
+  Paper.findById(data.paperId, function (err, paper) {
+    if(err){
+        console.log(err);
+        throw err;
+    }else{
+        if(paper){
+          paper.descriptionText = data.description;
+          paper.save(function (err, p) {
+            if(err){
+              console.log(err);
+              throw err;
+            }else{
+              console.log(p);
+              next(p);
+            }
+          })
+        }
+    }
+  })
 };
 
 module.exports.tempAddQuestions = function (user, data, next) {

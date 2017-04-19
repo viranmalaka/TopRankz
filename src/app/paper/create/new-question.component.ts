@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, OnChanges, OnDestroy} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Input, OnChanges} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {OtherService} from "../../other.services";
 import {PaperService} from "../paper.service";

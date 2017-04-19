@@ -12,10 +12,11 @@ import {FormControl} from "@angular/forms";
     <div class="ui vertical pointing menu" *ngIf="started">
       <!--<div class="ui vertical menu">-->
         <div class="item">
-          <div class="header cursorHand" ><a (click)="state == 'C'">Start</a></div>
+          <div class="header cursorHand" ><a (click)="state = 'C'">Basic Data</a></div>
+          <div class="header cursorHand" ><a (click)="state = 'D'; loadDescriptionOnce = true">Description</a></div>
           <div class="menu" style="margin-left: 1px">
             <button style="margin-top:3px;font-size:12px" class="ui icon button" *ngFor="let q of questionsArray"
-                  (click)="state = 'Q'; currentQuestionIndex = q.questionNumber - 1; loadOnes = true">
+                  (click)="state = 'Q'; currentQuestionIndex = q.questionNumber - 1; loadQuestionOnce = true">
               {{('0' + q.questionNumber).slice(-2)}}
             </button>
           </div>
@@ -29,11 +30,18 @@ import {FormControl} from "@angular/forms";
     <app-new-paper *ngIf="state == 'C'" 
             (onSubmitForm)="onSubmitNewPaper($event)"
             [paper]="paper"></app-new-paper>
-            
-    <app-answer-sheet *ngIf="state == 'A' && started" ></app-answer-sheet>
-    <app-submit-paper *ngIf="state == 'S' && started"></app-submit-paper>
     
-    <app-new-question *ngIf="(state == 'Q' && started) || loadOnes" 
+    <app-description *ngIf="(state == 'D' && started) || loadDescriptionOnce" 
+          [des]="paper.descriptionText" (onSubmitDes)="setDescription($event)"
+          [class.hideMe]="!(state == 'D' && started)"  ></app-description>
+            
+    <app-answer-sheet *ngIf="state == 'A' && started" 
+            [questionArray]="questionsArray"></app-answer-sheet>
+    <app-submit-paper *ngIf="state == 'S' && started"
+            [questionArray]="questionsArray" [paper]="paper"
+    ></app-submit-paper>
+    
+    <app-new-question *ngIf="(state == 'Q' && started) || loadQuestionOnce" 
         [question]="questionsArray[currentQuestionIndex]"
         [subject]="paper.subject"
         [class.hideMe]="!(state == 'Q' && started)"></app-new-question>
@@ -42,7 +50,7 @@ import {FormControl} from "@angular/forms";
 </div>
 `,
 
-  styles: [".cursorHand { cursor: pointer } .hideMe{visibility: hidden;}"]
+  styles: [".cursorHand { cursor: pointer } .hideMe{display: none;}"]
 })
 
 export class CreatePaperComponent implements OnInit, AfterViewInit {
@@ -52,7 +60,8 @@ export class CreatePaperComponent implements OnInit, AfterViewInit {
   private questionsArray = [];
   private user = JSON.parse(localStorage.getItem('user'));
   private currentQuestionIndex = -1;
-  private loadOnes = false;
+  private loadQuestionOnce = false;
+  private loadDescriptionOnce = false;
 
 
   constructor(private route:ActivatedRoute, private paperService : PaperService,
@@ -109,4 +118,19 @@ export class CreatePaperComponent implements OnInit, AfterViewInit {
         }
       });
   }
+
+  setDescription(des : String){
+    this.paperService.setDescription(this.paper._id, des)
+      .subscribe(res => {
+        console.log(res);
+        if(res.success){
+          this.paper = res['paper'];
+          toastr.success('save description');
+        }
+      });
+  }
+
+  submitFullPaper(){
+  }
 }
+

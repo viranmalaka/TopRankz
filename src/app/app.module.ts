@@ -30,6 +30,7 @@ import { EditUserDetailsComponent } from './auth/edit-user-details.component';
 import { UserDetailsBioComponent } from './auth/user-details-bio.component';
 import { UserDetailsEnrollComponent } from './auth/user-details-enroll.component';
 import {SignupDataEntryComponent} from "./auth/admins/signup-data-entry.component";
+import { DescriptionComponent } from './paper/create/description.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {SignupDataEntryComponent} from "./auth/admins/signup-data-entry.componen
     UserDetailsBioComponent,
     UserDetailsEnrollComponent,
     SignupDataEntryComponent,
+    DescriptionComponent,
   ],
   imports: [
     BrowserModule,

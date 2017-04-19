@@ -29,6 +29,18 @@ export class PaperService {
       .map((res : Response) => res.json());
   }
 
+  setDescription(paper, des){
+    let data = {
+      paperId : paper,
+      description : des
+    };
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.post(this.paperDomain + 'set_description', data, options)
+      .map((res : Response) => res.json());
+  }
+
   editThisPaper(paperId){
     let options = new RequestOptions({
       headers : new Headers({token : localStorage.getItem('auth-token')})
@@ -41,5 +53,17 @@ export class PaperService {
   getAllTags(){
     return this._http.get(this.paperDomain + 'get_all_tags')
       .map((res : Response) => res.json());
+  }
+
+  submitFinalPaper(paper, questions){
+    let data = {paper: paper, questions: questions};
+    return this._http.post(this.paperDomain + 'submit_final_paper', data)
+      .map((res : Response) => res.json())
+  }
+
+  submitToProofReading(paper, questions){
+    let data = {paper: paper, questions: questions};
+    return this._http.post(this.paperDomain + 'submit_to_pr', data)
+      .map((res : Response) => res.json())
   }
 }

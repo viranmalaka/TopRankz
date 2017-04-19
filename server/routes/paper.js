@@ -3,7 +3,7 @@
  */
 var router = require('express').Router();
 var pprCtrl = require('../controllers/paperController');
-
+var validAuth = require('./user').validAuth;
 router.get('/check_paper_name', function (req, res) {
   pprCtrl.checkPaperName(req.query.name, function (exist) {
     res.jsonp({
@@ -35,7 +35,15 @@ router.post('/new_question', function (req, res) {
   })
 });
 
-router.get('/edit_this_paper', require('./user').validAuth, function (req, res) {
+router.post('/set_description', validAuth, function (req, res) {
+  pprCtrl.addDescription(req.body, function (paper) {
+    res.jsonp(
+      {success: true, paper: paper}
+    );
+  });
+});
+
+router.get('/edit_this_paper', validAuth, function (req, res) {
   pprCtrl.getEditThisPaper(req.user, req.query['paper_id'], function (possible, p, q) {
     res.jsonp({
       success : true,
