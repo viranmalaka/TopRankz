@@ -252,13 +252,25 @@ function generateToken(req, res, next) {
 }
 
 function validAuth(req, res, next) {
+  console.log('valid auth', req.get('token'));
   if (req.user){
     var genID = jwt.verify(req.get('token'), 'secret');
     req.validToken = (genID.id == req.user._id);
+    if(req.validToken){
+      next();
+    }else{
+      res.jsonp({
+        success : false,
+        msg : 'invalid token'
+        })
+    }
   }else{
     req.validToken = false;
+    res.jsonp({
+      success : false,
+      msg : 'required login'
+    })
   }
-  next();
 }
 
 module.exports = router;

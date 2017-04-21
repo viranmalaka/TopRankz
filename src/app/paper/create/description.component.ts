@@ -9,6 +9,7 @@ import {Component, OnInit, AfterViewInit, OnChanges, Input, Output, EventEmitter
       <div id="editor"></div>
     </div>
   </div>
+    <hr>
     <button (click)="onSubmit()" class="ui button">Submit</button>
 </div>
   `,

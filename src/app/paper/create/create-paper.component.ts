@@ -12,16 +12,17 @@ import {FormControl} from "@angular/forms";
     <div class="ui vertical pointing menu" *ngIf="started">
       <!--<div class="ui vertical menu">-->
         <div class="item">
-          <div class="header cursorHand" ><a (click)="state = 'C'">Basic Data</a></div>
-          <div class="header cursorHand" ><a (click)="state = 'D'; loadDescriptionOnce = true">Description</a></div>
+          <div class="header cursorHand" ><a (click)="onMenuChange('C')">Basic Data</a></div>
+          <div class="header cursorHand" ><a (click)="onMenuChange('D')">Description</a></div>
           <div class="menu" style="margin-left: 1px">
             <button style="margin-top:3px;font-size:12px" class="ui icon button" *ngFor="let q of questionsArray"
-                  (click)="state = 'Q'; currentQuestionIndex = q.questionNumber - 1; loadQuestionOnce = true">
+                  (click)="onMenuChange('Q', q.questionNumber - 1)">
               {{('0' + q.questionNumber).slice(-2)}}
             </button>
           </div>
-          <div class="header cursorHand" style="margin-top: 10px;"><a (click)="state = 'A'">Answer sheet</a></div>
-          <div class="header cursorHand"><a (click)="state = 'S'">Submit Paper</a></div>
+          <div class="header cursorHand" style="margin-top: 10px;"><a (click)="onMenuChange('A')">
+          Answer sheet</a></div>
+          <div class="header cursorHand"><a (click)="onMenuChange('S')">Submit Paper</a></div>
         </div>
       <!--</div>-->
     </div>
@@ -44,7 +45,8 @@ import {FormControl} from "@angular/forms";
     <app-new-question *ngIf="(state == 'Q' && started) || loadQuestionOnce" 
         [question]="questionsArray[currentQuestionIndex]"
         [subject]="paper.subject"
-        [class.hideMe]="!(state == 'Q' && started)"></app-new-question>
+        [class.hideMe]="!(state == 'Q' && started)"
+        (onSubmitChanges)="submitChanges()"></app-new-question>
         
   </div>
 </div>
@@ -113,6 +115,7 @@ export class CreatePaperComponent implements OnInit, AfterViewInit {
           this.questionsArray = res['questions'];
           this.state = 'Q';
           this.started = true;
+          this.router.navigate([this.paper.id], {relativeTo : this.route})
         }else{
 
         }
@@ -130,7 +133,30 @@ export class CreatePaperComponent implements OnInit, AfterViewInit {
       });
   }
 
-  submitFullPaper(){
+
+
+
+
+
+
+  onMenuChange(state, newIndex){
+    this.state = state;
+    if(state == 'D'){
+      this.loadDescriptionOnce = true;
+    }else if(state == 'Q'){
+
+      this.currentQuestionIndex = newIndex;
+      this.loadQuestionOnce = true;
+    }
+  }
+
+  submitChanges(){ // submit all questions
+    this.paperService.submitAllQuestions(this.questionsArray)
+      .subscribe(res => {
+        if (res.success) {
+          toastr.success('save changes');
+        }
+      });
   }
 }
 

@@ -140,6 +140,8 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
 
     $('.ui.dropdown').dropdown();
     $('#random').checkbox();
+
+
   }
 
   onSubmit(){

@@ -1,6 +1,8 @@
 import {Component, OnInit, AfterViewInit, Input} from '@angular/core';
 import {PaperService} from "../paper.service";
-declare let $: any;
+import {Route} from "@angular/router";
+
+
 @Component({
   selector: 'app-submit-paper',
   template: `
@@ -25,7 +27,7 @@ declare let $: any;
         <button class="ui button" (click)="onProofReadingSubmit()">Submit for proof reading</button>
       </div>
       <div class="five wide column">
-        <button class="ui button" (click)="onFinalSubmit()">Submit as final</button>
+        <button class="ui button" (click)="submitFullPaperFinal()">Submit as final</button>
       </div>
     </div>
   </div>
@@ -60,18 +62,21 @@ export class SubmitPaperComponent implements OnInit, AfterViewInit {
       });
   }
 
-  onFinalSubmit(){
-    this.paperService.submitFinalPaper(this.paper, this.questionArray)
-      .subscribe(res => {
-
-      });
+  submitFullPaperFinal(){
+    this.paperService.submitFinalPaper(this.paper, this.questionArray).subscribe(res => {
+      if(res.success){
+        //navigate paper view
+        toastr.success('saved paper');
+      }
+    });
   }
 
-  onProofReadingSubmit(){
-    this.paperService.submitToProofReading(this.paper, this.questionArray)
-      .subscribe(res => {
-
-      });
+  submitFullPaperPR(){
+    this.paperService.submitToProofReading(this.paper, this.questionArray).subscribe(res => {
+      if(res.success){
+        //navigate to paper view
+      }
+    });
   }
 
 }

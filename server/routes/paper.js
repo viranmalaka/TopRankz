@@ -16,7 +16,6 @@ router.get('/check_paper_name', function (req, res) {
 router.post('/new_paper', function (req, res) {
   // server side validation should be done
   pprCtrl.createPaper(req.user, req.body, function (p, q) {
-    console.log(q);
     res.jsonp({
       success : true,
       paper : p,
@@ -25,14 +24,45 @@ router.post('/new_paper', function (req, res) {
   });
 });
 
-router.post('/new_question', function (req, res) {
-  pprCtrl.tempAddQuestions(req.user, req.body, function (t) {
-    // console.log(err, t);
+
+//not using now
+router.post('/submit_one_question', function (req, res) {
+  pprCtrl.submitQuestions(false, req.user, req.body, function (t) {
     res.jsonp({
       success : true,
       temp :t
     });
   })
+});
+
+
+router.post('/submit_all_questions', function (req, res) {
+  pprCtrl.submitQuestions(true, req.user, req.body, function (t) {
+    res.jsonp({
+      success : true,
+      temp : t
+    })
+  })
+});
+
+router.post('/finish_paper', function (req, res) {
+  pprCtrl.finishPaper(true, req.user, req.body.paper, req.body.questions, function (success) {
+    res.jsonp({
+      success: success
+    });
+  })
+});
+
+router.post('/finish_paper_for_pr', function (req, res) {
+
+});
+
+router.post('/edit_one_question', function (req, res) {
+
+});
+
+router.post('/proof_read_ok', function (req, res) {
+
 });
 
 router.post('/set_description', validAuth, function (req, res) {
@@ -45,6 +75,7 @@ router.post('/set_description', validAuth, function (req, res) {
 
 router.get('/edit_this_paper', validAuth, function (req, res) {
   pprCtrl.getEditThisPaper(req.user, req.query['paper_id'], function (possible, p, q) {
+    console.log(q);
     res.jsonp({
       success : true,
       can : possible,
@@ -64,3 +95,4 @@ router.get('/get_all_tags', function (req, res) {
 });
 
 module.exports = router;
+

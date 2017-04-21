@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, OnChanges} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Input, OnChanges, Output, EventEmitter} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {OtherService} from "../../other.services";
 import {PaperService} from "../paper.service";
@@ -11,6 +11,7 @@ import {PaperService} from "../paper.service";
 export class NewQuestionComponent implements OnInit , AfterViewInit, OnChanges{
   @Input() question;
   @Input() subject;
+  @Output() onSubmitChanges = new EventEmitter();
   mceAns = [];
   mceQBody = null;
   ansArray = [];
@@ -84,13 +85,16 @@ export class NewQuestionComponent implements OnInit , AfterViewInit, OnChanges{
         }.bind(this)
       })
     }
-    this.setMCEEditors();
-    this.setDropDowns();
+    setTimeout(()=>{
+      this.setMCEEditors();
+      this.setDropDowns();
+    }, 100)
+
   }
 
 
   onSubmit(){
-    console.log(this.question);
+    this.onSubmitChanges.emit();
   }
 
   checkedThisAns(val){
@@ -115,13 +119,14 @@ export class NewQuestionComponent implements OnInit , AfterViewInit, OnChanges{
   setDropDowns(){
     let dropdowns = $('.ui.dropdown');
 
-    if (this.question.tags.length > 0) {
-      dropdowns.has('#tags').dropdown('set selected', this.question.tags);
+    if (this.question.tags.length > 0 && this.question.tags[0] != "") {
+      dropdowns.has('#tags').dropdown('set exactly', this.question.tags);
     }else{
       dropdowns.has('#tags').dropdown('clear');
     }
     if (this.question.topics.length > 0) {
-      dropdowns.has('#topics').dropdown('set selected', this.question.topics);
+      // dropdowns.has('#topics').dropdown('clear');
+      dropdowns.has('#topics').dropdown('set exactly', this.question.topics);
     }else{
       dropdowns.has('#topics').dropdown('clear');
     }
