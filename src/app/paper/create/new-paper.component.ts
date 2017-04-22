@@ -46,7 +46,8 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
         nAnswers : new FormControl(this.paper.numAnswer),
         timeLimit : new FormControl(this.paper.time_limit),
         unitMark : new FormControl(this.paper.unit_mark),
-        random : new FormControl(this.paper.random)
+        random : new FormControl(this.paper.random),
+        isPassPaper : new FormControl(this.paper.isPassPaper)
       });
     }
     // new validation rule for check paper name is available
@@ -139,7 +140,7 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
     });
 
     $('.ui.dropdown').dropdown();
-    $('#random').checkbox();
+    $('.ui.checkbox').checkbox();
 
 
   }
@@ -149,6 +150,7 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
       this.paperCreateForm.value.medium = $('#mediumSelect').val();
       this.paperCreateForm.value.subject = $('#subjectSelect').val();
       this.paperCreateForm.value.random = $('#random').checkbox('is checked');
+      this.paperCreateForm.value.isPassPaper = $('#passpaper').checkbox('is checked');
       this.onSubmitForm.emit(this.paperCreateForm);
     }
   }
