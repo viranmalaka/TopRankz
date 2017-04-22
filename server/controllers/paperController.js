@@ -23,6 +23,7 @@ module.exports.createPaper = function (user, data, next) {
   paper.numAnswer = data.nAnswers;
   paper.mixOrder = data.random;
   paper.addedBy = user._id;
+  paper.isPassPaper = data.isPassPaper;
   paper.descriptionText = '';
 
   paper.save(function (err, p) {
@@ -178,6 +179,7 @@ module.exports.finishPaper = function (finished, user, paper, questions, next) {
             tempPaper.numAnswer = paper.numAnswer;
             tempPaper.mixOrder = paper.mixOrder;
             tempPaper.addedBy = paper._id;
+            tempPaper.isPassPaper = paper.isPassPaper;
             tempPaper.finished = finished;
 
             tempPaper.save(function (err, savedPaper) {
