@@ -19,9 +19,8 @@ export class PaperService {
   }
 
   getUsersSubject(){
-    return {subjects: [{id : '01', name : 'Sinhala'},
-      {id: '02', name :'Chemistry'},
-      {id : '03', name : 'Bio'} ]};
+    return this._http.get(this.domainUrl + 'subject/all_subject_of_user')
+      .map((res : Response) => res.json());
   }
 
   postCreateNewPaper(data){
@@ -83,5 +82,15 @@ export class PaperService {
       .map((res : Response) => res.json());
   }
 
+
+  getPaperList(subject, type){
+    return this._http.get(this.paperDomain + "get_paper_id?subject=" + subject + "&type=" + type)
+      .map((res:Response) => res.json());
+  }
+
+  getPaper(id){
+    return this._http.get(this.paperDomain + "get_paper?id="+id)
+      .map((res: Response) => res.json());
+  }
 
 }

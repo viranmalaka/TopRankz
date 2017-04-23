@@ -5,6 +5,7 @@
 const Paper = require('../models/paper');
 const Question = require('../models/question');
 const Temp = require('../models/temp');
+const Subject = require('../models/subject');
 
 module.exports.checkPaperName = function (name, next) {
   Paper.find({name : name}, function (err, papers) {
@@ -222,6 +223,51 @@ module.exports.getAllTags = function (next) {
   });
 };
 
+module.exports.getPaperIds = function (sub, type, next) {
+  if( type == 'ap'){
+    Subject.findOne({id : sub}).select('_id').exec(function (err, sub) {
+      Paper.find({subject : sub._id}).select('_id').exec(function (err, papers) {
+        if(err){
+          console.log(err);
+          throw err;
+        }else{
+          next(papers)
+        }
+      });
+    });
+
+  }else if(type == 'pp'){
+    Subject.findOne({id : sub}).select('_id').exec(function (err, sub) {
+      Paper.find({subject : sub._id, isPassPaper : true}).select('_id').exec(function (err, papers) {
+        if(err){
+          console.log(err);
+          throw err;
+        }else{
+          next(papers)
+        }
+      });
+    });
+
+  }else if(type == 'pr'){
+    Subject.findOne({id : sub}).select('_id').exec(function (err, sub) {
+      Paper.find({subject : sub._id, finished : false}).select('_id').exec(function (err, papers) {
+        if(err){
+          console.log(err);
+          throw err;
+        }else{
+          next(papers)
+        }
+      });
+    });
+
+  }
+};
+
+module.exports.getPaper = function (id, next) {
+  Paper.findById(id).populate('addedBy','username').exec(function (err, paper) {
+    next(paper);
+  });
+};
 
 function insertQuestionBatch(docs, index, next) {
   if(docs.length == index){

@@ -37,7 +37,7 @@ import {FormControl} from "@angular/forms";
           [class.hideMe]="!(state == 'D' && started)"  ></app-description>
             
     <app-answer-sheet *ngIf="state == 'A' && started" 
-            [questionArray]="questionsArray"></app-answer-sheet>
+            [attr.questionArray]="questionsArray"></app-answer-sheet>
     <app-submit-paper *ngIf="state == 'S' && started"
             [questionArray]="questionsArray" [paper]="paper"
     ></app-submit-paper>

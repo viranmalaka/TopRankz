@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { ClassGroupComponent } from './class-group.component';
+import { SelectPaperComponent } from './select-paper.component';
 
-describe('ClassGroupComponent', () => {
-  let component: ClassGroupComponent;
-  let fixture: ComponentFixture<ClassGroupComponent>;
+describe('SelectPaperComponent', () => {
+  let component: SelectPaperComponent;
+  let fixture: ComponentFixture<SelectPaperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClassGroupComponent ]
+      declarations: [ SelectPaperComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClassGroupComponent);
+    fixture = TestBed.createComponent(SelectPaperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

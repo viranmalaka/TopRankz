@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { PassPaperComponent } from './pass-paper.component';
+import { PaperListComponent } from './paper-list.component';
 
-describe('PassPaperComponent', () => {
-  let component: PassPaperComponent;
-  let fixture: ComponentFixture<PassPaperComponent>;
+describe('PaperListComponent', () => {
+  let component: PaperListComponent;
+  let fixture: ComponentFixture<PaperListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PassPaperComponent ]
+      declarations: [ PaperListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PassPaperComponent);
+    fixture = TestBed.createComponent(PaperListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

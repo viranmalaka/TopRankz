@@ -4,6 +4,7 @@
 var router = require('express').Router();
 var pprCtrl = require('../controllers/paperController');
 var validAuth = require('./user').validAuth;
+
 router.get('/check_paper_name', function (req, res) {
   pprCtrl.checkPaperName(req.query.name, function (exist) {
     res.jsonp({
@@ -35,7 +36,6 @@ router.post('/submit_one_question', function (req, res) {
   })
 });
 
-
 router.post('/submit_all_questions', function (req, res) {
   pprCtrl.submitQuestions(true, req.user, req.body, function (t) {
     res.jsonp({
@@ -54,7 +54,11 @@ router.post('/finish_paper', function (req, res) {
 });
 
 router.post('/finish_paper_for_pr', function (req, res) {
-
+  pprCtrl.finishPaper(false, req.user, req.body.paper, req.body.questions, function (success) {
+    res.jsonp({
+      success: success
+    });
+  })
 });
 
 router.post('/edit_one_question', function (req, res) {
@@ -92,6 +96,24 @@ router.get('/get_all_tags', function (req, res) {
       tags : tags
     })
   })
+});
+
+router.get('/get_paper_id', function (req, res) {
+  pprCtrl.getPaperIds(req.query['subject'], req.query['type'], function (ids) {
+    res.jsonp({
+      success : true,
+      ids : ids
+    })
+  })
+});
+
+router.get('/get_paper', function (req, res) {
+  pprCtrl.getPaper(req.query['id'], function (paper) {
+    res.jsonp({
+      success : true,
+      paper : paper
+    })
+  });
 });
 
 module.exports = router;

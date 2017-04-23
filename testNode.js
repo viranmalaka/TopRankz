@@ -2,16 +2,11 @@
  * Created by malaka on 4/2/17.
  */
 
-var obj2 = {
-  test : "asdfasdfasdfasdf"
+function random(start, end) {
+  var range = end - start;
+  var r = (Math.random() * 1000).toFixed();
+  return (r % range + start);
 }
 
-var obj = {
-  test : 'test',
-  print : function (val) {
-    console.log(this.test + " " + val);
-  }.bind(obj2)
-};
 
-
-obj.print('asdf');
+console.log(random(3,30));
