@@ -26,7 +26,6 @@ export class PaperListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    console.log('here', this.paperList);
-  }
+    }
 
 }

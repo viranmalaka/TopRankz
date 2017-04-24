@@ -179,7 +179,7 @@ module.exports.finishPaper = function (finished, user, paper, questions, next) {
             tempPaper.unit_mark = paper.unit_mark;
             tempPaper.numAnswer = paper.numAnswer;
             tempPaper.mixOrder = paper.mixOrder;
-            tempPaper.addedBy = paper._id;
+            tempPaper.addedBy = user._id;
             tempPaper.isPassPaper = paper.isPassPaper;
             tempPaper.finished = finished;
 
@@ -190,20 +190,20 @@ module.exports.finishPaper = function (finished, user, paper, questions, next) {
               }else{
                 for(var i= 0; i < questions.length; i ++) {
                   questions[i].paper = savedPaper._id;
-                  questions[i].checkedBy =
-                    finished ? user._id : null;
+                  questions[i].checkedBy = finished ? user._id : null;
                   questions[i].difficulty = [];
                   questions[i].comments = [];
                 }
-                console.log(questions[3].checkedBy);
-                insertQuestionBatch(questions, 0, function (savedCount) {
+                insertQuestionBatch(questions, 0, function (savedCount, err, errIndex) {
                   if(savedCount == questions.length){
                     Temp.remove({userId : user._id},function (err, t) {});
                     console.log('Done');
                     next(true);
                   }else{
-                    Question.remove({paper : savedPaper._id});
-                    next(false);
+                    Question.remove({paper : savedPaper._id}, function (removeError, count) {
+                      console.log('remove ' + count);
+                      next(false, err.message, errIndex);
+                    });
                   }
                 });
               }
@@ -223,44 +223,35 @@ module.exports.getAllTags = function (next) {
   });
 };
 
-module.exports.getPaperIds = function (sub, type, next) {
-  if( type == 'ap'){
-    Subject.findOne({id : sub}).select('_id').exec(function (err, sub) {
-      Paper.find({subject : sub._id}).select('_id').exec(function (err, papers) {
-        if(err){
+module.exports.getPaperIds = function (sub, type, user, next) {
+  var query;
+  Subject.findOne({id : sub}).select('_id').exec(function (err, sub) {
+    if (sub) {
+      switch (type) {
+        case 'pp':
+          query = {subject: sub._id, finished: true, isPassPaper: true};
+          break;
+        case 'op':
+          query = {subject: sub._id, finished: true, isPassPaper: false};
+          break;
+        case 'pr':
+          query = {subject: sub._id, finished: false};
+          break;
+        case 'mp':
+          query = {subject: sub._id, addedBy: user};
+          break;
+      }
+      console.log(query);
+      Paper.find(query).select('_id').exec(function (err, papers) {
+        if (err) {
           console.log(err);
           throw err;
-        }else{
+        } else {
           next(papers)
         }
       });
-    });
-
-  }else if(type == 'pp'){
-    Subject.findOne({id : sub}).select('_id').exec(function (err, sub) {
-      Paper.find({subject : sub._id, isPassPaper : true}).select('_id').exec(function (err, papers) {
-        if(err){
-          console.log(err);
-          throw err;
-        }else{
-          next(papers)
-        }
-      });
-    });
-
-  }else if(type == 'pr'){
-    Subject.findOne({id : sub}).select('_id').exec(function (err, sub) {
-      Paper.find({subject : sub._id, finished : false}).select('_id').exec(function (err, papers) {
-        if(err){
-          console.log(err);
-          throw err;
-        }else{
-          next(papers)
-        }
-      });
-    });
-
-  }
+    }
+  });
 };
 
 module.exports.getPaper = function (id, next) {
@@ -276,8 +267,7 @@ function insertQuestionBatch(docs, index, next) {
     var q = new Question(docs[index]);
     q.save(function (err, savedQuestions) {
       if(err){
-        console.log(err);
-        throw err;
+        next(0, err, index);
       }else{
         insertQuestionBatch(docs, index + 1, next);
       }

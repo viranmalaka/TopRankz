@@ -19,7 +19,10 @@ export class PaperService {
   }
 
   getUsersSubject(){
-    return this._http.get(this.domainUrl + 'subject/all_subject_of_user')
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.get(this.domainUrl + 'subject/all_subject_of_user', options)
       .map((res : Response) => res.json());
   }
 
@@ -84,7 +87,10 @@ export class PaperService {
 
 
   getPaperList(subject, type){
-    return this._http.get(this.paperDomain + "get_paper_id?subject=" + subject + "&type=" + type)
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.get(this.paperDomain + "get_paper_id?subject=" + subject + "&type=" + type, options)
       .map((res:Response) => res.json());
   }
 

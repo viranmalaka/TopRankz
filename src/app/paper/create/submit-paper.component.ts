@@ -1,6 +1,5 @@
-import {Component, OnInit, AfterViewInit, Input} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnChanges} from '@angular/core';
 import {PaperService} from "../paper.service";
-import {Route} from "@angular/router";
 
 
 @Component({
@@ -24,7 +23,7 @@ import {Route} from "@angular/router";
     </div>
     <div class="row centered">
       <div class="five wide column">
-        <button class="ui button" (click)="onProofReadingSubmit()">Submit for proof reading</button>
+        <button class="ui button" (click)="submitFullPaperPR()">Submit for proof reading</button>
       </div>
       <div class="five wide column">
         <button class="ui button" (click)="submitFullPaperFinal()">Submit as final</button>
@@ -36,20 +35,29 @@ import {Route} from "@angular/router";
 `,
   styles: []
 })
-export class SubmitPaperComponent implements OnInit, AfterViewInit {
+export class SubmitPaperComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() paper;
   @Input() questionArray;
+  @Output() navQuestions = new EventEmitter<Number>();
 
   constructor(private paperService : PaperService) { }
 
   ngOnInit() {
+
   }
+
+  ngOnChanges(){
+    this.ngAfterViewInit();
+    // $('#quePrg').progress('set value', 10);
+  }
+
 
   ngAfterViewInit(){
     $('#quePrg')
       .progress({
+        total : 50,
         text: {
-          active: 'Adding {value} of {total} Questions',
+          active: 'Added {value} of {total} Questions',
           success: '{total} Questions added!'
         }
       });
@@ -67,6 +75,9 @@ export class SubmitPaperComponent implements OnInit, AfterViewInit {
       if(res.success){
         //navigate paper view
         toastr.success('saved paper');
+      }else{
+        toastr.error('error - ' + res.msg);
+        this.navQuestions.emit(res.errIndex);
       }
     });
   }
@@ -78,5 +89,4 @@ export class SubmitPaperComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
 }

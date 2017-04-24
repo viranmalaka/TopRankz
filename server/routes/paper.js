@@ -46,9 +46,11 @@ router.post('/submit_all_questions', function (req, res) {
 });
 
 router.post('/finish_paper', function (req, res) {
-  pprCtrl.finishPaper(true, req.user, req.body.paper, req.body.questions, function (success) {
+  pprCtrl.finishPaper(true, req.user, req.body.paper, req.body.questions, function (success,msg, errIndex) {
     res.jsonp({
-      success: success
+      success: success,
+      msg : msg,
+      errIndex : errIndex
     });
   })
 });
@@ -98,8 +100,8 @@ router.get('/get_all_tags', function (req, res) {
   })
 });
 
-router.get('/get_paper_id', function (req, res) {
-  pprCtrl.getPaperIds(req.query['subject'], req.query['type'], function (ids) {
+router.get('/get_paper_id', require('../routes/user').identfyUser, function (req, res) {
+  pprCtrl.getPaperIds(req.query['subject'], req.query['type'], req.userID, function (ids) {
     res.jsonp({
       success : true,
       ids : ids

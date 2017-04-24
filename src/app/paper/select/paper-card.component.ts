@@ -50,11 +50,11 @@ export class PaperCardComponent implements OnInit {
   ngOnInit() {
     this.paperService.getPaper(this.paper._id)
       .subscribe(res => {
-        console.log(res);
         this.paperData.name = res.paper.name;
         this.paperData.numberOfQuestions = res.paper.questions;
         this.paperData.timeLimit = res.paper.time_limit;
         if(this.paperData.viewMode == 'D'){
+          console.log(res.paper);
           this.paperData.addedBy = res.paper.addedBy.username;
         }
       });

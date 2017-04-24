@@ -22,7 +22,11 @@ var paperNames = [
   '2012 - A/L chemistry',
   '2342 - O/L buddhism',
   '2342 - A/L physics',
-  '2323 - O/L history'
+  '2323 - O/L history',
+  'dfaidsfasfasd',
+  'asdfasdfasdfawe',
+  'adfaeasdfaeae',
+  'asdfeasdfase'
 ];
 
 
@@ -32,7 +36,8 @@ function setSubject(next) {
   });
 }
 
-function createPaper(names, subjects, index, next) {
+function createPaper(names, subjects, user,  index, next) {
+  console.log('create paper', index);
   if(names.length == index){
     next(names);
   }else{
@@ -47,23 +52,24 @@ function createPaper(names, subjects, index, next) {
       finished : true,
       numAnswer : 4,
       mixOrder : true,
-      addedBy: '58ef03f7d4aa602f58b5626e',
+      addedBy: user,
       descriptionText : "this is the description",
       isPassPaper : true
     });
 
     p.save(function (err, newPaper) {
-      names[index] = newPaper;
-      createPaper(names, subjects, index + 1, next);
+      console.log(newPaper);
+      createPaper(names, subjects, user,  index + 1, next);
     });
   }
 }
 
 setSubject(function (subjects) {
-  console.log(subjects);
-  createPaper(paperNames, subjects, 0, function (papers) {
-    papers.forEach(function (e) {
-      console.log(e._id);
+  User.find({acc_type : 'D'}, function (err, users) {
+    createPaper(paperNames, subjects, users[0]._id, 0, function (papers) {
+      papers.forEach(function (e) {
+        console.log('done');
+      })
     })
-  })
+  });
 });

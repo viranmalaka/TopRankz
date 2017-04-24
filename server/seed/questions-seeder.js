@@ -4,6 +4,7 @@
 
 var User = require('../models/user');
 var Question = require('../models/question');
+var Paper = require('../models/paper');
 
 function random(start, end) {
   var range = end - start;
@@ -12,15 +13,8 @@ function random(start, end) {
 }
 
 var papers = [
-  "58fb28c9c913f533f8061815",
-  "58fb28c9c913f533f8061816",
-  "58fb28c9c913f533f8061817",
-  "58fb28c9c913f533f8061818",
-  "58fb28c9c913f533f8061819",
-  "58fb28c9c913f533f806181a",
-  "58fb28c9c913f533f806181b"
-];
 
+];
 
 var questionBody = [
   'The QuickStart seed contains the same application as the QuickStart playground. But its true purpose is to provide a solid foundation for local development. Consequently, there are many more files in the project folder on your machine, most of which you can',
@@ -65,7 +59,6 @@ var answers = [
   "Notice the hero in the ngFor"
 ];
 
-
 var tags = [ 'A',
   'form',
   'creates',
@@ -95,6 +88,7 @@ var tags = [ 'A',
   'presents',
   'errors.' ]
 
+var user = '';
 function createQuestions(q, index, next) {
   if(index == papers.length){
     next(q);
@@ -109,7 +103,7 @@ function createQuestions(q, index, next) {
           correct: [random(0,4)],    // array of corrected answers ids
           tags: [tags[random(0,27)], tags[random(0,27)]],                        // array of tags
           topics: [random(1,6)],                      // array of if of topics from Subject table
-          paper: papers[index],
+          paper: papers[index]._id,
           checkedBy: '58ef03f7d4aa602f58b5626e',
           difficulty : [],                     //{studentId, difficultyRate}
           comments: [],                         //{username, body, likes[], dislikes[]}
@@ -131,8 +125,15 @@ function createQuestions(q, index, next) {
   }
 }
 
-createQuestions([], 0, function (questions) {
-  console.log('fuck you tmasha');
+User.find({acc_type : 'D'}, function (err, users) {
+  user = users[0]._id;
+  Paper.find().select('_id').exec(function (err, ids) {
+    papers = ids;
+    createQuestions([], 0, function (questions) {
+      console.log('fuck you tmasha');
+    });
+  });
+
 });
 
 // console.log(questionBody.length);

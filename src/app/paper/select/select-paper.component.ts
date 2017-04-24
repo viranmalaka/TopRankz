@@ -1,5 +1,6 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {PaperService} from "../paper.service";
+import {raceStatic} from "rxjs/operator/race";
 
 @Component({
   selector: 'app-select-paper',
@@ -12,41 +13,30 @@ import {PaperService} from "../paper.service";
         <div class="ui vertical fluid left tabular menu">
           <a class="item" *ngFor="let sub of subjectArray"
              id="{{sub.id}}"
-             (click)="selectSubject = sub.id" [class.active]="selectSubject == sub.id">{{sub.name}}</a>
+             (click)="selectSubject = sub.id; paperTypeChanged(paperType)" [class.active]="selectSubject == sub.id">{{sub.name}}</a>
         </div>
       </div>
       <div class="twelve wide stretched column">
         <div class="ui segment box-centerside">
           <div class="ui segment">
             <div class="ui secondary pointing menu">
-              <a id="pp" class="item" *ngIf="user.acc_type == 'S' || user.acc_type == 'T'"
+              <a id="pp" class="item"
                  (click)="paperTypeChanged('pp')" [class.active]="paperType == 'pp'">Pass Paper</a>
-              <a id="rq" class="item" *ngIf="user.acc_type == 'S' || user.acc_type == 'T'"
+              <a id="rq" class="item" *ngIf="user.acc_type == 'S'"
                  (click)="paperTypeChanged('rq')" [class.active]="paperType == 'rq'">Random Questions</a>
-              <a id="cg" class="item" *ngIf="user.acc_type == 'S' || user.acc_type == 'T'"
+              <a id="cg" class="item" *ngIf="user.acc_type == 'S'"
                  (click)="paperTypeChanged('cg')" [class.active]="paperType == 'cg'">Class Group</a>
-              <a id="ap" class="item" *ngIf="user.acc_type == 'D' || user.acc_type == 'G'"
-                 (click)="paperTypeChanged('ap')" [class.active]="paperType == 'ap'">All Papers</a>
+              <a id="op" class="item" *ngIf="user.acc_type == 'G'"
+                 (click)="paperTypeChanged('op')" [class.active]="paperType == 'op'">Other Paper</a>
               <a id="pr" class="item" *ngIf="user.acc_type == 'D'"
                  (click)="paperTypeChanged('pr')" [class.active]="paperType == 'pr'">Proof Reading</a>
+              <a id="mp" class="item" *ngIf="user.acc_type == 'D' || user.acc_type=='T'"
+                 (click)="paperTypeChanged('mp')" [class.active]="paperType == 'mp'">My Papers</a>
             </div>
           </div>
-
-
-          <div *ngIf="paperType == 'pp'">
+          <div *ngIf="['cg', 'rq'].indexOf(paperType) == -1">
             <app-paper-list [paperList]="paperIds"></app-paper-list>
           </div>
-          <!--<div *ngIf="paperType == 'cg'">-->
-            <!--<h3 class="ui dividing header">Your Class Groups</h3>-->
-            <!--class group list here-->
-            <!--<app-card-list [paperList]="paperIds"></app-card-list>-->
-          <!--</div>-->
-          <!--<div *ngIf="paperType == 'rq'">-->
-            <!--<app-random></app-random>-->
-          <!--</div>-->
-          <!--<div *ngIf="paperType == 'ap' || paperType == 'pr'">-->
-            <!--<app-card-list [paperlist]="paperIds"></app-card-list>-->
-          <!--</div>-->
         </div>
       </div>
     </div>
@@ -75,7 +65,6 @@ export class SelectPaperComponent implements OnInit, AfterViewInit {
     this.paperService.getUsersSubject().subscribe(res => {
       if (res.success) {
         this.subjectArray = res['subjects'];
-        console.log(this.subjectArray);
         this.selectSubject = this.subjectArray[0].id;
         this.paperTypeChanged(this.paperType);
       }
@@ -85,23 +74,39 @@ export class SelectPaperComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-
   }
-
-
   ngAfterViewInit(){
     $('.ui.menu');
   }
 
   paperTypeChanged(type){
-    this.paperService.getPaperList(this.selectSubject, this.paperType)
+    this.paperService.getPaperList(this.selectSubject, type)
       .subscribe(res => {
         if(res.success){
+          console.log(res);
           this.paperIds = res['ids'];
           this.paperType = type;
-          console.log(this.paperIds);
         }
       });
   }
 
 }
+
+
+/*
+guest ->
+      passpapers - finish, passpaper
+      other papers - finish, not passpapers
+
+data  -> passpapers - finish, passpaper
+         proofreadings - not finished, all papers
+         myPapers - all my papers(both finish and not)
+
+student -> passpapers - finish, passpapers
+           class groups - finish, not passpapers
+           random questions -- #
+
+teachers -> passpaper, finish
+            myPapers , finished or not
+
+ */

@@ -30,16 +30,16 @@ import {FormControl} from "@angular/forms";
   <div style="margin-top : 20px" class="ui eleven wide column">
     <app-new-paper *ngIf="state == 'C'" 
             (onSubmitForm)="onSubmitNewPaper($event)"
-            [paper]="paper"></app-new-paper>
+            [paper]="paper" [user]="user"></app-new-paper>
     
     <app-description *ngIf="(state == 'D' && started) || loadDescriptionOnce" 
           [des]="paper.descriptionText" (onSubmitDes)="setDescription($event)"
           [class.hideMe]="!(state == 'D' && started)"  ></app-description>
             
     <app-answer-sheet *ngIf="state == 'A' && started" 
-            [attr.questionArray]="questionsArray"></app-answer-sheet>
+            [questionArray]="questionsArray"></app-answer-sheet>
     <app-submit-paper *ngIf="state == 'S' && started"
-            [questionArray]="questionsArray" [paper]="paper"
+            [questionArray]="questionsArray" [paper]="paper" (navQuestions)="navOnError($event)"
     ></app-submit-paper>
     
     <app-new-question *ngIf="(state == 'Q' && started) || loadQuestionOnce" 
@@ -133,12 +133,6 @@ export class CreatePaperComponent implements OnInit, AfterViewInit {
       });
   }
 
-
-
-
-
-
-
   onMenuChange(state, newIndex){
     this.state = state;
     if(state == 'D'){
@@ -158,5 +152,9 @@ export class CreatePaperComponent implements OnInit, AfterViewInit {
         }
       });
   }
-}
 
+  navOnError(n){
+    this.state = 'Q';
+    this.currentQuestionIndex = n;
+  }
+}

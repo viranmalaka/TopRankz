@@ -3,7 +3,6 @@ import {PaperService} from "../paper.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {OtherService} from "../../other.services";
 import {Router, ActivatedRoute} from "@angular/router";
-declare let $: any;
 
 @Component({
   selector: 'app-new-paper',
@@ -14,6 +13,7 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
   private allSubject =[];
   @Output() onSubmitForm = new EventEmitter<FormGroup>();
   @Input() paper;
+  @Input() user;
 
   paperCreateForm = new FormGroup({
     name : new FormControl(),
