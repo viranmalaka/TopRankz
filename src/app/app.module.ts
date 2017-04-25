@@ -19,7 +19,6 @@ import { QuestionContainerComponent } from './paper/attempt/question-container.c
 import { QuestionsDashComponent } from './paper/attempt/questions-dash.component';
 import { ViewPaperComponent } from './paper/view/view-paper.component';
 import { ViewQuestionComponent } from './paper/view/view-question.component';
-import { ViewQuestionContentComponent } from './paper/view/view-question-content.component';
 import { EditUserDetailsComponent } from './auth/edit-user-details.component';
 import { UserDetailsBioComponent } from './auth/user-details-bio.component';
 import { UserDetailsEnrollComponent } from './auth/user-details-enroll.component';
@@ -46,7 +45,6 @@ import { PaperCardComponent } from './paper/select/paper-card.component';
     QuestionsDashComponent,
     ViewPaperComponent,
     ViewQuestionComponent,
-    ViewQuestionContentComponent,
     EditUserDetailsComponent,
     UserDetailsBioComponent,
     UserDetailsEnrollComponent,

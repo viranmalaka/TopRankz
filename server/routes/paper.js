@@ -118,5 +118,23 @@ router.get('/get_paper', function (req, res) {
   });
 });
 
+router.get('/get_paper_by_id', function (req, res) {
+  pprCtrl.getPaperById(req.query['id'], function (paper) {
+    res.jsonp({
+      success : true,
+      paper : paper
+    })
+  })
+});
+
+router.get('/get_question', function (req, res) {
+  pprCtrl.getQuestion(req.query['paper'], req.query['q'], function (question) {
+    res.jsonp({
+      success : question != null,
+      question : question
+    })
+  })
+});
+
 module.exports = router;
 

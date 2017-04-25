@@ -99,4 +99,13 @@ export class PaperService {
       .map((res: Response) => res.json());
   }
 
+  getPaperById(id){
+    return this._http.get(this.paperDomain + "get_paper_by_id?id="+id)
+      .map((res: Response) => res.json());
+  }
+
+  getQuestions(paper_id, questionsNumber){
+    return this._http.get(this.paperDomain + "get_question?paper="+paper_id + "&q=" + questionsNumber)
+      .map((res: Response) => res.json());
+  }
 }

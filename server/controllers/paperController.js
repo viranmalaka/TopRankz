@@ -1,7 +1,8 @@
 /**
  * Created by malaka on 4/9/17.
  */
-
+var mongoose = require('mongoose');
+var schema = mongoose.Schema;
 const Paper = require('../models/paper');
 const Question = require('../models/question');
 const Temp = require('../models/temp');
@@ -258,6 +259,28 @@ module.exports.getPaper = function (id, next) {
   Paper.findById(id).populate('addedBy','username').exec(function (err, paper) {
     next(paper);
   });
+};
+
+module.exports.getPaperById = function (id, next) {
+  Paper.findOne({id : id}, function (err, paper) {
+    if(err){
+      console.log(err);
+      throw err;
+    }else{
+      next(paper);
+    }
+  })
+};
+
+module.exports.getQuestion = function (p, q, next) {
+  Question.findOne({paper: p, questionNumber: q}, function (err, que) {
+    if(err){
+      console.log(err);
+      throw err;
+    }else{
+      next(que);
+    }
+  })
 };
 
 function insertQuestionBatch(docs, index, next) {

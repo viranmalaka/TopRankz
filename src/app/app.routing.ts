@@ -18,7 +18,9 @@ const APP_ROUTES : Routes = [
   {path : 'paper/create', component : CreatePaperComponent},
   {path : 'paper/create/:paper_id', component : CreatePaperComponent},
   {path : 'paper/attempt' , component : AttemptComponent, children: PAPER_ATTEMPT_ROUTER},
-  {path : 'paper/view' , component : ViewPaperComponent, children: PAPER_VIEW_ROUTER}
+  {path : 'paper/:paper_id' , component: ViewPaperComponent},//redirectTo : '/paper/:paper_id/1'},
+  {path : 'paper/:paper_id/:id' , component : ViewPaperComponent},
+
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

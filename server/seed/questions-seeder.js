@@ -98,7 +98,10 @@ function createQuestions(q, index, next) {
         var ques = new Question({
           body: questionBody[random(0,12)],
           answers: [
-            answers[random(0,23)],answers[random(0,23)],answers[random(0,23)],answers[random(0,23)]
+            {id:1, body : answers[random(0,23)]},
+            {id:2, body : answers[random(0,23)]},
+            {id:3, body : answers[random(0,23)]},
+            {id:4, body : answers[random(0,23)]}
           ],                          // {id : body}
           correct: [random(0,4)],    // array of corrected answers ids
           tags: [tags[random(0,27)], tags[random(0,27)]],                        // array of tags
@@ -108,7 +111,7 @@ function createQuestions(q, index, next) {
           difficulty : [],                     //{studentId, difficultyRate}
           comments: [],                         //{username, body, likes[], dislikes[]}
           mixOrder : true,
-          questionNumber : index + 1
+          questionNumber : i+1
         });
         ques.save(function (err, newQuestions) {
           oneQues(i + 1, next);

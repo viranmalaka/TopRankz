@@ -25,8 +25,8 @@ export const PAPER_ATTEMPT_ROUTER : Routes = [
 
 // define route to the guest paper views.
 export const PAPER_VIEW_ROUTER : Routes = [
-  { path : '', component : SelectPaperComponent},
-  { path : ':paper_id', component : ViewQuestionComponent }
+  { path : '', component : ViewQuestionComponent},
+  { path : ':id', component : ViewQuestionComponent }
 ];
 
 
