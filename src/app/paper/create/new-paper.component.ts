@@ -1,9 +1,8 @@
-import {Component, OnInit, AfterViewInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Output, EventEmitter, Input} from '@angular/core';
 import {PaperService} from "../paper.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {OtherService} from "../../other.services";
 import {Router, ActivatedRoute} from "@angular/router";
-declare let $: any;
 
 @Component({
   selector: 'app-new-paper',
@@ -12,7 +11,9 @@ declare let $: any;
 })
 export class NewPaperComponent implements OnInit, AfterViewInit {
   private allSubject =[];
-  @Output() onSubmitState = new EventEmitter<string>();
+  @Output() onSubmitForm = new EventEmitter<FormGroup>();
+  @Input() paper;
+  @Input() user;
 
   paperCreateForm = new FormGroup({
     name : new FormControl(),
@@ -34,7 +35,21 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
     });
   }
 
+
   ngAfterViewInit(){
+    if(this.paper){
+      this.paperCreateForm = new FormGroup({
+        name : new FormControl(this.paper.name),
+        subject : new FormControl(this.paper.subject),
+        medium : new FormControl(this.paper.medium),
+        nQuestions : new FormControl(this.paper.questions),
+        nAnswers : new FormControl(this.paper.numAnswer),
+        timeLimit : new FormControl(this.paper.time_limit),
+        unitMark : new FormControl(this.paper.unit_mark),
+        random : new FormControl(this.paper.random),
+        isPassPaper : new FormControl(this.paper.isPassPaper)
+      });
+    }
     // new validation rule for check paper name is available
     $.fn.form.settings.rules.range = function (value) {
       return value > 0.2 && value < 3;
@@ -121,29 +136,22 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
           }]
         }
       },
-      inline: true,
-      on: 'blur'
+      inline: true
     });
 
     $('.ui.dropdown').dropdown();
-    $('#random').checkbox();
+    $('.ui.checkbox').checkbox();
+
+
   }
 
   onSubmit(){
-    this.paperCreateForm.value.medium = $('#mediumSelect').val();
-    this.paperCreateForm.value.subject = $('#subjectSelect').val();
-    this.paperCreateForm.value.random = $('#random').checkbox('is checked');
-    this.paperServices.postCreateNewPaper(this.paperCreateForm.value)
-      .subscribe(res => {
-        if(res.success){
-          toastr.success("success");
-          this.onSubmitState.emit('Q');
-          localStorage.setItem("paper", JSON.stringify(res['paper']));
-          localStorage.setItem("action", "create paper");
-          this.router.navigate([res['paper'].id]);
-        }else{
-          toastr.error('error');
-        }
-      });
+    if($('#newPaper').form('is valid')){
+      this.paperCreateForm.value.medium = $('#mediumSelect').val();
+      this.paperCreateForm.value.subject = $('#subjectSelect').val();
+      this.paperCreateForm.value.random = $('#random').checkbox('is checked');
+      this.paperCreateForm.value.isPassPaper = $('#passpaper').checkbox('is checked');
+      this.onSubmitForm.emit(this.paperCreateForm);
+    }
   }
 }

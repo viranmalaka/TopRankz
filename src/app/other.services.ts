@@ -28,5 +28,10 @@ export class OtherService {
       .map((res : Response) => res.json());
   }
 
+  getAllTopics(sub){
+    return this._http.get(this.subjectDomain + 'all_topics?subject=' + sub)
+      .map((res: Response) => res.json());
+  }
+
 
 }

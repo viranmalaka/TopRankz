@@ -17,7 +17,7 @@ var question = new schema({
     tags: {type : [String]},                        // array of tags
     topics: {type : [String]},                      // array of if of topics from Subject table
     paper: {type : schema.ObjectId,ref : 'Paper'},
-    proofBy: {type : schema.ObjectId, ref : 'User'},
+    checkedBy: {type : schema.ObjectId, ref : 'User'},
     difficulty : {type : [{}]},                     //{studentId, difficultyRate}
     comments: {type : [{}]},                         //{username, body, likes[], dislikes[]}
     mixOrder : {type : Boolean, default : true},

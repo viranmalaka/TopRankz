@@ -57,6 +57,12 @@
              formControlName="random"/>
       <label>Output a random ordered question list.</label>
     </div>
+
+    <div class="ui checkbox" id="passpaper" *ngIf="user.acc_type == 'D'">
+      <input type="checkbox"  tabindex="0" class="hidden"
+             formControlName="isPassPaper"/>
+      <label>This is a Pass Paper</label>
+    </div>
   </div>
   <input type="hidden" value="" name="paper_id"/>
   <div class="ui grid">

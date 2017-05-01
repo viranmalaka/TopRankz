@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { SubmitPaperComponent } from './submit-paper.component';
+import { AttemptSubmitPaperComponent } from './attempt-submit-paper.component';
 
-describe('SubmitPaperComponent', () => {
-  let component: SubmitPaperComponent;
-  let fixture: ComponentFixture<SubmitPaperComponent>;
+describe('AttemptSubmitPaperComponent', () => {
+  let component: AttemptSubmitPaperComponent;
+  let fixture: ComponentFixture<AttemptSubmitPaperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubmitPaperComponent ]
+      declarations: [ AttemptSubmitPaperComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SubmitPaperComponent);
+    fixture = TestBed.createComponent(AttemptSubmitPaperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

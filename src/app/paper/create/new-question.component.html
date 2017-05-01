@@ -5,29 +5,31 @@
     border-radius : 16px;
   }
 </style>
-<form id="oneQuestion" onkeypress="return event.keyCode != 13;" class="ui form">
+<div id="oneQuestion" onkeypress="return event.keyCode != 13;" class="ui form">
   <div class="field inline">
-    <label>{{('0' + questionId).slice(-2)}}</label>
+    <label>{{('0' + question.questionNumber).slice(-2)}}</label>
     <div class="field">
-      <textarea name="qBody" id="qBody">
-        Questions here
-      </textarea>
+      <div id="qBody">
+      </div>
     </div>
   </div>
   <div class="ui grid">
     <div class="eleven wide column">
       <div class="ui grid">
-        <div class="row" *ngFor="let n of answerArray">
+        <div class="row" *ngFor="let n of ansArray">
           <div class="two wide column">
             <div class="field">
               <div class="ui checkbox">
-                <input type="checkbox" name="chkAns" id="chkAns" class="hidden" tabindex="-1"/>
-                <label>{{('0' + n).slice(-2)}}</label>
+                <input type="checkbox" id="chkAns{{question.answers[n].id}}" class="" tabindex="-1"
+                    [ngModel]="checkedThisAns(question.answers[n].id)"
+                    (change)="toggleThisAns(question.answers[n].id)"/>
+                <label>{{('0' + question.answers[n].id).slice(-2)}}</label>
               </div>
             </div>
           </div>
+
           <div class="fourteen wide column">
-            <div class="ans" id="ans{{n}}">{{n}}</div>
+            <div class="ans" id="ans{{question.answers[n].id}}"></div>
           </div>
         </div>
       </div>
@@ -35,32 +37,33 @@
     <div class="five wide column">
       <div id="topicField" class="field">
         <label>Topics</label>
-        <select id="topics" multiple="" class="ui dropdown">
+        <select id="topics" multiple="" class="ui dropdown" (change)="onTopicsChanged()">
           <option value="">select Topics Here</option>
-          <option value="1">tag1</option>
-          <option value="3">tag2</option>
+          <option *ngFor="let t of topicsArray" data-value="{{t.id}}">{{t['english']}}</option>
         </select>
       </div>
       <div class="field">
         <label>Tags</label>
         <div class="ui fluid multiple search selection dropdown">
-          <input id="tags" name="tags" type="hidden"/><i class="dropdown icon"></i>
+          <input id="tags" name="tags" type="hidden" (change)="onTagsChanged()"/>
+          <i class="dropdown icon"></i>
           <div class="default text">Select Tags</div>
           <div class="menu">
-            <div data-value='1' class="item">topci1</div>
-            <div data-value='2' class="item">topci2</div>
+            <div *ngFor="let t of tagsArray" data-value='t' class="item">{{t}}</div>
           </div>
         </div>
       </div>
       <div class="field">
         <div class="ui checkbox">
-          <input type="checkbox" name="canMix" class="hidden"/>
+          <input type="checkbox" name="canMix" class="hidden"
+                 [ngModel]="question.mixOrder"
+                  (change)="question.mixOrder = !question.mixOrder"/>
           <label>Mix the answer order.</label>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="ui button">Submit Question</div>
+      <div class="ui button" (click)="onSubmit()">Submit Changes</div>
     </div>
   </div>
-</form>
+</div>

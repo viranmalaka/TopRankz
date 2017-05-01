@@ -20,7 +20,9 @@ var paper = new schema({
   finished : {type : Boolean, default : false},
   numAnswer : {type : Number, required : true},
   mixOrder : {type : Boolean, default : true},
-  addedBy: {type : schema.ObjectId, ref : 'User'}
+  addedBy: {type : schema.ObjectId, ref : 'User'},
+  descriptionText : {type : String},
+  isPassPaper : {type : Boolean}
 });
 
 paper.plugin(autoInc.plugin, {

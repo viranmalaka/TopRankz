@@ -10,7 +10,10 @@ module.exports.subjects = [
     topics : [
       {id : 1, english :'heat'},
       {id : 2, english :'radiation'},
-      {id : 3, english :'mechenics'}]
+      {id : 3, english :'mechenics'},
+      {id : 4, english : 'sdfasdf'},
+      {id : 5, english : 'asdfwe'}
+    ]
   }),
   new Subject({
     name : 'Chemistry',
@@ -18,6 +21,8 @@ module.exports.subjects = [
       {id : 1, english:'Basic'},
       {id : 2, english :'S Block'},
       {id : 3, english :'D Block'},
-      {id : 4, english :'organic'}]
+      {id : 4, english :'organic'},
+      {id : 5, english : 'physical'}
+    ]
   })
 ];

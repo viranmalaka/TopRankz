@@ -63,7 +63,7 @@ export class SignupDataEntryComponent implements OnInit, AfterViewInit {
   constructor(private authService : AuthService, private router : Router) { }
 
   onSubmit(){
-    this.signupForm.value.acc_type = "D";
+    this.signupForm.value.acc_type = "D"; // only data entry
     if($('.ui.form').form('is valid')){
       console.log('valid');
       this.authService.postSignUp(this.signupForm.value)

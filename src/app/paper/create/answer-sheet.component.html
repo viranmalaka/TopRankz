@@ -19,7 +19,9 @@
         <td>{{('0' + q).slice(-2)}}</td>
         <td *ngFor="let n of arrayOfAnswer">
           <div class="ui checkbox">
-            <input type="checkbox" id="chkAns_{{q + '_' + n}}" class="hidden"/>
+            <input type="checkbox" class="hidden"
+                    [ngModel]="checkedThisAns(q - 1, n)"
+                    (change)="toggleThisAns(q -1 , n)"/>
           </div>
         </td>
       </tr>
@@ -39,7 +41,9 @@
         <td>{{('0' + q).slice(-2)}}</td>
         <td *ngFor="let n of arrayOfAnswer">
           <div class="ui checkbox">
-            <input type="checkbox" id="chkAns_{{q + '_' + n}}" class="hidden"/>
+            <input type="checkbox" class="hidden"
+                  [ngModel]="checkedThisAns(q - 1, n)"
+                  (change)="toggleThisAns(q-1 , n)"/>
           </div>
         </td>
       </tr>

@@ -73,7 +73,7 @@ router.post('/signup', function (req, res) {
       username : req.body.username,
       password : req.body.password,
       email : req.body.email,
-      acc_type : (req.body.acc_type == 'Student' ? 'S' : 'T')
+      acc_type : req.body.acc_type
     });
 
     usrCntl.createUser(newUser, function (err, user) {   // call user create method
@@ -252,14 +252,37 @@ function generateToken(req, res, next) {
 }
 
 function validAuth(req, res, next) {
+  console.log('valid auth', req.get('token'));
   if (req.user){
     var genID = jwt.verify(req.get('token'), 'secret');
     req.validToken = (genID.id == req.user._id);
+    if(req.validToken){
+      next();
+    }else{
+      res.jsonp({
+        success : false,
+        msg : 'invalid token'
+        })
+    }
   }else{
     req.validToken = false;
+    res.jsonp({
+      success : false,
+      msg : 'required login'
+    })
+  }
+}
+
+function identifyUser(req, res, next) {
+  if(req.get('token')){
+    var genID = jwt.verify(req.get('token'), 'secret');
+    req.userID = genID.id;
+  }else{
+    req.userID = null;
   }
   next();
 }
 
 module.exports = router;
 module.exports.validAuth = validAuth;
+module.exports.identfyUser = identifyUser;

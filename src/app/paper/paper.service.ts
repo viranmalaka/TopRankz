@@ -19,9 +19,11 @@ export class PaperService {
   }
 
   getUsersSubject(){
-    return {subjects: [{id : '01', name : 'Sinhala'},
-      {id: '02', name :'Chemistry'},
-      {id : '03', name : 'Bio'} ]};
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.get(this.domainUrl + 'subject/all_subject_of_user', options)
+      .map((res : Response) => res.json());
   }
 
   postCreateNewPaper(data){
@@ -29,11 +31,98 @@ export class PaperService {
       .map((res : Response) => res.json());
   }
 
-  getCanEditThisPaper(paperId){
+  setDescription(paper, des){
+    let data = {
+      paperId : paper,
+      description : des
+    };
     let options = new RequestOptions({
       headers : new Headers({token : localStorage.getItem('auth-token')})
     });
-    return this._http.get(this.paperDomain + "can_edit_this?paper_id=" + paperId, options)
+    return this._http.post(this.paperDomain + 'set_description', data, options)
       .map((res : Response) => res.json());
   }
+
+  editThisPaper(paperId){
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.get(this.paperDomain + "edit_this_paper?paper_id=" + paperId, options)
+      .map((res : Response) => res.json());
+  }
+
+
+  getAllTags(){
+    return this._http.get(this.paperDomain + 'get_all_tags')
+      .map((res : Response) => res.json());
+  }
+
+  submitFinalPaper(paper, questions){
+    let data = {paper: paper, questions: questions};
+    return this._http.post(this.paperDomain + 'finish_paper', data)
+      .map((res : Response) => res.json())
+  }
+
+  submitToProofReading(paper, questions){
+    let data = {paper: paper, questions: questions};
+    return this._http.post(this.paperDomain + 'finish_paper_for_pr', data)
+      .map((res : Response) => res.json())
+  }
+
+  submitOneQuestion(data){
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.post(this.paperDomain + 'submit_one_question', data, options)
+      .map((res : Response) => res.json());
+  }
+
+  submitAllQuestions(data){
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.post(this.paperDomain + 'submit_all_questions', data, options)
+      .map((res : Response) => res.json());
+  }
+
+
+  getPaperList(subject, type){
+    let options = new RequestOptions({
+      headers : new Headers({token : localStorage.getItem('auth-token')})
+    });
+    return this._http.get(this.paperDomain + "get_paper_id?subject=" + subject + "&type=" + type, options)
+      .map((res:Response) => res.json());
+  }
+
+  getPaper(id){
+    return this._http.get(this.paperDomain + "get_paper?id="+id)
+      .map((res: Response) => res.json());
+  }
+
+  getPaperById(id){
+    return this._http.get(this.paperDomain + "get_paper_by_id?id="+id)
+      .map((res: Response) => res.json());
+  }
+
+  getQuestion(paper_id, questionsNumber){
+    return this._http.get(this.paperDomain + "get_question_in_view?paper="+paper_id + "&q=" + questionsNumber)
+      .map((res: Response) => res.json());
+  }
+
+  getQuestionsOfPaper(paper){
+    let url = "get_questions_of_paper?p="+paper;
+    return this._http.get(this.paperDomain + url)
+      .map((res: Response) => res.json());
+  }
+
+  getQuestionInAttempt(id){
+    return this._http.get(this.paperDomain + "get_question_in_attempt?id=" + id)
+      .map((res : Response) => res.json());
+  }
+
+  getStartAttempt(){
+    return this._http.get(this.paperDomain + "get_start_paper")
+      .map((res : Response) => res.json());
+  }
+
 }

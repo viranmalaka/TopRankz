@@ -9,7 +9,7 @@ declare let $: any;
   styles: []
 })
 export class SignupComponent implements OnInit, AfterViewInit{
-  acc_type = 'Student';
+  acc_type = 'S';
 
   private signupForm = new FormGroup({
     username : new FormControl(),
