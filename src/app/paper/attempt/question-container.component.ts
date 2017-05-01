@@ -10,14 +10,19 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
     <div class="one wide column"></div>
     <div class="fifteen wide column">
       <div class="ui grid">
-        <div class="row" *ngFor="let ans of question.answers">
+        <div class="row" *ngFor="let ans of ansArray">
           <div class="one wide column">
-            <div class="ui radio checkbox">
-              <input type="radio" name="fruit" class="hidden"/>
-              <label>{{ans.id}}</label>
-            </div>
+            <!--<div class="ui radio checkbox">-->
+              <!--<input type="radio" class="hidden"/>-->
+              <label>{{question.answers[ans].id}}</label>
+            <!--</div>-->
           </div>
-          <div class="fifteen wide column">{{ans.body}}</div>
+          <div class="fifteen wide column">
+            <div class="ui radio checkbox" (click)="setAnswer(ans + 1)">
+              <input type="radio" class="hidden" name="ans" [value]="ans + 1" [(ngModel)]="question.givenAnswer">
+              <label>{{question.answers[ans].body}}</label>
+            </div>
+           </div>
         </div>
       </div>
     </div>
@@ -38,12 +43,12 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
     </div>
     <div class="two wide column right floated">
       <div class="ui icon buttons">
-        <button class="ui toggle button"><i class="flag icon"></i></button>
+        <button class="ui toggle button" (click)="question.flagged = !question.flagged"
+            [class.green]="question.flagged"><i class="flag icon"></i></button>
       </div>
     </div>
   </div>
-  <div id="quePrg" style="margin-bottom:-10px" data-value="10"
-       data-total="20" class="ui green bottom attached progress">
+  <div id="quePrg" style="margin-bottom:-10px"  class="ui green bottom attached progress">
     <div class="bar"></div>
   </div>
 </div>
@@ -53,18 +58,31 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
 export class QuestionContainerComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() question;
   @Output() navQue = new EventEmitter();
+  @Input() viewPrecent;
+  ansArray;
 
   constructor() { }
 
   ngOnInit() {
+    this.ansArray = Array(this.question.answers.length).fill(0).map((x,i)=> i);
   }
 
   ngOnChanges(){
-    this.ngAfterViewInit();
+    if(this.question.viewAt == null){
+      this.question.viewAt = new Date();
+    }
+    $('#quePrg').progress('set progress', this.viewPrecent);
+
   }
 
   ngAfterViewInit(){
     $(".ui.radio").checkbox();
+    $('#quePrg').progress();
   }
+
+  setAnswer(n){
+    this.question.givenAnswer = n;
+  }
+
 
 }

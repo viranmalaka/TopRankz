@@ -11,15 +11,19 @@ import {Observable} from "rxjs";
     <div class="ui vertical pointing menu">
       <div class="item">
         <div class="menu" style="margin-left:1px;">
-          <a class="ui icon button" 
+          <a class="ui icon black button" [class.basic]="!x.flagged" 
+                [class.yellow]="x.viewAt!=null && x.givenAnswer==0"
+                [class.teal]="x.givenAnswer!=0"
+                
           style="margin-top:3px;font-size:12px" 
           *ngFor="let x of questions" id="qLink{{x}}" (click)="changeQuestion(x.questionNumber)">
             {{('0' + x.questionNumber).slice(-2)}}
+            
           </a>
         </div>
       </div>
-      <div class="header cursorHand" ><a>Answer Sheet</a></div>
-      <div class="header cursorHand"><a>Submit Paper</a></div>
+      <div class="header cursorHand" (click)="state = 'A'"><a>Answer Sheet</a></div>
+      <div class="header cursorHand" (click)="state = 'F'"><a>Submit Paper</a></div>
     </div>
   </div>
   <div class="ui two wide column" *ngIf="!started"></div>
@@ -27,12 +31,20 @@ import {Observable} from "rxjs";
     <app-start-paper *ngIf="state == 'S'" (takeAttempt)="startAttempt()" [paper]="paper">
     </app-start-paper>
     
-    <app-questions-dash *ngIf="state == 'Q' || questionsShowing" 
+    <app-questions-dash *ngIf="state == 'Q' || questionDashBoardShowing" 
     [question]="questions" [time]="time" 
-      [totalTime]="paper.time_limit" [selectedQue]="selectedQue"
-      [class.hideMe]="!(state=='Q' && questionsShowing)"></app-questions-dash>
+      [totalTime]="paper.time_limit" [selectedQue]="selectedQue" [viewCount]="viewedCount"
+      [class.hideMe]="!(state=='Q')" (changeQ)="changeQuestion($event)"></app-questions-dash>
     
+    <app-attempt-answer-sheet *ngIf="state=='A' || questionDashBoardShowing"
+      [class.hideMe]="state!='A'"></app-attempt-answer-sheet>
+      
+    <app-attempt-submit-paper *ngIf="state=='F'"
+    ></app-attempt-submit-paper>
+      
   </div>
+  
+  <button (click)="print()">print</button>
 </div>
 `,
   styles: [".cursorHand { cursor: pointer } .hideMe{display: none;}"]
@@ -56,7 +68,8 @@ export class AttemptComponent implements OnInit{
   startedAtClient;
   viewedCount = 0;
   time;
-  questionsShowing = false;
+  questionDashBoardShowing = false;
+  questionAnswerSheetShowing = false;
 
   constructor(private router : Router, private route : ActivatedRoute,
               private paperService : PaperService) { }
@@ -76,6 +89,7 @@ export class AttemptComponent implements OnInit{
                 for(let i = 0; i < this.questions.length; i++){
                   this.questions[i]['viewAt'] = null;
                   this.questions[i]['givenAnswer'] = 0;
+                  this.questions[i]['flagged'] = false;
                 }
                 console.log(this.questions);
               });
@@ -101,27 +115,31 @@ export class AttemptComponent implements OnInit{
     Observable.timer(1000,1000).subscribe(t => {
       this.time = t;
     });
-    this.questionsShowing = true;
+    this.questionDashBoardShowing = true;
     this.state = "Q";
   }
 
   changeQuestion(n){
-    // if(!this.questions[n-1]['body']){
-    //   this.paperService.getQuestionInAttempt(this.questions[n-1]._id).
-    //     subscribe(res => {
-    //       if(res.success){
-    //         this.questionLoaded ++;
-    //         this.questions[n-1] = res['question'];
-    //         this.selectedQue = n;
-    //      }
-    //   });
-    //
-    // }
+    this.state = 'Q';
     if(this.questions[n-1].viewAt == null){
       this.questions[n-1].viewAt = new Date();
       this.viewedCount ++;
     }
     this.selectedQue = n;
+    console.log('changin here');
+  }
+
+  print(){
+    console.log(this.questions);
   }
 
 }
+
+
+//classes for different states
+/*
+init - basic + black
+viewed - basic + yello
+answered - basic + teal
+flagged - green
+ */

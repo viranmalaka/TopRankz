@@ -1,18 +1,15 @@
-/**
- * Created by malaka on 5/1/17.
- */
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-answer-sheet',
+  selector: 'app-attempt-answer-sheet',
   template: `
     <p>
-      answer-sheet Works!
+      attempt-answer-sheet Works!
     </p>
   `,
   styles: []
 })
-export class SubmitPaperComponent implements OnInit {
+export class AttemptAnswerSheetComponent implements OnInit {
 
   constructor() { }
 

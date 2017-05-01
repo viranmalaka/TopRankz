@@ -26,7 +26,8 @@ import { DescriptionComponent } from './paper/create/description.component';
 import { SelectPaperComponent } from './paper/select/select-paper.component';
 import { PaperListComponent } from './paper/select/paper-list.component';
 import { PaperCardComponent } from './paper/select/paper-card.component';
-import { AnswerSheetComponent } from './paper/attempt/answer-sheet.component';
+import { AttemptAnswerSheetComponent } from './paper/attempt/attempt-answer-sheet.component';
+import { AttemptSubmitPaperComponent } from './paper/attempt/attempt-submit-paper.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { AnswerSheetComponent } from './paper/attempt/answer-sheet.component';
     SelectPaperComponent,
     PaperListComponent,
     PaperCardComponent,
-    AnswerSheetComponent,
+    AttemptAnswerSheetComponent,
+    AttemptSubmitPaperComponent,
   ],
   imports: [
     BrowserModule,

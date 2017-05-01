@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-answer-sheet',
+  selector: 'app-attempt-submit-paper',
   template: `
     <p>
-      answer-sheet Works!
+      attempt-submit-paper Works!
     </p>
   `,
   styles: []
 })
-export class AnswerSheetComponent implements OnInit {
+export class AttemptSubmitPaperComponent implements OnInit {
 
   constructor() { }
 

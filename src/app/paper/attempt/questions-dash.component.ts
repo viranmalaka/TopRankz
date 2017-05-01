@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnChanges} from '@angular/core';
+import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-questions-dash',
@@ -13,16 +13,21 @@ import {Component, OnInit, Input, OnChanges} from '@angular/core';
             {{('0' + min).slice(-2)}} : {{('0' + sec).slice(-2)}}
           </div>
           <div style="height:10px" class="three wide right floated column">
-            <div id="timePrg" class="ui indicating small progress">
+            <div id="timePrg" class="ui indicating small progress" >
               <div class="bar"></div>
             </div>
           </div>
         </div>
       </div>
       <div class="autumn">
-        <app-question-container [question]="question[selectedQue - 1]" (navQue)="onNavQue($event)"></app-question-container>
+        <app-question-container 
+        [question]="question[selectedQue - 1]" 
+        (navQue)="onNavQue($event)"
+        [viewPrecent]="viewCount * 100 / question.length"></app-question-container>
       </div>
+      
       <pre></pre>
+      
       <div class="ui bottom attached label">
         <div style="float:left"></div>
         <div style="float:right">you have done this 3 times before</div>
@@ -35,12 +40,15 @@ import {Component, OnInit, Input, OnChanges} from '@angular/core';
   `,
   styles: []
 })
-export class QuestionsDashComponent implements OnInit, OnChanges {
+export class QuestionsDashComponent implements OnInit, OnChanges , AfterViewInit{
 
   @Input() question;
   @Input() time;
   @Input() totalTime;
   @Input() selectedQue;
+  @Input() viewCount;
+
+  @Output() changeQ = new EventEmitter();
 
   min = 0; sec = 0;
   remainTime = false;
@@ -50,16 +58,22 @@ export class QuestionsDashComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
+  ngAfterViewInit(){
+    $('.ui.radio').checkbox();
+    $('#timePrg').progress({precent:0});
+  }
+
   back(){
-    console.log(this.question.length);
     $('.autumn')
       .transition('fade left','200ms')
       .transition('fade right', '200ms')
     ;
     if(this.selectedQue == 1){
-      this.selectedQue = this.question.length;
+      // this.selectedQue = this.question.length;
+      this.changeQ.emit(this.question.length);
     } else{
-      this.selectedQue --;
+      this.changeQ.emit(this.selectedQue - 1);
+      // this.selectedQue --;
     }
   }
 
@@ -69,9 +83,10 @@ export class QuestionsDashComponent implements OnInit, OnChanges {
       .transition('fade left')
     ;
     if(this.selectedQue == this.question.length){
-      this.selectedQue = 1;
+      // this.selectedQue = 1;
+      this.changeQ.emit(1);
     }else{
-      this.selectedQue ++;
+      this.changeQ.emit(this.selectedQue + 1);
     }
   }
 
@@ -82,8 +97,9 @@ export class QuestionsDashComponent implements OnInit, OnChanges {
     }
     this.min = Math.floor(this.time / 60);
     this.sec = this.time % 60;
-
+    $('#timePrg').progress('set progress', this.time*100/(this.totalTime*60));
   }
+
 
   onNavQue(x){
     if(x) this.next();
