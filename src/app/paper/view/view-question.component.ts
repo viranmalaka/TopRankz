@@ -1,6 +1,4 @@
-import {Component, OnInit, Input, OnChanges, Output, EventEmitter} from '@angular/core';
-import {ActivatedRoute, Params, Router} from "@angular/router";
-import {PaperService} from "../paper.service";
+import {Component, Input,Output, EventEmitter, AfterViewInit} from '@angular/core';
 
 @Component({
   selector: 'app-view-question',
@@ -9,11 +7,11 @@ import {PaperService} from "../paper.service";
     <div class="ui segment">
       <div style="font-size:15px" class="ui top attached label">
         <div class="ui grid">
-          <div class="one wide column">{{question.questionNumber}}</div>
+          <div class="one wide column">{{('0' + question.questionNumber).slice(-2)}}</div>
         </div>
       </div>
         <div class="ui segment" style="margin-top: 35px">
-          {{question.body}} - body
+          {{question.body}}
           <div class="ui divider"></div>
           <div class="ui grid">
             <div class="one wide column"></div>
@@ -21,7 +19,7 @@ import {PaperService} from "../paper.service";
               <div class="ui grid">
                 <div class="row" *ngFor="let ans of question.answers">
                   <div class="one wide column">
-                    <div class="ui radio checkbox">
+                    <div class="ui radio disabled checkbox">
                       <input type="radio" name="fruit" class="hidden"/>
                       <label>{{ans.id}}</label>
                     </div>
@@ -45,7 +43,7 @@ import {PaperService} from "../paper.service";
         </div>
       <pre></pre>
       <div class="ui bottom attached label">
-        <div style="float:left">Tag list here</div>
+        <div style="float:left"><p>{{question.tags.join(' | ')}}</p></div>
         <div style="float:right">Hardness Level</div>
       </div>
     </div>
@@ -53,18 +51,14 @@ import {PaperService} from "../paper.service";
   `,
   styles: []
 })
-export class ViewQuestionComponent implements OnInit , OnChanges{
+export class ViewQuestionComponent implements AfterViewInit{
   @Input() question;
   @Output() nav = new EventEmitter();
 
   constructor() { }
 
-  ngOnInit() {
-
-  }
-
-  ngOnChanges(){
-
+  ngAfterViewInit(){
+    $('.ui.radio').checkbox();
   }
 
   nextQue(){

@@ -13,7 +13,7 @@ import {PaperService} from "../paper.service";
           <a class="ui icon button" 
           style="margin-top:3px;font-size:12px" 
           *ngFor="let x of arrayQuestions" id="qLink{{x}}"
-          routerLink="../{{x}}">
+          routerLink="../{{x}}" [class.green]="selectedQueId == x">
             {{('0' + x).slice(-2)}}
           </a>
         </div>
@@ -39,13 +39,16 @@ export class ViewPaperComponent implements OnInit {
     questionNumber : 0,
     body : '',
     answers : [],
+    tags : []
   };
+  selectedQueId = '';
 
   constructor(private route : ActivatedRoute, private paperService : PaperService,
               private router : Router) { }
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
+      this.selectedQueId = params['id'];
       this.paperService.getPaperById(params['paper_id']).subscribe(res => {
         if (res.success) {
           this.paper = res['paper'];
@@ -53,7 +56,7 @@ export class ViewPaperComponent implements OnInit {
           this.arrayQuestions = Array(this.numberOfQuestions).fill(0).map((x, i) => i + 1);
 
           if(params['id']){
-            this.paperService.getQuestions(this.paper._id, params['id'])
+            this.paperService.getQuestion(this.paper._id, this.selectedQueId)
               .subscribe(res => {
                 if(res.success){
                   this.question = res['question'];
@@ -70,8 +73,9 @@ export class ViewPaperComponent implements OnInit {
   }
 
   navigateQue(n){
-    this.router.navigate(['..', parseInt(this.route.snapshot.params['id']) +  (n ? +1: -1)],
+    this.router.navigate(['..', parseInt(this.selectedQueId) +  (n ? +1: -1)],
       {relativeTo : this.route});
   }
+
 
 }

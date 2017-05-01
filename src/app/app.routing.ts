@@ -17,7 +17,8 @@ const APP_ROUTES : Routes = [
   {path : 'paper', component : SelectPaperComponent},
   {path : 'paper/create', component : CreatePaperComponent},
   {path : 'paper/create/:paper_id', component : CreatePaperComponent},
-  {path : 'paper/attempt' , component : AttemptComponent, children: PAPER_ATTEMPT_ROUTER},
+  {path : 'paper/attempt' , component : AttemptComponent},
+  {path : 'paper/attempt/:id' , component : AttemptComponent},
   {path : 'paper/:paper_id' , component: ViewPaperComponent},//redirectTo : '/paper/:paper_id/1'},
   {path : 'paper/:paper_id/:id' , component : ViewPaperComponent},
 

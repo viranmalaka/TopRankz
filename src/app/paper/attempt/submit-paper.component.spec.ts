@@ -1,23 +1,26 @@
+/**
+ * Created by malaka on 5/1/17.
+ */
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { ViewPaperComponent } from './view-paper.component';
+import {SubmitPaperComponent} from "./submit-paper.component";
 
-describe('ViewPaperComponent', () => {
-  let component: ViewPaperComponent;
-  let fixture: ComponentFixture<ViewPaperComponent>;
+describe('SubmitPaperComponent', () => {
+  let component: SubmitPaperComponent;
+  let fixture: ComponentFixture<SubmitPaperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewPaperComponent ]
+      declarations: [ SubmitPaperComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ViewPaperComponent);
+    fixture = TestBed.createComponent(SubmitPaperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

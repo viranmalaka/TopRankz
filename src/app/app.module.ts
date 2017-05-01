@@ -12,7 +12,6 @@ import { NewPaperComponent } from './paper/create/new-paper.component';
 import { NewQuestionComponent } from './paper/create/new-question.component';
 import { AnswerSheetComponent } from './paper/create/answer-sheet.component';
 import { StartPaperComponent } from './paper/attempt/start-paper.component';
-import { OneQuestionComponent } from './paper/attempt/one-question.component';
 import { SubmitPaperComponent } from './paper/create/submit-paper.component';
 import { AttemptComponent } from './paper/attempt/attempt.component';
 import { QuestionContainerComponent } from './paper/attempt/question-container.component';
@@ -27,6 +26,7 @@ import { DescriptionComponent } from './paper/create/description.component';
 import { SelectPaperComponent } from './paper/select/select-paper.component';
 import { PaperListComponent } from './paper/select/paper-list.component';
 import { PaperCardComponent } from './paper/select/paper-card.component';
+import { AnswerSheetComponent } from './paper/attempt/answer-sheet.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +38,6 @@ import { PaperCardComponent } from './paper/select/paper-card.component';
     NewQuestionComponent,
     AnswerSheetComponent,
     StartPaperComponent,
-    OneQuestionComponent,
     SubmitPaperComponent,
     AttemptComponent,
     QuestionContainerComponent,
@@ -53,6 +52,7 @@ import { PaperCardComponent } from './paper/select/paper-card.component';
     SelectPaperComponent,
     PaperListComponent,
     PaperCardComponent,
+    AnswerSheetComponent,
   ],
   imports: [
     BrowserModule,

@@ -104,8 +104,25 @@ export class PaperService {
       .map((res: Response) => res.json());
   }
 
-  getQuestions(paper_id, questionsNumber){
-    return this._http.get(this.paperDomain + "get_question?paper="+paper_id + "&q=" + questionsNumber)
+  getQuestion(paper_id, questionsNumber){
+    return this._http.get(this.paperDomain + "get_question_in_view?paper="+paper_id + "&q=" + questionsNumber)
       .map((res: Response) => res.json());
   }
+
+  getQuestionsOfPaper(paper){
+    let url = "get_questions_of_paper?p="+paper;
+    return this._http.get(this.paperDomain + url)
+      .map((res: Response) => res.json());
+  }
+
+  getQuestionInAttempt(id){
+    return this._http.get(this.paperDomain + "get_question_in_attempt?id=" + id)
+      .map((res : Response) => res.json());
+  }
+
+  getStartAttempt(){
+    return this._http.get(this.paperDomain + "get_start_paper")
+      .map((res : Response) => res.json());
+  }
+
 }

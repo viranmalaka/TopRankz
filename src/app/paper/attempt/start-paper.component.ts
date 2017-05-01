@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 
 @Component({
   selector: 'app-start-paper',
   template: `
 <div class="ui segment">
   <h1 class="textCenter">
-    Paper Name
+    {{paper.name}}
   </h1>
   <div class="ui grid">
     <div class="row">
@@ -13,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
         <p class="textRight fontSize">Number of questions :</p>
       </div>
       <div class="eight wide column">
-        <p class="textLeft fontSize">#</p>
+        <p class="textLeft fontSize">{{paper.questions}}</p>
       </div>
     </div>
     <div class="row">
@@ -21,7 +21,7 @@ import { Component, OnInit } from '@angular/core';
         <p class="textRight fontSize">Time for whole paper(minutes):</p>
       </div>
       <div class="eight wide column">
-        <p class="textLeft fontSize">233</p>
+        <p class="textLeft fontSize">{{paper.time_limit}}</p>
       </div>
     </div>
     <div class="row">
@@ -29,7 +29,7 @@ import { Component, OnInit } from '@angular/core';
         <p class="textRight fontSize">You have done this paper before :</p>
       </div>
       <div class="eight wide column">
-        <p class="textLeft fontSize">times</p>
+        <p class="textLeft fontSize">{{paper.before}}</p>
       </div>
     </div>
        <div class="row">
@@ -37,12 +37,12 @@ import { Component, OnInit } from '@angular/core';
           <p class="textRight fontSize">Average marks :</p>
         </div>
         <div class="eight wide column">
-          <p class="textLeft fontSize">#</p>
+          <p class="textLeft fontSize">{{paper.avg}}</p>
         </div>
       </div>
       <div class="row">
         <div class="sixteen wide column textCenter">
-          <button class="ui blue button">Take Attempt</button>
+          <button class="ui blue button" (click)="onTakeAttempt()">Take Attempt</button>
         </div>
       </div>
   </div>
@@ -55,10 +55,15 @@ import { Component, OnInit } from '@angular/core';
             '.fontSize { font-size: 20px}']
 })
 export class StartPaperComponent implements OnInit {
+  @Input() paper;
+  @Output() takeAttempt = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  onTakeAttempt(){
+    this.takeAttempt.emit();
+  }
 }

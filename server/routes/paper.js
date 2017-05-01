@@ -121,18 +121,44 @@ router.get('/get_paper', function (req, res) {
 router.get('/get_paper_by_id', function (req, res) {
   pprCtrl.getPaperById(req.query['id'], function (paper) {
     res.jsonp({
-      success : true,
+      success : paper != null,
       paper : paper
     })
   })
 });
 
-router.get('/get_question', function (req, res) {
-  pprCtrl.getQuestion(req.query['paper'], req.query['q'], function (question) {
+router.get('/get_question_in_view', function (req, res) {
+  pprCtrl.getQuestionInView(req.query['paper'], req.query['q'], function (question) {
     res.jsonp({
       success : question != null,
       question : question
     })
+  })
+});
+
+router.get('/get_question_in_attempt', function (req, res) {
+  pprCtrl.getQuestionInAttempt(req.query['id'], function (question) {
+    res.jsonp({
+      success : question != null,
+      question : question
+    })
+  })
+});
+
+router.get('/get_questions_of_paper', function (req, res) {
+  //query - paper, [qNumber], [full]
+  pprCtrl.getQuestionsOfPaper(req.query['p'], function (q) {
+    res.jsonp({
+      success : true,
+      questions : q
+    })
+  })
+});
+
+router.get('/get_start_paper', function (req, res) {
+  res.jsonp({
+    success : true,
+    time : new Date()
   })
 });
 

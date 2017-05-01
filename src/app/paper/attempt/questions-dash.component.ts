@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-declare let $:any;
+import {Component, OnInit, Input, OnChanges} from '@angular/core';
 
 @Component({
   selector: 'app-questions-dash',
@@ -8,9 +7,9 @@ declare let $:any;
     <div class="ui segment">
       <div style="font-size:15px" class="ui top attached label">
         <div class="ui grid">
-          <div class="one wide column">01</div>
+          <div class="one wide column">{{('0' + question[selectedQue - 1].questionNumber).slice(-2)}}</div>
           <div class="nine wide column"></div>
-          <div class="three wide right floated column">
+          <div class="three wide right floated column" (click)="remainTime = !remainTime">
             {{('0' + min).slice(-2)}} : {{('0' + sec).slice(-2)}}
           </div>
           <div style="height:10px" class="three wide right floated column">
@@ -21,11 +20,11 @@ declare let $:any;
         </div>
       </div>
       <div class="autumn">
-        <app-question-container></app-question-container>
+        <app-question-container [question]="question[selectedQue - 1]" (navQue)="onNavQue($event)"></app-question-container>
       </div>
       <pre></pre>
       <div class="ui bottom attached label">
-        <div style="float:left">Tag list here</div>
+        <div style="float:left"></div>
         <div style="float:right">you have done this 3 times before</div>
       </div>
     </div>
@@ -36,7 +35,15 @@ declare let $:any;
   `,
   styles: []
 })
-export class QuestionsDashComponent implements OnInit {
+export class QuestionsDashComponent implements OnInit, OnChanges {
+
+  @Input() question;
+  @Input() time;
+  @Input() totalTime;
+  @Input() selectedQue;
+
+  min = 0; sec = 0;
+  remainTime = false;
 
   constructor() { }
 
@@ -44,11 +51,16 @@ export class QuestionsDashComponent implements OnInit {
   }
 
   back(){
-    console.log('back');
+    console.log(this.question.length);
     $('.autumn')
       .transition('fade left','200ms')
       .transition('fade right', '200ms')
     ;
+    if(this.selectedQue == 1){
+      this.selectedQue = this.question.length;
+    } else{
+      this.selectedQue --;
+    }
   }
 
   next(){
@@ -56,5 +68,25 @@ export class QuestionsDashComponent implements OnInit {
       .transition('fade right')
       .transition('fade left')
     ;
+    if(this.selectedQue == this.question.length){
+      this.selectedQue = 1;
+    }else{
+      this.selectedQue ++;
+    }
+  }
+
+
+  ngOnChanges(){
+    if (this.remainTime) {
+      this.time = this.totalTime * 60 - this.time;
+    }
+    this.min = Math.floor(this.time / 60);
+    this.sec = this.time % 60;
+
+  }
+
+  onNavQue(x){
+    if(x) this.next();
+    if(!x) this.back();
   }
 }

@@ -272,7 +272,7 @@ module.exports.getPaperById = function (id, next) {
   })
 };
 
-module.exports.getQuestion = function (p, q, next) {
+module.exports.getQuestionInView = function (p, q, next) {
   Question.findOne({paper: p, questionNumber: q}, function (err, que) {
     if(err){
       console.log(err);
@@ -281,6 +281,31 @@ module.exports.getQuestion = function (p, q, next) {
       next(que);
     }
   })
+};
+
+module.exports.getQuestionInAttempt = function (i, next) {
+  Question.findById(i).select('-checkBy -correct').exec(function (err, ques) {
+    if(err){
+      console.log(err);
+      throw err;
+    }else{
+      next(ques);
+    }
+  });
+};
+
+module.exports.getQuestionsOfPaper = function (p, next) {
+  var query = {paper : p};
+  var select = '_id id questionNumber';
+
+  Question.find(query).sort({'questionNumber' : 1}).exec(function (err, questions) {
+    if(err){
+      console.log(err);
+      throw err;
+    }else{
+      next(questions);
+    }
+  });
 };
 
 function insertQuestionBatch(docs, index, next) {
