@@ -37,7 +37,7 @@
     <div class="five wide column">
       <div id="topicField" class="field">
         <label>Topics</label>
-        <select id="topics" multiple="" class="ui dropdown" (change)="onTopicsChanged()">
+        <select id="topics" multiple="" class="ui dropdown" (change)="onTest()">
           <option value="">select Topics Here</option>
           <option *ngFor="let t of topicsArray" data-value="{{t.id}}">{{t['english']}}</option>
         </select>

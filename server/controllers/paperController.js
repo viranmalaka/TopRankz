@@ -8,6 +8,7 @@ const Question = require('../models/question');
 const Temp = require('../models/temp');
 const Subject = require('../models/subject');
 
+
 module.exports.checkPaperName = function (name, next) {
   Paper.find({name : name}, function (err, papers) {
     next(papers.length > 0);
@@ -269,7 +270,7 @@ module.exports.getPaperById = function (id, next) {
     }else{
       next(paper);
     }
-  })
+  });
 };
 
 module.exports.getQuestionInView = function (p, q, next) {
@@ -307,6 +308,8 @@ module.exports.getQuestionsOfPaper = function (p, next) {
     }
   });
 };
+
+
 
 function insertQuestionBatch(docs, index, next) {
   if(docs.length == index){

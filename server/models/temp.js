@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 
 var temp = new schema({
-  userId : [{type: schema.ObjectId, required: true}],
+  userId : {type: schema.ObjectId, required: true},
   data : {type : {}}
 });
 

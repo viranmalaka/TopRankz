@@ -13,6 +13,7 @@ export class PaperService {
     return this._http.get(this.paperDomain + "/get_all_paper_names")
       .map((response: Response) => response.json());
   }
+
   getTitle(){
     return this._http.get("http://localhost:3000/api")
       .map((res : Response) => res.json());
@@ -120,9 +121,10 @@ export class PaperService {
       .map((res : Response) => res.json());
   }
 
-  getStartAttempt(){
-    return this._http.get(this.paperDomain + "get_start_paper")
+  getStartAttempt(paper){
+    return this._http.get(this.paperDomain + "get_start_paper?paper=" + paper)
       .map((res : Response) => res.json());
   }
+
 
 }

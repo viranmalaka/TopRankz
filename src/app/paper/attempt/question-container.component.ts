@@ -14,12 +14,15 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
           <div class="one wide column">
             <!--<div class="ui radio checkbox">-->
               <!--<input type="radio" class="hidden"/>-->
-              <label>{{question.answers[ans].id}}</label>
+              <label>{{ans + 1}}</label>
             <!--</div>-->
+            
           </div>
           <div class="fifteen wide column">
-            <div class="ui radio checkbox" (click)="setAnswer(ans + 1)">
-              <input type="radio" class="hidden" name="ans" [value]="ans + 1" [(ngModel)]="question.givenAnswer">
+            <div class="ui radio checkbox" (click)="setLastEdit(ans);">
+              <input type="radio" class="hidden" name="ans" 
+              [value]="question.answers[ans].id" 
+              [(ngModel)]="question.givenAnswer">
               <label>{{question.answers[ans].body}}</label>
             </div>
            </div>
@@ -52,9 +55,11 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
     <div class="bar"></div>
   </div>
 </div>
+<button (click)="print()">print here</button>
   `,
   styles: []
 })
+
 export class QuestionContainerComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() question;
   @Output() navQue = new EventEmitter();
@@ -80,9 +85,13 @@ export class QuestionContainerComponent implements OnInit, OnChanges, AfterViewI
     $('#quePrg').progress();
   }
 
-  setAnswer(n){
-    this.question.givenAnswer = n;
+  setLastEdit(ans){
+    this.question.lastEdit = (new Date()).getTime() - this.question.viewAt.getTime();
+    this.question.givenAnswer = this.question.answers[ans].id;
+  };
+
+  print(){
+    console.log(this.question.answers);
+    console.log(this.question.givenAnswer);
   }
-
-
 }

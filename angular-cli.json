@@ -25,7 +25,7 @@
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
-        "../node_modules/semantic-ui-css/semantic.min.js",
+        "../node_modules/semantic-ui-css/semantic2.min.js",
         "../node_modules/tinymce/tinymce.js",
         "../node_modules/tinymce/themes/modern/theme.js",
         "../node_modules/tinymce/plugins/link/plugin.js",

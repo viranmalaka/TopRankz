@@ -3,6 +3,7 @@
  */
 var router = require('express').Router();
 var pprCtrl = require('../controllers/paperController');
+var attmpCtrl = require('../controllers/attemptController');
 var validAuth = require('./user').validAuth;
 
 router.get('/check_paper_name', function (req, res) {
@@ -156,10 +157,24 @@ router.get('/get_questions_of_paper', function (req, res) {
 });
 
 router.get('/get_start_paper', function (req, res) {
-  res.jsonp({
-    success : true,
-    time : new Date()
+  attmpCtrl.startAttempt(req.user, req.query['paper'], function (time) {
+    res.jsonp({
+      success : true,
+      time : time
+    })
+  });
+});
+
+router.post('/save_attempt_temp', function (req, res) {
+  attmpCtrl.saveAttemptTemp(req.user._id, req.params['data'], function () {
+    res.jsonp({
+      success : true
+    })
   })
+});
+
+router.post('/finish_attempt', function (req, res) {
+
 });
 
 module.exports = router;

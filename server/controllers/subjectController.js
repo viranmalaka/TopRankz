@@ -30,7 +30,6 @@ module.exports.getAllTopics = function (sub, next) {
 };
 
 module.exports.getUsersSubject = function(user, next){
-  console.log("hereh", user);
   if(user){
     if(user.acc_type == 'T'){
       Teacher.findById(user.acc_id).populate('subject', 'name id').select('subject').exec(function (err, teacher) {
@@ -42,14 +41,13 @@ module.exports.getUsersSubject = function(user, next){
         }
       })
     }else if (user.acc_type == 'S'){
-      Students.findById(user.acc_id).populate('enroll').select('enroll').exec(function (err, students) {
+      Students.findById(user.acc_id).populate('enroll').select('enroll.id enroll.name').exec(function (err, enrol) {
         if(err){
           console.log(err);
           throw err;
         }else{
-          subjectFilter(students.enroll, 0, function (arr) {
-            next(arr);
-          });
+          console.log(enrol);
+          next(enrol);
         }
       })
     }else if (user.acc_type == 'D'){
@@ -75,3 +73,11 @@ module.exports.getUsersSubject = function(user, next){
     });
   }
 };
+
+function subjectFilter(err, index, next) {
+  if(index == err.length){
+
+  }else{
+
+  }
+}

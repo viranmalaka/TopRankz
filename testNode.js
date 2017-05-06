@@ -2,12 +2,11 @@
  * Created by malaka on 4/2/17.
  */
 
-function test(next) {
-  next("asdf");
-  return;
-  next("werwer");
-}
+var x = new Date();
 
-test(function (v) {
-  console.log(v);
-});
+setTimeout(function () {
+  console.log(x);
+  var y = new Date();
+  console.log(y+4000);
+  console.log(y - x);
+},2000);
