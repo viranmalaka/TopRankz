@@ -116,15 +116,6 @@ export class PaperService {
       .map((res: Response) => res.json());
   }
 
-  getQuestionInAttempt(id){
-    return this._http.get(this.paperDomain + "get_question_in_attempt?id=" + id)
-      .map((res : Response) => res.json());
-  }
-
-  getStartAttempt(paper){
-    return this._http.get(this.paperDomain + "get_start_paper?paper=" + paper)
-      .map((res : Response) => res.json());
-  }
 
 
 }

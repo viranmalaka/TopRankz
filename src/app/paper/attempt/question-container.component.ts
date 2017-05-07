@@ -41,7 +41,7 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
     </div>
     <div class="six wide column">
       <button class="ui right labeled icon green button"><i class="right arrow icon"></i>
-        <div class="visible content">Submit</div>
+        <div class="visible content" (click)="onSubmit.emit();">Submit</div>
       </button>
     </div>
     <div class="two wide column right floated">
@@ -63,6 +63,8 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
 export class QuestionContainerComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() question;
   @Output() navQue = new EventEmitter();
+  @Output() onSubmit = new EventEmitter();
+
   @Input() viewPrecent;
   ansArray;
 
@@ -90,8 +92,5 @@ export class QuestionContainerComponent implements OnInit, OnChanges, AfterViewI
     this.question.givenAnswer = this.question.answers[ans].id;
   };
 
-  print(){
-    console.log(this.question.answers);
-    console.log(this.question.givenAnswer);
-  }
+
 }

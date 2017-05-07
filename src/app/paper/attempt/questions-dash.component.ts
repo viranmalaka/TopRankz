@@ -23,7 +23,8 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
         <app-question-container 
         [question]="question[selectedQue - 1]" 
         (navQue)="onNavQue($event)"
-        [viewPrecent]="viewCount * 100 / question.length"></app-question-container>
+        [viewPrecent]="viewCount * 100 / question.length"
+        (onSubmit)="onSubmit.emit();"></app-question-container>
       </div>
       
       <pre></pre>
@@ -49,6 +50,7 @@ export class QuestionsDashComponent implements OnInit, OnChanges , AfterViewInit
   @Input() viewCount;
 
   @Output() changeQ = new EventEmitter();
+  @Output() onSubmit = new EventEmitter();
 
   min = 0; sec = 0;
   remainTime = false;

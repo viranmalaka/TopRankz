@@ -3,6 +3,7 @@ import {Router, ActivatedRoute, Params} from "@angular/router";
 import {PaperService} from "../paper.service";
 import {Observable} from "rxjs";
 import {AuthService} from "../../auth/auth.service";
+import {AttemptService} from "../attempt.service";
 
 @Component({
   selector: 'app-attempt',
@@ -35,12 +36,12 @@ import {AuthService} from "../../auth/auth.service";
     <app-questions-dash *ngIf="state == 'Q' || questionDashBoardShowing" 
     [question]="questions" [time]="time" 
       [totalTime]="paper.time_limit" [selectedQue]="selectedQue" [viewCount]="viewedCount"
-      [class.hideMe]="!(state=='Q')" (changeQ)="changeQuestion($event)"></app-questions-dash>
+      [class.hideMe]="!(state=='Q')" (changeQ)="changeQuestion($event)"
+      (onSubmit)="submitAttempt()"
+      ></app-questions-dash>
     
     <app-attempt-answer-sheet *ngIf="state=='A' || questionDashBoardShowing"
       [class.hideMe]="state!='A'" [questionArray]="questions"></app-attempt-answer-sheet>
-      
-     <button (click)="print()">pring</button>
      
   </div>
 </div>
@@ -62,7 +63,7 @@ import {AuthService} from "../../auth/auth.service";
     <div class="ui black deny button">
       No
     </div>
-    <div class="ui positive right labeled icon button" (click)="submitAttempt()">
+    <div class="ui positive right labeled icon button" (click)="submitFinal()">
       Submit Paper
       <i class="checkmark icon"></i>
     </div>
@@ -92,9 +93,11 @@ export class AttemptComponent implements OnInit{
   time;
   questionDashBoardShowing = false;
   questionAnswerSheetShowing = false;
+  attemptID;
 
   constructor(private router : Router, private route : ActivatedRoute,
-              private paperService : PaperService, private authService : AuthService) { }
+              private paperService : PaperService, private attemptService : AttemptService,
+              private authService : AuthService) { }
 
   ngOnInit() {
     this.authService.getCheckToken().subscribe(res => {
@@ -105,6 +108,7 @@ export class AttemptComponent implements OnInit{
               this.paperService.getPaperById(params['id']).subscribe(res => {
                 if(res.success){
                   this.paper = res['paper'];
+                  console.log(this.paper._id);
                   this.paperService.getQuestionsOfPaper(this.paper._id)
                     .subscribe(res => {
                       this.questions = res['questions'];
@@ -137,8 +141,13 @@ export class AttemptComponent implements OnInit{
   }
 
   startAttempt(){
-    this.paperService.getStartAttempt(this.paper._id).subscribe(res => {
+    this.attemptService.getStartAttempt(this.paper._id).subscribe(res => {
       if(res.success){
+        // this.attemptService.setServerTimeout(this.paper._id).subscribe(res => {
+        //   if(res.success){
+        //     this.submitFinal();
+        //   }
+        // });
         this.startedAtServer = res['time'];
         this.started = true;
         this.changeQuestion(1);
@@ -147,6 +156,7 @@ export class AttemptComponent implements OnInit{
         });
         this.questionDashBoardShowing = true;
         this.state = "Q";
+        this.attemptID = res['attemptID'];
       }
     });
 
@@ -166,30 +176,35 @@ export class AttemptComponent implements OnInit{
   }
 
   submitAttempt(){
-    console.log(this.questions);
     let attempts = Array(this.questions.length).fill({});
-    this.extractSubmittingData(0, attempts, function (arr) {
+    for (let i = 0; i < this.questions.length; i++) {
+      let obj = this.questions[i];
+      attempts[i] = {
+        qId : obj['_id'],
+        viewAt : obj['viewAt'],
+        lastEdit : obj['lastEdit'],
+        givenAnswer : obj['givenAnswer']
+      };
+    }
+    this.attemptService.saveAttemptTemp({attemptID : this.attemptID, answersData : attempts})
+      .subscribe(res => {
+        if(res.success){
+          toastr.success('ok');
+        }
+      });
+  }
 
+  submitFinal(){
+    this.submitAttempt();
+    this.attemptService.saveAttemptFinished({
+      attemptID : this.attemptID
+    }).subscribe(res => {
+      if(res.success){
+        toastr.success('submitted data success');
+      }
     });
   }
 
-  extractSubmittingData(index, arr, next){
-    if(index == arr.length){
-      next(arr);
-    }else{
-      arr[index] = {
-        qId : this.questions[index]['_id'],
-        viewAt : this.questions[index]['viewAt'],
-        lastEdit : this.questions[index]['lastEdit'],
-        givenAnswer : this.questions[index]['givenAnswer']
-      };
-      this.extractSubmittingData(index + 1, arr, next);
-    }
-  }
-
-  print(){
-    console.log(this.questions[this.selectedQue]);
-  }
 }
 
 //classes for different states
