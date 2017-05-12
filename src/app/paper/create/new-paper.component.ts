@@ -23,7 +23,8 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
     nAnswers : new FormControl(),
     timeLimit : new FormControl(),
     unitMark : new FormControl(),
-    random : new FormControl()
+    random : new FormControl(),
+    isPassPaper : new FormControl()
   });
 
   constructor(private paperServices:PaperService, private otherServices : OtherService,

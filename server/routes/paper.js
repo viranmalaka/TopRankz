@@ -3,6 +3,7 @@
  */
 var router = require('express').Router();
 var pprCtrl = require('../controllers/paperController');
+var attmpCtrl = require('../controllers/attemptController');
 var validAuth = require('./user').validAuth;
 
 router.get('/check_paper_name', function (req, res) {
@@ -155,11 +156,8 @@ router.get('/get_questions_of_paper', function (req, res) {
   })
 });
 
-router.get('/get_start_paper', function (req, res) {
-  res.jsonp({
-    success : true,
-    time : new Date()
-  })
+router.post('/finish_attempt', function (req, res) {
+
 });
 
 module.exports = router;

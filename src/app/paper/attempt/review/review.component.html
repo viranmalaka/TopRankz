@@ -1,0 +1,140 @@
+<div class="ui grid">
+  <div class="three wide column">
+    <div class="ui vertical pointing menu">
+      <div class="item">
+        <div class="menu" style="margin-left:1px;">
+          <a class="ui icon button" [class.red]="!x.correct" [class.green.inverted]="x.correct"
+             style="margin-top:3px;font-size:12px" (click)="navQuestions(x.qId.questionNumber)"
+             *ngFor="let x of answers; let i = index" id="qLink{{x.qId.questionNumber}}">
+            {{('0' + x.qId.questionNumber).slice(-2)}}
+          </a>
+        </div>
+      </div>
+      <div>
+        <h1 class="ui header" style="margin-left: 20px;">
+          {{correctCount}} / {{totalAnswers}}
+          <div class="sub header">{{correctCount * 100 / totalAnswers}}</div>
+        </h1>
+      </div>
+
+    </div>
+  </div>
+  <div class="thirteen wide column">
+    <div class="ui segment box-centerside"
+         style="height: 85vh; overflow-y: auto;" id="queContainer">
+
+      <div class="ui segment box-centerside" style="position:relative;" id="que{{que.qId.questionNumber}}"
+        *ngFor="let que of answers" [class.correct]="que.correct" [class.wrong]="!que.correct">
+        <div class="ui top attached label" [style.background]="que.correct ? 'green' : 'red'">
+          {{que.qId.questionNumber}}
+        </div>
+        <br>
+        {{que.qId.body}}
+        <div class="ui divider" ></div>
+        <div class="ui grid" >
+          <div class="one wide column"></div>
+          <div class="fifteen wide column">
+            <div class="ui grid">
+              <div class="row" *ngFor="let ans of que.qId.answers">
+                <div class="one wide column" [class.green]="que.qId.correct.indexOf(test('' + (ans.id-1))) > -1">
+                  <div class="ui radio disabled checkbox">
+                    <input type="radio" name="answerFor{{que.qId.questionNumber}}"
+                           class="hidden" [checked]="checkAnswer(ans.id, que.givenAnswer)"/>
+                    <label>{{ans.id}}</label>
+                  </div>
+                </div>
+                <div class="fifteen wide column">{{ans.body}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="ui grid">
+          <div class="eight wide column">
+            TAGS : {{que.qId.tags.join(' | ')}} <br>
+            <!--TOPICS : {{que.qId.topics.join (' | ')}}-->
+          </div>
+          <div class="three wide column right floated">
+            <!--<button class="circular ui icon button"><i class="help icon"></i></button>-->
+            Difficulty % :<a class="ui circular label">
+              {{que.qId.difficulty == undefined ? "N/A" : que.qId.difficulty.avg}}
+            </a>
+            <br>
+            <!--{{que.qId.difficulty == undefined ? "non" : setYourDiff(i, que.qId.difficulty.yourDiff)}}-->
+            <!--<br>-->
+            <!--Success % : <a class="ui circular label" >-->
+            <!--</a>-->
+          </div>
+          <div class="five wide column right floated">
+            <div class="ui floating dropdown labeled icon button" id='q{{que.qId.id}}' >
+              <i class="dashboard icon"></i><span class="text">Difficulty</span>
+              <div class="menu" >
+                <div class="scrolling menu">
+                  <div class="item" data-value="20">
+                    <div class="ui black empty circular label"></div>Easy
+                  </div>
+                  <div class="item" data-value="40">
+                    <div class="ui green empty circular label"></div>Normal
+                  </div>
+                  <div class="item" data-value="60">
+                    <div class="ui blue empty circular label"></div>Hard
+                  </div>
+                  <div class="item" data-value="80">
+                    <div class="ui orange empty circular label"></div>Advanced
+                  </div>
+                  <div class="item" data-value="100">
+                    <div class="ui red empty circular label"></div>Expert
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="ui divided"></div>
+        <div style="margin-top:10px;max-height:500px;overflow-y: scroll;" class="ui fluid styled accordion box-centerside">
+          <div class="title" (click)="loadComments(que.qId.id)"><i class="dropdown icon"></i>Comments</div>
+          <div class="content">
+            <div class="ui segment" *ngIf="comments[que.qId.id] == undefined"
+            style="height: 50px;">
+              <div class="ui active dimmer">
+                <div class="ui mini text loader">Loading</div>
+              </div>
+              <p></p>
+            </div>
+            <div class="ui comments">
+              <div *ngIf="comments[que.qId.id]">
+                <div class="comment" *ngFor="let com of comments[que.qId.id]; let i = index;">
+                  <a class="avatar"><img src="assets/prof-pic/{{com.user.profile_picture}}"/></a>
+                  <div class="content">
+                    <div class="ui grid">
+                      <div class="one wide column">
+                        <h3>{{com.likes}}</h3><i class="thumbs up icon"></i>
+                      </div>
+                      <div class="fifteen wide column"><a class="author">{{com.user.username}}</a>
+                        <div class="text">{{com.body}}</div>
+                        <button class="ui tiny button" (click)="putLike(que.qId.id, i)"
+                                [class.blue]="com.yourLike == 1"
+                        ><i class="thumbs up icon"></i>Like</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <form class="ui reply form">
+                <div class="field">
+                  <input type="text" id="commentBody{{que.qId.id}}">
+                </div>
+                <div class="ui green labeled submit icon button" (click)="postComment(que.qId.id)">
+                  <i class="icon edit"></i>Add Reply</div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="one wide column">
+        <div class="ui lable">a</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,12 +2,14 @@ import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {PaperService} from "./paper/paper.service";
 import {AuthService} from "./auth/auth.service";
 import {OtherService} from "./other.services";
+import {AttemptService} from "./paper/attempt.service";
+import {QuestionService} from "./paper/question.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers : [PaperService, AuthService, OtherService]
+  providers : [PaperService, AuthService, OtherService, AttemptService, QuestionService]
 })
 export class AppComponent implements OnInit, AfterViewInit{
   constructor(){}
@@ -29,7 +31,7 @@ export class AppComponent implements OnInit, AfterViewInit{
       "hideEasing": "linear",
       "showMethod": "fadeIn",
       "hideMethod": "fadeOut"
-    }
+    };
   }
 
   ngAfterViewInit(){

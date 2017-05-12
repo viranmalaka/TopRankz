@@ -253,6 +253,7 @@ function generateToken(req, res, next) {
 
 function validAuth(req, res, next) {
   console.log('valid auth', req.get('token'));
+  console.log(req.user);
   if (req.user){
     var genID = jwt.verify(req.get('token'), 'secret');
     req.validToken = (genID.id == req.user._id);

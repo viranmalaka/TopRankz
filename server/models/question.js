@@ -18,8 +18,8 @@ var question = new schema({
     topics: {type : [String]},                      // array of if of topics from Subject table
     paper: {type : schema.ObjectId,ref : 'Paper'},
     checkedBy: {type : schema.ObjectId, ref : 'User'},
-    difficulty : {type : [{}]},                     //{studentId, difficultyRate}
-    comments: {type : [{}]},                         //{username, body, likes[], dislikes[]}
+    difficulty : {type : {}},                     //{studentId, difficultyRate}
+    comments: {type : [{}]},                         //{user._id, body, likes[], dislikes[]}
     mixOrder : {type : Boolean, default : true},
     questionNumber : {type : Number, required : true}
 });

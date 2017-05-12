@@ -7,22 +7,22 @@ var schCtrl = require('../controllers/schoolController');
 
 // route for get all districts names from the database
 router.get('/allDistricts', function (req, res) {
-  schCtrl.getAllDistricts({}, function (val) {
-    res.json({districts : val._getAllDistricts});
+  schCtrl.getAllDistricts(function (val) {
+    res.json({districts : val});
   });
 });
 
 // route for get all schools names from the database
 router.get('/allSchools', function (req, res) {
-  schCtrl.getAllSchools({}, function (val) {
-    res.json({schools : val._getAllSchools});
+  schCtrl.getAllSchools(function (val) {
+    res.json({schools : val});
   });
 });
 
 // route for get all school names by district from the database
 router.get('/allSchoolsByDistricts', function (req, res) {
-  schCtrl.getAllSchoolsByDistricts({getAllSchoolsByDistricts : {district : req.query.district}}, function (val) {
-    res.json({schools : val._getAllSchoolsByDistrict});
+  schCtrl.getAllSchoolsByDistricts(req.query['district'] , function (val) {
+    res.json({schools : val});
   });
 });
 

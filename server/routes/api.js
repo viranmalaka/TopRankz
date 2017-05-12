@@ -11,5 +11,7 @@ router.use('/paper', require('./paper'));
 router.use('/user', require('./user'));
 router.use('/school', require('./school'));
 router.use('/subject', require('./subject'));
+router.use('/attempt', require('./attempt'));
+router.use('/question', require('./question'));
 
 module.exports = router;

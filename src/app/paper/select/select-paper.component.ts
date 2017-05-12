@@ -64,13 +64,13 @@ export class SelectPaperComponent implements OnInit, AfterViewInit {
 
     this.paperService.getUsersSubject().subscribe(res => {
       if (res.success) {
+        console.log(res['su']);
         this.subjectArray = res['subjects'];
         this.selectSubject = this.subjectArray[0].id;
         this.paperTypeChanged(this.paperType);
       }
     });
   }
-
 
   ngOnInit() {
 

@@ -8,6 +8,7 @@ const Question = require('../models/question');
 const Temp = require('../models/temp');
 const Subject = require('../models/subject');
 
+
 module.exports.checkPaperName = function (name, next) {
   Paper.find({name : name}, function (err, papers) {
     next(papers.length > 0);
@@ -192,7 +193,7 @@ module.exports.finishPaper = function (finished, user, paper, questions, next) {
                 for(var i= 0; i < questions.length; i ++) {
                   questions[i].paper = savedPaper._id;
                   questions[i].checkedBy = finished ? user._id : null;
-                  questions[i].difficulty = [];
+                  questions[i].difficulty = {};
                   questions[i].comments = [];
                 }
                 insertQuestionBatch(questions, 0, function (savedCount, err, errIndex) {
@@ -269,7 +270,7 @@ module.exports.getPaperById = function (id, next) {
     }else{
       next(paper);
     }
-  })
+  });
 };
 
 module.exports.getQuestionInView = function (p, q, next) {
@@ -307,6 +308,8 @@ module.exports.getQuestionsOfPaper = function (p, next) {
     }
   });
 };
+
+
 
 function insertQuestionBatch(docs, index, next) {
   if(docs.length == index){

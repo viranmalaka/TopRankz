@@ -15,18 +15,15 @@ import {PaperService} from "../paper.service";
         </div>
       </div>
       <div class="extra content" *ngIf="paperData.viewMode == 'S'">
-        <div class="right floated author">
-          <button class="ui tiny button">Show Results</button>
-        </div>
         <div class="left floated author">
-          <button class="ui tiny button">Take Attempt</button>
+          <button class="ui tiny button" routerLink="/paper/attempt/{{paperData.id}}">Take Attempt</button>
         </div>
       </div>
-      <div class="extra content" *ngIf="paperData.viewMode != 'S'">
+      <div class="extra content" *ngIf="paperData.viewMode == 'V' || paperData.viewMode=='T' || paperData.viewMode=='D'">
         <div class="right floated author">
-          <button class="ui tiny button">View Paper</button>
+          <button class="ui tiny button" routerLink="/paper/{{paperData.id}}">View Paper</button>
         </div>
-        <div class="left floated author" *ngIf="paperData.viewMode != 'V'">
+        <div class="left floated author" *ngIf="paperData.viewMode == 'D'">
           <button class="ui tiny button">Proof Reading</button>
         </div>
       </div>
@@ -34,18 +31,26 @@ import {PaperService} from "../paper.service";
   `,
   styles: []
 })
-export class PaperCardComponent implements OnInit {
+export class PaperCardComponent implements OnInit{
 
   @Input() paper;
   paperData = {
     name : '',
     numberOfQuestions : 0,
     timeLimit : 0,
-    viewMode : 'D',
-    addedBy : ''
+    viewMode : '',
+    addedBy : '',
+    id : 0
   };
 
-  constructor(private paperService : PaperService) { }
+  constructor(private paperService : PaperService) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user) {
+      this.paperData.viewMode = user.acc_type;
+    }else{
+      this.paperData.viewMode = 'V';
+    }
+  }
 
   ngOnInit() {
     this.paperService.getPaper(this.paper._id)
@@ -53,6 +58,7 @@ export class PaperCardComponent implements OnInit {
         this.paperData.name = res.paper.name;
         this.paperData.numberOfQuestions = res.paper.questions;
         this.paperData.timeLimit = res.paper.time_limit;
+        this.paperData.id = res.paper.id;
         if(this.paperData.viewMode == 'D'){
           console.log(res.paper);
           this.paperData.addedBy = res.paper.addedBy.username;
@@ -60,5 +66,4 @@ export class PaperCardComponent implements OnInit {
       });
 
   }
-
 }

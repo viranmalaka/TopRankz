@@ -8,6 +8,7 @@ import {ViewPaperComponent} from "./paper/view/view-paper.component";
 import {EditUserDetailsComponent} from "./auth/edit-user-details.component";
 import {SignupDataEntryComponent} from "./auth/admins/signup-data-entry.component";
 import {SelectPaperComponent} from "./paper/select/select-paper.component";
+import {ReviewComponent} from "./paper/attempt/review/review.component";
 
 const APP_ROUTES : Routes = [
   {path : 'login', component : LoginComponent},
@@ -19,6 +20,7 @@ const APP_ROUTES : Routes = [
   {path : 'paper/create/:paper_id', component : CreatePaperComponent},
   {path : 'paper/attempt' , component : AttemptComponent},
   {path : 'paper/attempt/:id' , component : AttemptComponent},
+  {path : 'paper/attempt/review/:id' , component : ReviewComponent},
   {path : 'paper/:paper_id' , component: ViewPaperComponent},//redirectTo : '/paper/:paper_id/1'},
   {path : 'paper/:paper_id/:id' , component : ViewPaperComponent},
 
