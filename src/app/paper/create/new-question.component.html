@@ -37,19 +37,19 @@
     <div class="five wide column">
       <div id="topicField" class="field">
         <label>Topics</label>
-        <select id="topics" multiple="" class="ui dropdown" (change)="onTest()">
+        <select id="topics" multiple="" class="ui dropdown">
           <option value="">select Topics Here</option>
           <option *ngFor="let t of topicsArray" data-value="{{t.id}}">{{t['english']}}</option>
         </select>
       </div>
       <div class="field">
         <label>Tags</label>
-        <div class="ui fluid multiple search selection dropdown">
-          <input id="tags" name="tags" type="hidden" (change)="onTagsChanged()"/>
+        <div class="ui fluid multiple search selection dropdown" id="tags">
+          <input name="tags" type="hidden"/>
           <i class="dropdown icon"></i>
           <div class="default text">Select Tags</div>
           <div class="menu">
-            <div *ngFor="let t of tagsArray" data-value='t' class="item">{{t}}</div>
+            <div *ngFor="let t of tagsArray" attr.data-value='{{t}}' class="item">{{t}}</div>
           </div>
         </div>
       </div>

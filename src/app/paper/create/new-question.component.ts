@@ -45,13 +45,21 @@ export class NewQuestionComponent implements OnInit , AfterViewInit, OnChanges{
 
 
   ngAfterViewInit(){
-    console.log('on view init');
+    let that = this;
+    // console.log('on view init');
     $('.ui.checkbox').checkbox();
 
-    $('.ui.dropdown').dropdown({
-      allowAdditions:  true
+    $('#topics').dropdown({
+      onChange: function(val){
+        that.question.topics = val;
+      }
     });
-
+    $('#tags').dropdown({
+      allowAdditions:  true,
+      onChange : function(val){
+        that.question.tags = val.split(',');
+      }
+    });
 
     tinyMCE.init({
       selector : '#qBody',
@@ -85,13 +93,14 @@ export class NewQuestionComponent implements OnInit , AfterViewInit, OnChanges{
         }.bind(this)
       })
     }
+
     setTimeout(()=>{
       this.setMCEEditors();
       this.setDropDowns();
     }, 100)
 
-  }
 
+  }
 
   onSubmit(){
     this.onSubmitChanges.emit();
@@ -117,36 +126,16 @@ export class NewQuestionComponent implements OnInit , AfterViewInit, OnChanges{
   }
 
   setDropDowns(){
-    let dropdowns = $('.ui.dropdown');
-    console.log('chagening dropdonws');
-    console.log(this.question.tags);
-    console.log(this.question.topics);
     if (this.question.tags.length > 0 && this.question.tags[0] != "") {
-      dropdowns.has('#tags').dropdown('set exactly', this.question.tags);
+      $('#tags').dropdown('set exactly', this.question.tags);
     }else{
-      dropdowns.has('#tags').dropdown('clear');
+      $('#tags').dropdown('clear');
     }
     if (this.question.topics.length > 0) {
-      // dropdowns.has('#topics').dropdown('clear');
-      dropdowns.has('#topics').dropdown('set exactly', this.question.topics);
+      $('#topics').dropdown('set exactly', this.question.topics);
     }else{
-      dropdowns.has('#topics').dropdown('clear');
+      $('#topics').dropdown('clear');
     }
-  }
-
-  onTopicsChanged(){
-    console.log('changes');
-    this.question.topics = $('.ui.dropdown').has('#topics').dropdown('get value');
-    console.log('topics', this.question.topics);
-  }
-
-  onTagsChanged(){
-    console.log('toags' , this.question.tags);
-    this.question.tags = $('.ui.dropdown').has('#tags').dropdown('get value').split(',');
-  }
-
-  onTest(){
-    console.log('testing');
   }
 }
 
