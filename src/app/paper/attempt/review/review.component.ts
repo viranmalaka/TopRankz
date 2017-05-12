@@ -86,7 +86,6 @@ export class ReviewComponent implements OnInit, AfterViewInit {
     }, 1000)
   }
 
-
   setCorrectCount(){
     for (let i = 0; i < this.answers.length; i++) {
       let ans = this.answers[i];
@@ -101,8 +100,11 @@ export class ReviewComponent implements OnInit, AfterViewInit {
   }
 
   navQuestions(id){
-    $('#queContainer').scrollTop = $('#que' + id).offsetTop;
+    $('#queContainer').animate({
+      scrollTop : $('#queContainer').scrollTop() + $('#que' + id).position().top
+    }, 1000);
   }
+
 
   loadComments(id){
     console.log('here');
@@ -153,9 +155,8 @@ export class ReviewComponent implements OnInit, AfterViewInit {
     return id;
   }
 
-  test(x){
-    console.log(x);
-    return x;
+  scroll(x){
+
   }
 
 }
