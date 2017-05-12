@@ -55,7 +55,6 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
     <div class="bar"></div>
   </div>
 </div>
-<button (click)="print()">print here</button>
   `,
   styles: []
 })

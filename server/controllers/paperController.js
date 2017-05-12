@@ -193,7 +193,7 @@ module.exports.finishPaper = function (finished, user, paper, questions, next) {
                 for(var i= 0; i < questions.length; i ++) {
                   questions[i].paper = savedPaper._id;
                   questions[i].checkedBy = finished ? user._id : null;
-                  questions[i].difficulty = [];
+                  questions[i].difficulty = {};
                   questions[i].comments = [];
                 }
                 insertQuestionBatch(questions, 0, function (savedCount, err, errIndex) {

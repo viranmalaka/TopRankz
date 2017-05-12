@@ -6,6 +6,7 @@ const PaperAttempts = require('../models/paperAttempt');
 const Temp = require('../models/temp');
 const Paper = require('../models/paper');
 const Question = require('../models/question');
+const Subject = require('../models/subject');
 
 module.exports.startAttempt = function (student, paper, next) {
   var attempt = new PaperAttempts();
@@ -104,7 +105,7 @@ module.exports.getReview = function (user, attemptId, next) {
       if(attempt){
         // next(attempt);
         if(user._id + "" == attempt.student + ""){
-          populateQuestions(attempt.answers, 0, function (attemptWithQBody) {
+          populateQuestions(attempt.answers, user._id, 0, function (attemptWithQBody) {
             attempt.answers = attemptWithQBody;
             next(attempt);
           })
@@ -118,19 +119,28 @@ module.exports.getReview = function (user, attemptId, next) {
   })
 };
 
-function populateQuestions(arr, i, next) {
+function populateQuestions(arr, userID, i, next) {
   if(arr.length == i){
     next(arr);
   }else{
-    Question.findById(arr[i].qId).select('-id -_id -paper -checkBy -difficulty -comments -mixOrder')
+    Question.findById(arr[i].qId).select(' -_id -checkBy -comments -mixOrder')
       .exec(function (err, que) {
-        arr[i].qId = que;
         if(arr.givenAnswer == 0){
           arr[i].correct = false;
         }else{
           arr[i].correct = que.correct.indexOf(arr[i].givenAnswer - 1) > -1;
         }
-        populateQuestions(arr, i+1, next);
+        var diffSum = 0;
+        if(que.difficulty){
+          for (var j = 0; j < Object.keys(que.difficulty).length; j++) {
+            diffSum += Object.values(que.difficulty)[j];
+          }
+          que.yourDiff = que.difficulty[userID];
+          var yd = que.difficulty[userID];
+          que.difficulty = {avg : diffSum / Object.keys(que.difficulty).length, yourDiff : yd};
+        }
+        arr[i].qId = que;
+        populateQuestions(arr, userID, i+1, next);
       });
   }
 }

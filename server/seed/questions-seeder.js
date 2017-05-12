@@ -108,7 +108,7 @@ function createQuestions(q, index, next) {
           topics: [random(1,6)],                      // array of if of topics from Subject table
           paper: papers[index]._id,
           checkedBy: '58ef03f7d4aa602f58b5626e',
-          difficulty : [],                     //{studentId, difficultyRate}
+          difficulty : {},                     //{studentId, difficultyRate}
           comments: [],                         //{username, body, likes[], dislikes[]}
           mixOrder : true,
           questionNumber : i+1
