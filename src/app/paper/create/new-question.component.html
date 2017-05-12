@@ -22,7 +22,7 @@
               <div class="ui checkbox">
                 <input type="checkbox" id="chkAns{{question.answers[n].id}}" class="" tabindex="-1"
                     [ngModel]="checkedThisAns(question.answers[n].id)"
-                    (change)="toggleThisAns(question.answers[n].id)"/>
+                    (blur)="toggleThisAns(question.answers[n].id)"/>
                 <label>{{('0' + question.answers[n].id).slice(-2)}}</label>
               </div>
             </div>
@@ -57,7 +57,7 @@
         <div class="ui checkbox">
           <input type="checkbox" name="canMix" class="hidden"
                  [ngModel]="question.mixOrder"
-                  (change)="question.mixOrder = !question.mixOrder"/>
+                  (blur)="question.mixOrder = !question.mixOrder"/>
           <label>Mix the answer order.</label>
         </div>
       </div>
@@ -67,3 +67,4 @@
     </div>
   </div>
 </div>
+
