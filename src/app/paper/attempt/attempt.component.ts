@@ -90,7 +90,7 @@ export class AttemptComponent implements OnInit{
   startedAtServer;
   startedAtClient;
   viewedCount = 0;
-  time;
+  time = 0;
   questionDashBoardShowing = false;
   questionAnswerSheetShowing = false;
   attemptID;
@@ -148,18 +148,25 @@ export class AttemptComponent implements OnInit{
         //     this.submitFinal();
         //   }
         // });
-        this.startedAtServer = res['time'];
-        this.started = true;
-        this.changeQuestion(1);
-        Observable.timer(1000,1000).subscribe(t => {
-          this.time = t;
-        });
-        this.questionDashBoardShowing = true;
-        this.state = "Q";
-        this.attemptID = res['attemptID'];
+
+        if(res.finish){
+          this.router.navigate(['paper', 'attempt','review',res['attemptID']]);
+        }else{
+          this.startedAtServer = new Date(res['time']);
+          this.time = parseInt("" + ((new Date()).getTime() - this.startedAtServer.getTime())/1000);
+
+          this.started = true;
+          this.changeQuestion(1);
+          Observable.timer(1000,1000).subscribe(t => {
+            this.time += 1;
+          });
+          this.questionDashBoardShowing = true;
+          this.state = "Q";
+          this.attemptID = res['attemptID'];
+        }
+
       }
     });
-
   }
 
   changeQuestion(n){

@@ -7,11 +7,13 @@ var timeout = require('connect-timeout');
 var attmpCtrl = require('../controllers/attemptController');
 
 router.get('/get_start_paper', function (req, res) {
-  attmpCtrl.startAttempt(req.user, req.query['paper'], function (time, attemptID) {
+  attmpCtrl.startAttempt(req.user, req.query['paper'], function (time, attemptID, finish) {
+    console.log('time is', time);
     res.jsonp({
       success : true,
       time : time,
-      attemptID : attemptID
+      attemptID : attemptID,
+      finish : finish
     })
   });
 });

@@ -160,5 +160,13 @@ router.post('/finish_attempt', function (req, res) {
 
 });
 
+router.get('/get_papers_of_teacher', function (req, res) {
+  if(req.user){
+    if(req.user.acc_type == 'T'){
+
+    }
+  }
+});
+
 module.exports = router;
 

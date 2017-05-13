@@ -30,6 +30,7 @@ import { AttemptAnswerSheetComponent } from './paper/attempt/attempt-answer-shee
 import { ReviewComponent } from './paper/attempt/review/review.component';
 import { UserProfileComponent } from './auth/user-profile/user-profile.component';
 import { UserDetailsClassGroupComponent } from './auth/user-details-class-group.component';
+import { CreateClassGroupComponent } from './auth/create-class-group.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { UserDetailsClassGroupComponent } from './auth/user-details-class-group.
     AttemptAnswerSheetComponent,
     ReviewComponent,
     UserProfileComponent,
-    UserDetailsClassGroupComponent
+    UserDetailsClassGroupComponent,
+    CreateClassGroupComponent
   ],
   imports: [
     BrowserModule,

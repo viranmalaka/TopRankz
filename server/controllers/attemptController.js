@@ -9,37 +9,51 @@ const Question = require('../models/question');
 const Subject = require('../models/subject');
 
 module.exports.startAttempt = function (student, paper, next) {
-  var attempt = new PaperAttempts();
-  attempt.student = student._id;
-  attempt.paper = paper;
-  attempt.startingTime = new Date();
-  attempt.save(function (err, savedAttempt) {
+  Temp.findOne({userId : student._id}, function (err, temps) {
     if(err){
       console.log(err);
       throw err;
     }else{
-      Temp.findOne({userId : student._id}, function (err, temps) {
-        if(err){
-          console.log(err);
-          throw err;
-        }else{
-          var t = new Temp();
-          if(temps){
-            t = temps;
+      if(temps){
+        PaperAttempts.findById(temps.data).populate({path :'paper', select:'time_limit'}).exec(function (err, attempt) {
+          if(err){
+            console.log(err);
+            throw err;
           }else{
+            if(attempt.startingTime.getTime() + attempt.paper.time_limit*60000 < (new Date()).getTime()){
+              finishAttemptFunction({attemptID : attempt.id}, function () {
+                next(false, attempt.id, true);
+              });
+            }else{
+              next(attempt.startingTime, attempt.id, false);
+            }
+          }
+        })
+      }else{
+        var attempt = new PaperAttempts();
+        attempt.student = student._id;
+        attempt.paper = paper;
+        attempt.startingTime = new Date();
+        attempt.save(function (err, savedAttempt) {
+          if(err){
+            console.log(err);
+            throw err;
+          }else{
+            var t = new Temp();
             t.userId = student._id;
             t.data = savedAttempt._id;
+            t.save(function (err, temp) {
+              if(err){
+                console.log(err);
+                throw err;
+              }else{
+                next(savedAttempt.startingTime, savedAttempt.id);
+              }
+            })
           }
-          t.save(function (err, temp) {
-            if(err){
-              console.log(err);
-              throw err;
-            }else{
-              next(savedAttempt.startingTime, savedAttempt.id);
-            }
-          })
-        }
-      });
+        });
+      }
+
     }
   });
 };
@@ -63,7 +77,7 @@ module.exports.saveAttemptTemp = function (data, next) {
   });
 };
 
-module.exports.finishAttempt = function (data, next) {
+var finishAttemptFunction = function (data, next) {
   PaperAttempts.findOne({id : data.attemptID}, function (err, att) {
     if(err){
       console.log(err);
@@ -82,7 +96,9 @@ module.exports.finishAttempt = function (data, next) {
   })
 };
 
-module.exports.setTimer = function (data, next) {
+module.exports.finishAttempt = finishAttemptFunction;
+
+  module.exports.setTimer = function (data, next) {
   console.log(data);
   Paper.findById(data, function (err, paper) {
     if(err){

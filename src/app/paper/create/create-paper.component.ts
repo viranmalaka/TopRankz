@@ -105,6 +105,7 @@ export class CreatePaperComponent implements OnInit, AfterViewInit {
   }
 
   onSubmitNewPaper(formControl : FormControl){
+    console.log('here');
     this.paperService.postCreateNewPaper(formControl.value)
       .subscribe(res => {
         if(res.success){

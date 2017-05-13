@@ -148,11 +148,15 @@ export class NewPaperComponent implements OnInit, AfterViewInit {
 
   onSubmit(){
     if($('#newPaper').form('is valid')){
+      alert('adsfasdf');
       this.paperCreateForm.value.medium = $('#mediumSelect').val();
       this.paperCreateForm.value.subject = $('#subjectSelect').val();
       this.paperCreateForm.value.random = $('#random').checkbox('is checked');
-      this.paperCreateForm.value.isPassPaper = $('#passpaper').checkbox('is checked');
+      if(this.user.acc_type == 'D'){
+        this.paperCreateForm.value.isPassPaper = $('#passpaper').checkbox('is checked');
+      }
       this.onSubmitForm.emit(this.paperCreateForm);
     }
+    alert('weer');
   }
 }
