@@ -28,6 +28,8 @@ import { PaperListComponent } from './paper/select/paper-list.component';
 import { PaperCardComponent } from './paper/select/paper-card.component';
 import { AttemptAnswerSheetComponent } from './paper/attempt/attempt-answer-sheet.component';
 import { ReviewComponent } from './paper/attempt/review/review.component';
+import { UserProfileComponent } from './auth/user-profile/user-profile.component';
+import { UserDetailsClassGroupComponent } from './auth/user-details-class-group.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { ReviewComponent } from './paper/attempt/review/review.component';
     PaperListComponent,
     PaperCardComponent,
     AttemptAnswerSheetComponent,
-    ReviewComponent
+    ReviewComponent,
+    UserProfileComponent,
+    UserDetailsClassGroupComponent
   ],
   imports: [
     BrowserModule,

@@ -4,12 +4,13 @@ import {AuthService} from "./auth/auth.service";
 import {OtherService} from "./other.services";
 import {AttemptService} from "./paper/attempt.service";
 import {QuestionService} from "./paper/question.service";
+import {ClassGroupService} from "./paper/class-group.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers : [PaperService, AuthService, OtherService, AttemptService, QuestionService]
+  providers : [PaperService, AuthService, OtherService, AttemptService, QuestionService, ClassGroupService]
 })
 export class AppComponent implements OnInit, AfterViewInit{
   constructor(){}

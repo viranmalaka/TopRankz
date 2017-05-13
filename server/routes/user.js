@@ -206,6 +206,19 @@ router.post('/post_profile_picture', upload.single('profImg'), function (req, re
   });
 });
 
+router.get('/search_teachers', function (req, res) {
+  if(req.query['q']){
+    usrCntl.searchTeachers(req.query['q'], function (suc, results) {
+      res.jsonp({
+        success : suc,
+        teachers : results
+      });
+    })
+  }else{
+    res.jsonp({success : false});
+  }
+});
+
 //<editor-fold desc="Passport Things">
 passport.use(new LocalStrategy(function (username, password, done) {
   User.findOne({username : username}, function (err, user) {

@@ -73,4 +73,10 @@ export class AuthService {
       .map((response : Response) => response.json());
   }
 
+
+  searchTeachersName(txt){
+    return this._http.get(this.authDomain + "search_teachers?q=" + txt)
+      .map((res : Response) => res.json());
+  }
+
 }

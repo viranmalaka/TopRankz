@@ -7,6 +7,14 @@
       <label class="fluid ui blue basic button" for='imgUpload'>Change</label>
       <input type="file" class="inputfile" id="imgUpload" name='imgUpload' (change)="changeImg($event)"
             accept=".jpg, .png, .jpge">
+
+      <div class="ui vertical fluid tabular menu">
+        <a class="item">
+
+
+        </a>
+      </div>
+
       <div class="ui vertical fluid tabular menu">
         <a class="item" id="mnuBio"
            (click)="activeTab = 'bio'" [class.active]="activeTab == 'bio'">Bio</a>
@@ -22,6 +30,9 @@
       </div>
       <div *ngIf="activeTab == 'enroll'">
         <app-user-details-enroll></app-user-details-enroll>
+      </div>
+      <div *ngIf="activeTab == 'class'">
+        <app-user-details-class-group></app-user-details-class-group>
       </div>
     </div>
   </div>

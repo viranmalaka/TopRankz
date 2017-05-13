@@ -80,6 +80,19 @@ module.exports.setEnrollments = function (user, data, next) {
   })
 };
 
+module.exports.searchTeachers = function (txt, next) {
+  Teacher.find({visibleName : {$regex : new RegExp(txt, 'ig')}}).select('visibleName classGroup')
+    .populate('classGroup')
+    .exec(function (err, teachers) {
+      if(err){
+        console.log(err);
+        throw err;
+      }else{
+        next(true, teachers);
+      }
+  });
+};
+
 // create new user
 module.exports.createUser = function (newUser, cb) {
   bycrypt.genSalt(10, function (err, salt) {                          // generate salt to encrypt
@@ -129,7 +142,6 @@ module.exports.createUser = function (newUser, cb) {
     })
   });
 };
-
 
 // compare password
 module.exports.comparePassword = function (candidatePassword, hash, cb) {
