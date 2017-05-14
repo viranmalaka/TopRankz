@@ -31,6 +31,7 @@ import { ReviewComponent } from './paper/attempt/review/review.component';
 import { UserProfileComponent } from './auth/user-profile/user-profile.component';
 import { UserDetailsClassGroupComponent } from './auth/user-details-class-group.component';
 import { CreateClassGroupComponent } from './auth/create-class-group.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { CreateClassGroupComponent } from './auth/create-class-group.component';
     ReviewComponent,
     UserProfileComponent,
     UserDetailsClassGroupComponent,
-    CreateClassGroupComponent
+    CreateClassGroupComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

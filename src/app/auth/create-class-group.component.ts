@@ -14,6 +14,7 @@ import {ClassGroupService} from "../paper/class-group.service";
 <div class="ui divider"></div>
 <div class="ui grid">
     <div class="ui six wide column" style="height: 65vh; overflow-y: auto;" >
+    <h3>Your Class Groups</h3>
       <div class="ui vertical menu" *ngIf="classGroupNameList.length != 0">
         <a class="item" *ngFor="let n of classGroupNameList; let i = index"  
             [class.active]="selectCG == i" (click)="selectCG = i">
@@ -22,8 +23,9 @@ import {ClassGroupService} from "../paper/class-group.service";
       </div>
     </div>
     <div class="ui six wide column" style="height: 65vh; overflow-y: auto;">
-      <div *ngIf="classGroupNameList.length > 0 && selectCG > -1">
-        <div class="ui checkbox" *ngFor="let x of classGroupNameList[selectCG].paper">
+      <h3>Your Available Papers</h3>
+      <div *ngIf="teachersPaper.length > 0">
+        <div class="ui checkbox" *ngFor="let x of teachersPaper">
           <input type="checkbox" tabindex="0" class="hidden">
           <label>{{x.name}}</label>
         </div>
@@ -50,6 +52,12 @@ export class CreateClassGroupComponent implements OnInit, AfterViewInit {
     this.cgService.getAllClassGroup().subscribe(res => {
       if(res.success){
         this.classGroupNameList = res.cgs;
+
+        this.cgService.getAllPapersOfTeacher().subscribe(res => {
+          if(res.success){
+            this.teachersPaper = res['papers'];
+          }
+        })
       }
     });
   }

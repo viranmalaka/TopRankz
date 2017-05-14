@@ -5,6 +5,7 @@ import {OtherService} from "./other.services";
 import {AttemptService} from "./paper/attempt.service";
 import {QuestionService} from "./paper/question.service";
 import {ClassGroupService} from "./paper/class-group.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -13,9 +14,30 @@ import {ClassGroupService} from "./paper/class-group.service";
   providers : [PaperService, AuthService, OtherService, AttemptService, QuestionService, ClassGroupService]
 })
 export class AppComponent implements OnInit, AfterViewInit{
-  constructor(){}
+  user = {username : 'are you log in ?'};
+  checkLogin = false;
+
+  constructor(private authService : AuthService, private router : Router){
+
+  }
 
   ngOnInit(){
+    this.authService.getCheckToken().subscribe(res => {
+      if(res.validity){
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.checkLogin = true;
+      }
+    });
+
+    this.authService.loginEventSubject.subscribe(() => {
+      this.user = JSON.parse(localStorage.getItem('user'));
+      this.checkLogin = true;
+      if(!this.user){
+        this.user = {username : 'are you log in ?'};
+        this.checkLogin = false;
+      }
+    });
+
     toastr.options = {
       "closeButton": true,
       "debug": false,
@@ -36,6 +58,15 @@ export class AppComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(){
+    $('.ui.dropdown').dropdown();
+  }
 
+  logOut(){
+    this.authService.getLogOut().subscribe(res => {
+      this.checkLogin = false;
+      localStorage.clear();
+      this.router.navigate(['/']);
+      this.authService.triggerLogginEvent();
+    });
   }
 }

@@ -10,9 +10,12 @@ import {SignupDataEntryComponent} from "./auth/admins/signup-data-entry.componen
 import {SelectPaperComponent} from "./paper/select/select-paper.component";
 import {ReviewComponent} from "./paper/attempt/review/review.component";
 import {CreateClassGroupComponent} from "./auth/create-class-group.component";
+import {ResetPasswordComponent} from "./auth/reset-password/reset-password.component";
 
 const APP_ROUTES : Routes = [
   {path : 'login', component : LoginComponent},
+  {path : 'login/reset', component : ResetPasswordComponent},
+  {path : 'login/reset/:token', component : ResetPasswordComponent},
   {path : 'signup', component : SignupComponent},
   {path : 'admin/signup', component : SignupDataEntryComponent},
   {path : ':username/edit', component : EditUserDetailsComponent},

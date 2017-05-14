@@ -1,11 +1,15 @@
-import { Injectable } from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 import {Http, Response, RequestOptions, Headers} from "@angular/http";
 import 'rxjs/add/operator/map';
+import {EmitterVisitorContext} from "@angular/compiler/src/output/abstract_emitter";
+import {Subject} from "rxjs";
 
 @Injectable()
 export class AuthService {
   private domainUrl = require('../config')['development'].domainURL;
   private authDomain =  this.domainUrl + "user/";
+
+  public loginEventSubject = new Subject();
 
   constructor(private _http : Http) {
 
@@ -19,6 +23,11 @@ export class AuthService {
   postSignUp(data){
     return this._http.post(this.authDomain + 'signup', data)
       .map((response: Response) => response.json());
+  }
+
+  getLogOut(){
+    return this._http.get(this.authDomain + 'logout')
+      .map((res : Response) => res.json());
   }
 
   getCheckToken(){
@@ -79,4 +88,23 @@ export class AuthService {
       .map((res : Response) => res.json());
   }
 
+  triggerLogginEvent(){
+    this.loginEventSubject.next();
+  }
+
+  resetPassword(email){
+    let data = {email : email};
+    return this._http.post(this.authDomain + "reset_password", data)
+      .map((res : Response) => res.json());
+  }
+
+  checkPassToken(t){
+    return this._http.get(this.authDomain + "check_password_token?token=" + t)
+      .map((res : Response) => res.json());
+  }
+
+  updatePassword(data){
+    return this._http.post(this.authDomain + "update_password", data)
+      .map((res : Response) => res.json());
+  }
 }

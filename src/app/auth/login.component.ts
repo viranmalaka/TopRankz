@@ -3,6 +3,7 @@ import {FormGroup, FormControl} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Router} from "@angular/router";
 
+
 @Component({
   selector: 'auth-login',
   templateUrl : "./login.component.html",
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('user', JSON.stringify(res.user));
           localStorage.setItem('auth-token', res.token);
           toastr.success('Login Success');
+          this.authService.triggerLogginEvent();
           this.router.navigate([res.user.username, 'edit']);
         }
       }, (err) => {

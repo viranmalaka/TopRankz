@@ -5,6 +5,7 @@
 var router = require('express').Router();
 var ClassGroup = require('../models/classGroup');
 var Teacher = require('../models/teacher');
+var Paper = require('../models/paper');
 
 router.get('/get_all_cg_teacher', function (req, res) {
   if(req.user){
@@ -50,6 +51,25 @@ router.post('/add_class_group', function (req, res) {
               })
             }
           })
+        }
+      })
+    }else{
+      res.jsonp({success : false});
+    }
+  }else{
+    res.jsonp({success : false});
+  }
+});
+
+router.get('/get_all_paper_of_teacher', function (req, res) {
+  if(req.user){
+    if(req.user.acc_type == 'T'){
+      Paper.find({addedBy : req.user._id}).select('name').exec(function (err, papers) {
+        if(err){
+          console.log(err);
+          throw err;
+        }else{
+          res.jsonp({success : true, papers : papers});
         }
       })
     }else{

@@ -34,6 +34,7 @@ export class SignupComponent implements OnInit, AfterViewInit{
             localStorage.setItem('auth-token', res.token);
             localStorage.setItem('user', JSON.stringify(res.user));
             toastr.success('Singup successful.');
+            this.authService.triggerLogginEvent();
             this.router.navigate([res.user.username, 'edit']);
           }else{
             toastr.error('something went wrong');

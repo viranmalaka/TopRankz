@@ -93,6 +93,22 @@ module.exports.searchTeachers = function (txt, next) {
   });
 };
 
+module.exports.updatePasswords = function (user, cb) {
+  bycrypt.genSalt(10, function (err, salt) {
+    bycrypt.hash(user.password, salt, function (err, hash) {
+      user.password = hash;
+      user.save(function (err, saved) {
+        if(err){
+          console.log(err);
+          throw err;
+        }else{
+          cb();
+        }
+      });
+    });
+  });
+};
+
 // create new user
 module.exports.createUser = function (newUser, cb) {
   bycrypt.genSalt(10, function (err, salt) {                          // generate salt to encrypt
