@@ -19,6 +19,7 @@ import {Headers, RequestOptions} from "@angular/http";
 })
 export class EditUserDetailsComponent implements OnInit {
   activeTab = 'bio';
+  editMode = true;
   user = JSON.parse(localStorage.getItem('user'));
 
   constructor(private authService : AuthService, private router: Router) { }

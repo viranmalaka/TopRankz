@@ -80,5 +80,46 @@ router.get('/get_all_paper_of_teacher', function (req, res) {
   }
 });
 
+router.post('/allocate_papers', function (req, res) {
+  var data = req.body.data;
+  saveClassGroups(data, 0, function (arr) {
+    res.jsonp({success : true});
+  })
+});
+
+
+router.get('/drop_class_group', function (req, res) {
+  console.log(req.user._id, req.query['id']);
+  if(req.user){
+    if(req.user.acc_type == 'T'){
+      ClassGroup.remove({_id : req.query['id']}).exec(function (err, x) {
+        if(x > 0){
+          res.jsonp({success : true});
+        }
+      })
+    }else{
+      res.jsonp({success : false, msg : 'Not allowed'});
+    }
+  }else{
+    res.jsonp({success : false, msg : 'Not allowed'});
+  }
+});
+
+function saveClassGroups(arr, index, next){
+  if(arr.length == index){
+    next(arr);
+  }else{
+    ClassGroup.findById(arr[index]).exec(function (err, cg) {
+      for (var i = 0; i < arr[index].paper.length; i++) {
+        var obj = arr[index].paper[i];
+        cg.paper.push(obj);
+      }
+      cg.save(function (err, saved) {
+        saveClassGroups(arr, index + 1, next);
+      });
+    })
+  }
+}
+
 module.exports = router;
 

@@ -25,7 +25,7 @@ export class AttemptService {
   }
 
   saveAttemptFinished(data){
-    return this._http.post(this.attemptDomain + 'save_attempt_finish', data)
+    return this._http.post(this.attemptDomain + 'save_attempt_final', data)
       .map((res : Response) => res.json());
   }
 

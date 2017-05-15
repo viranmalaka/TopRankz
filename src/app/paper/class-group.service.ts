@@ -28,4 +28,14 @@ export class ClassGroupService {
     return this._http.get(this.cgDomain + 'get_all_paper_of_teacher')
       .map((res: Response) => res.json());
   }
+
+  allocatePapers(data){
+    return this._http.post(this.cgDomain + "allocate_papers", data)
+      .map((response: Response) => response.json());
+  }
+
+  dropClassGroup(id){
+    return this._http.get(this.cgDomain + 'drop_class_group?id=' + id)
+      .map((res: Response) => res.json());
+  }
 }

@@ -59,24 +59,18 @@ var answers = [
   "Notice the hero in the ngFor"
 ];
 
-var tags = [ 'A',
+var tags = [
   'form',
   'creates',
-  'a',
   'cohesive,',
   'effective,',
-  'and',
   'compelling',
   'data',
   'entry',
   'experience.',
-  'An',
   'Angular',
   'form',
   'coordinates',
-  'a',
-  'set',
-  'of',
   'data-bound',
   'user',
   'controls,',
@@ -86,7 +80,7 @@ var tags = [ 'A',
   'input,',
   'and',
   'presents',
-  'errors.' ]
+  'errors.' ];
 
 var user = '';
 function createQuestions(q, index, next) {
@@ -95,17 +89,18 @@ function createQuestions(q, index, next) {
   }else{
     function oneQues(i, next) {
       if (i < 20) {
+        var correctOne = random(0,4);
         var ques = new Question({
           body: questionBody[random(0,12)],
+          correct: [correctOne],    // array of corrected answers ids
           answers: [
-            {id:1, body : answers[random(0,23)]},
-            {id:2, body : answers[random(0,23)]},
-            {id:3, body : answers[random(0,23)]},
-            {id:4, body : answers[random(0,23)]}
+            {id:1, body : answers[random(0,23)] + (correctOne == 0 ? " *" : "")},
+            {id:2, body : answers[random(0,23)] + (correctOne == 1 ? " *" : "")},
+            {id:3, body : answers[random(0,23)] + (correctOne == 2 ? " *" : "")},
+            {id:4, body : answers[random(0,23)] + (correctOne == 3 ? " *" : "")}
           ],                          // {id : body}
-          correct: [random(0,4)],    // array of corrected answers ids
-          tags: [tags[random(0,27)], tags[random(0,27)]],                        // array of tags
-          topics: [random(1,6)],                      // array of if of topics from Subject table
+          tags: [tags[random(0,23)], tags[random(0,23)]],                        // array of tags
+          topics: [random(1,9)],                      // array of if of topics from Subject table
           paper: papers[index]._id,
           checkedBy: '58ef03f7d4aa602f58b5626e',
           difficulty : {},                     //{studentId, difficultyRate}

@@ -107,4 +107,5 @@ export class AuthService {
     return this._http.post(this.authDomain + "update_password", data)
       .map((res : Response) => res.json());
   }
+
 }

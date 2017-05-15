@@ -21,11 +21,12 @@ module.exports.startAttempt = function (student, paper, next) {
             throw err;
           }else{
             if(attempt.startingTime.getTime() + attempt.paper.time_limit*60000 < (new Date()).getTime()){
-              finishAttemptFunction({attemptID : attempt.id}, function () {
+              console.log('finish the paper');
+              finishAttemptFunction(student, {attemptID : attempt.id}, function () {
                 next(false, attempt.id, true);
               });
             }else{
-              next(attempt.startingTime, attempt.id, false);
+              next(attempt.startingTime, attempt.id, false, true, attempt.answers);
             }
           }
         })
@@ -77,7 +78,7 @@ module.exports.saveAttemptTemp = function (data, next) {
   });
 };
 
-var finishAttemptFunction = function (data, next) {
+var finishAttemptFunction = function (user, data, next) {
   PaperAttempts.findOne({id : data.attemptID}, function (err, att) {
     if(err){
       console.log(err);
@@ -89,7 +90,10 @@ var finishAttemptFunction = function (data, next) {
           console.log(err);
           throw err;
         }else{
-          next();
+          console.log(user._id);
+          Temp.remove({userId : user._id}, function (e, x) {
+            next(true);
+          });
         }
       })
     }
