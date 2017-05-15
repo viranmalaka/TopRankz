@@ -38,4 +38,14 @@ export class ClassGroupService {
     return this._http.get(this.cgDomain + 'drop_class_group?id=' + id)
       .map((res: Response) => res.json());
   }
+
+  getUserClassGroups(){
+    return this._http.get(this.cgDomain + 'get_class_groups')
+      .map((res: Response) => res.json());
+  }
+
+  addEnroll(id){
+    return this._http.get(this.cgDomain + "get_enroll?id=" + id)
+      .map((res : Response) => res.json());
+  }
 }

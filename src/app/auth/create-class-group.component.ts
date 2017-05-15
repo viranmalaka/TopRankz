@@ -26,20 +26,19 @@ import {ClassGroupService} from "../paper/class-group.service";
       <h3 style="margin-bottom: 5px">Your Available Papers</h3>
       <h5 style="margin: 0 0 0 0">(Select which paper for the selected class Group)</h5>
       <div *ngIf="teachersPaper.length > 0">
-        <div class="ui checkbox" *ngFor="let x of teachersPaper">
-          <input type="checkbox" tabindex="0" class="hidden" 
-          [ngModel]="cgList.length == 0 ? false : cgList[selectCG].paper.indexOf(x._id) > -1"
-          (blur)="selectPaper(cgList[selectCG].paper, x._id)">
+        <div class="field">
+          <div class="ui checkbox" *ngFor="let x of teachersPaper">
+            <input type="checkbox" tabindex="0" class="hidden" 
+            [ngModel]="cgList.length == 0 ? false : cgList[selectCG].paper.indexOf(x._id) > -1"
+            (blur)="selectPaper(cgList[selectCG].paper, x._id)">
           <label>{{x.name}}</label>
-        </div><br>
+        </div>
+        </div>
       </div>
     </div>
     <div class="ui four wide column">
       <button class="ui button blue" (click)="savePaperAllocation()">Save Changes</button>
       <button class="ui button tiny red" (click)="deleteCG()" style="margin-top: 10px;">Delete Class Group</button>
-    </div>
-    <div class="column">
-      <!--asdf  //TODO load the classgorup name here-->
     </div>
 </div>
 

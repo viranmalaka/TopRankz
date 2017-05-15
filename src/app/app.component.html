@@ -8,7 +8,7 @@
 
   <a class="item" routerLink="/paper">Papers</a>
   <a class="item" *ngIf="user.acc_type == 'T'">Class Group</a>
-  <a class="item" *ngIf="user.acc_type != 'S'" routerLink="/paper/create">Create Paper</a>
+  <a class="item" *ngIf="user.acc_type == 'T' && user.acc_type == 'D'" routerLink="/paper/create">Create Paper</a>
 
   <div class="right menu colhidden">
 
@@ -27,12 +27,7 @@
     <div class="ui dropdown item">
       <img class="ui mini circular image" src="assets/prof-pic/{{user.profile_picture ? user.profile_picture : 'demo-user-picture.png'}}" alt="label-image">
       <div class="menu">
-        <a class="item" href="mail.html">Inbox</a>
-        <a class="item" href="profile.html">Profile</a>
-        <a class="item" href="settings.html">Settings</a>
-        <div class="ui divider"></div>
-        <a class="item">Need Help?</a>
-        <a class="item" href="login.html">Sign Out</a>
+        <a class="item" *ngIf="checkLogin" routerLink="/{{user.username}}/edit">Settings</a>
       </div>
     </div>
     <a class="item labeled rightsidebar computer only">

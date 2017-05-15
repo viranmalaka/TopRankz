@@ -5,6 +5,7 @@
 var router = require('express').Router();
 var ClassGroup = require('../models/classGroup');
 var Teacher = require('../models/teacher');
+var Student = require('../models/student');
 var Paper = require('../models/paper');
 
 router.get('/get_all_cg_teacher', function (req, res) {
@@ -104,6 +105,53 @@ router.get('/drop_class_group', function (req, res) {
     res.jsonp({success : false, msg : 'Not allowed'});
   }
 });
+
+router.get('/get_class_groups', function (req, res) {
+  if(req.user){
+    Student.findById(req.user.acc_id).exec(function (err, std) {
+      if(err){
+        console.log(err);
+        throw err;
+      }else{
+        res.jsonp({success : true, cg : std.classGroup});
+      }
+    })
+  }else{
+    res.jsonp({success : false});
+  }
+});
+
+router.get('/get_enroll', function (req, res) {
+  if(req.user){
+    Student.findById(req.user.acc_id).exec(function (err, std) {
+      if(err){
+        console.log(err);
+        throw err;
+      }else{
+        var x = std.classGroup.indexOf(req.query['id']);
+        if(x > -1){
+          std.classGroup.splice(x, 1);
+        }else{
+          std.classGroup.push(req.query['id']);
+        }
+        std.save(function (err, saved) {
+          if(err){
+            console.log(err);
+            throw err;
+          }else{
+            res.jsonp({
+              success : true,
+              newList : saved.classGroup
+            })
+          }
+        })
+      }
+    })
+  }else{
+    res.jsonp({success : false});
+  }
+});
+
 
 function saveClassGroups(arr, index, next){
   if(arr.length == index){
