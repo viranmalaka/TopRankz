@@ -102,7 +102,7 @@ var finishAttemptFunction = function (user, data, next) {
 
 module.exports.finishAttempt = finishAttemptFunction;
 
-  module.exports.setTimer = function (data, next) {
+module.exports.setTimer = function (data, next) {
   console.log(data);
   Paper.findById(data, function (err, paper) {
     if(err){
@@ -165,8 +165,8 @@ function populateQuestions(arr, userID, i, next) {
   }
 }
 
+
 module.exports.getAttemptHistory = function (user, next) {
-  console.log(user._id);
   PaperAttempts.find({student : user._id})
     .populate({path :'paper', select : 'name questions'})
     // .populate({path : 'answers', populate : {path : 'qId', select : 'correct'}})
@@ -198,7 +198,6 @@ function eachQuestion(arr, index, next) {
     next(arr);
   }else{
     Question.findById(arr[index].qId).select('correct').exec(function (err, que) {
-      if (index == 6 ) console.log(que.correct, arr[index].givenAnswer);
       var r = que.correct.indexOf("" + (arr[index].givenAnswer - 1)) > -1;
       arr[index] = r;
       eachQuestion(arr, index + 1, next);
