@@ -34,9 +34,10 @@ import {raceStatic} from "rxjs/operator/race";
                  (click)="paperTypeChanged('mp')" [class.active]="paperType == 'mp'">My Papers</a>
             </div>
           </div>
-          <div *ngIf="['cg', 'rq'].indexOf(paperType) == -1">
+          <div *ngIf="['rq'].indexOf(paperType) == -1">
             <app-paper-list [paperList]="paperIds"></app-paper-list>
           </div>
+          
         </div>
       </div>
     </div>

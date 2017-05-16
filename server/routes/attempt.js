@@ -60,5 +60,15 @@ router.get('/get_review', function (req, res) {
   }
 });
 
+router.get('/attempt_history', function (req, res) {
+  if(req.user){
+    attmpCtrl.getAttemptHistory(req.user, function (data) {
+      res.jsonp({success : true, data : data});
+    });
+  }else{
+    res.jsonp({success : false});
+  }
+});
+
 module.exports = router;
 

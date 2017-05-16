@@ -32,6 +32,8 @@ import { UserProfileComponent } from './auth/user-profile/user-profile.component
 import { UserDetailsClassGroupComponent } from './auth/user-details-class-group.component';
 import { CreateClassGroupComponent } from './auth/create-class-group.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { NewlyAddedPapersComponent } from './paper/newly-added-papers.component';
+import { AttemptHistoryComponent } from './paper/attempt/attempt-history.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,9 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     UserProfileComponent,
     UserDetailsClassGroupComponent,
     CreateClassGroupComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    NewlyAddedPapersComponent,
+    AttemptHistoryComponent
   ],
   imports: [
     BrowserModule,

@@ -39,4 +39,9 @@ export class AttemptService {
       .map((res: Response) => res.json());
   }
 
+  getAttemptHistory(){
+    return this._http.get(this.attemptDomain + 'attempt_history')
+      .map((res : Response) => res.json());
+  }
+
 }

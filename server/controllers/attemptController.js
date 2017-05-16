@@ -165,4 +165,43 @@ function populateQuestions(arr, userID, i, next) {
   }
 }
 
+module.exports.getAttemptHistory = function (user, next) {
+  console.log(user._id);
+  PaperAttempts.find({student : user._id})
+    .populate({path :'paper', select : 'name questions'})
+    // .populate({path : 'answers', populate : {path : 'qId', select : 'correct'}})
+    .exec(function (err, atmpts) {
+    if(err){
+      console.log(err);
+      throw err;
+    }else{
+      eachAttempts(atmpts, 0, function (data) {
+        next(data);
+      })
+    }
+  })
+};
 
+function eachAttempts(arr, i, next) {
+  if(arr.length == i){
+    next(arr);
+  }else{
+    eachQuestion(arr[i].answers, 0, function (data) {
+      arr[i].answers = data;
+      eachAttempts(arr, i + 1, next);
+    });
+  }
+}
+
+function eachQuestion(arr, index, next) {
+  if(arr.length == index){
+    next(arr);
+  }else{
+    Question.findById(arr[index].qId).select('correct').exec(function (err, que) {
+      if (index == 6 ) console.log(que.correct, arr[index].givenAnswer);
+      var r = que.correct.indexOf("" + (arr[index].givenAnswer - 1)) > -1;
+      arr[index] = r;
+      eachQuestion(arr, index + 1, next);
+    });
+  }
+}

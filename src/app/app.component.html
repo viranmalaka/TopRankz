@@ -8,6 +8,7 @@
 
   <a class="item" routerLink="/paper">Papers</a>
   <a class="item" *ngIf="user.acc_type == 'T'">Class Group</a>
+  <a class="item" *ngIf="user.acc_type == 'S'" routerLink="/paper/attempt">Attempt History</a>
   <a class="item" *ngIf="user.acc_type == 'T' && user.acc_type == 'D'" routerLink="/paper/create">Create Paper</a>
 
   <div class="right menu colhidden">

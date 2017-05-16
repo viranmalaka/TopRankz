@@ -11,6 +11,11 @@ const School = require('../models/school');
 
 var bycrypt = require('bcryptjs');
 
+/**
+ * this will check the username is exist or not.
+ * @param val
+ * @param next
+ */
 module.exports.checkUserName = function (val, next) {
   User.count({username : val.checkUserName.username}, function (err, result) {
     if(err){
@@ -23,6 +28,12 @@ module.exports.checkUserName = function (val, next) {
   })
 };
 
+
+/**
+ * this will check the email is exist or not
+ * @param val
+ * @param next
+ */
 module.exports.checkEmail = function (val, next) {
   User.count({email : val.checkEmail.email} , function (err, result) {
     if(err){
@@ -35,6 +46,12 @@ module.exports.checkEmail = function (val, next) {
   })
 };
 
+
+/**
+ * this will return the extended account such as Student, Teacher, Dataentry
+ * @param account
+ * @param next
+ */
 module.exports.getExtendedAccount = function (account, next) {
   User.findById(account._id).select('-password').exec(function (err, user) {
     if(account.acc_type == 'S'){
@@ -63,6 +80,11 @@ module.exports.getExtendedAccount = function (account, next) {
 
 };
 
+/**
+ * this will return the all enroll subject of a user
+ * @param user
+ * @param next
+ */
 module.exports.getEnrollments = function (user, next) {
   Student.findById(user.acc_id, function (err, e) {
     if(err){
@@ -74,12 +96,23 @@ module.exports.getEnrollments = function (user, next) {
   })
 };
 
+/**
+ * this will update the enrollment array of a student
+ * @param user
+ * @param data
+ * @param next
+ */
 module.exports.setEnrollments = function (user, data, next) {
   Student.update({_id : user.acc_id}, {$set : {enroll : data.enroll}}, function (err, std) {
     next(std);
   })
 };
 
+/**
+ * return the set of teachers by given text
+ * @param txt
+ * @param next
+ */
 module.exports.searchTeachers = function (txt, next) {
   Teacher.find({visibleName : {$regex : new RegExp(txt, 'ig')}}).select('visibleName classGroup')
     .populate('classGroup')
@@ -93,6 +126,11 @@ module.exports.searchTeachers = function (txt, next) {
   });
 };
 
+/**
+ * password reset function
+ * @param user
+ * @param cb
+ */
 module.exports.updatePasswords = function (user, cb) {
   bycrypt.genSalt(10, function (err, salt) {
     bycrypt.hash(user.password, salt, function (err, hash) {
@@ -109,7 +147,11 @@ module.exports.updatePasswords = function (user, cb) {
   });
 };
 
-// create new user
+/**
+ * create new user function
+ * @param newUser
+ * @param cb
+ */
 module.exports.createUser = function (newUser, cb) {
   bycrypt.genSalt(10, function (err, salt) {                          // generate salt to encrypt
     bycrypt.hash(newUser.password, salt, function (err, hash) {     // generate has with salt
@@ -159,7 +201,12 @@ module.exports.createUser = function (newUser, cb) {
   });
 };
 
-// compare password
+/**
+ * compaier password in passport
+ * @param candidatePassword
+ * @param hash
+ * @param cb
+ */
 module.exports.comparePassword = function (candidatePassword, hash, cb) {
   bycrypt.compare(candidatePassword, hash, function (err, isMatch) {
     if(err){
@@ -170,6 +217,12 @@ module.exports.comparePassword = function (candidatePassword, hash, cb) {
   });
 };
 
+/**
+ * Save the extended account details
+ * @param user
+ * @param body
+ * @param next
+ */
 module.exports.saveDetails = function (user, body, next) {
   user.address = body.address;
   user.email = body.email;
