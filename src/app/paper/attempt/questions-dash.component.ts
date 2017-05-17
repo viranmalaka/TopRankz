@@ -36,8 +36,8 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
     </div>
   </div>
   <br>
-  <button class="ui button">Answer Sheet</button>
-  <button class="ui button">Finish Attempt</button>
+  <button class="ui button" (click)="onAnswerSheet.emit()">Answer Sheet</button>
+  <button class="ui button" (click)="onFinalSubmit.emit()">Finish Attempt</button>
   `,
   styles: []
 })
@@ -51,6 +51,8 @@ export class QuestionsDashComponent implements OnInit, OnChanges , AfterViewInit
 
   @Output() changeQ = new EventEmitter();
   @Output() onSubmit = new EventEmitter();
+  @Output() onFinalSubmit = new EventEmitter();
+  @Output() onAnswerSheet = new EventEmitter();
 
   min = 0; sec = 0;
   remainTime = false;

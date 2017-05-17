@@ -4,7 +4,7 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
   selector: 'app-question-container',
   template: `
 <div class="ui segment" style="margin-top: 35px">
-  {{question.body}}
+  <div [innerHTML]="question.body"></div>
   <div class="ui divider"></div>
   <div class="ui grid">
     <div class="one wide column"></div>
@@ -23,7 +23,7 @@ import {Component, OnInit, Input, OnChanges, AfterViewInit, Output, EventEmitter
               <input type="radio" class="hidden" name="ans" 
               [value]="question.answers[ans].id" 
               [(ngModel)]="question.givenAnswer">
-              <label>{{question.answers[ans].body}}</label>
+              <label [innerHTML]="question.answers[ans].body"></label>
             </div>
            </div>
         </div>

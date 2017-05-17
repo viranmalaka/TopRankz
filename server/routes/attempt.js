@@ -7,11 +7,15 @@ var timeout = require('connect-timeout');
 var attmpCtrl = require('../controllers/attemptController');
 
 router.get('/get_start_paper', function (req, res) {
-  attmpCtrl.startAttempt(req.user, req.query['paper'], function (time, attemptID) {
+  attmpCtrl.startAttempt(req.user, req.query['paper'], function (time, attemptID, finish, resume, ga) {
+    console.log('time is', time);
     res.jsonp({
       success : true,
       time : time,
-      attemptID : attemptID
+      attemptID : attemptID,
+      finish : finish,
+      resume : resume,
+      givenAns : ga
     })
   });
 });
@@ -25,7 +29,7 @@ router.post('/save_attempt_temp', function (req, res) {
 });
 
 router.post('/save_attempt_final', function (req, res) {
-  attmpCtrl.finishAttempt(req.body, function (r) {
+  attmpCtrl.finishAttempt(req.user,req.body, function (r) {
     res.jsonp({
       success : r
     });
@@ -53,6 +57,16 @@ router.get('/get_review', function (req, res) {
         res : result
       });
     })
+  }
+});
+
+router.get('/attempt_history', function (req, res) {
+  if(req.user){
+    attmpCtrl.getAttemptHistory(req.user, function (data) {
+      res.jsonp({success : true, data : data});
+    });
+  }else{
+    res.jsonp({success : false});
   }
 });
 

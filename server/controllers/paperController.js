@@ -243,7 +243,6 @@ module.exports.getPaperIds = function (sub, type, user, next) {
           query = {subject: sub._id, addedBy: user};
           break;
       }
-      console.log(query);
       Paper.find(query).select('_id').exec(function (err, papers) {
         if (err) {
           console.log(err);

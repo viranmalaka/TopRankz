@@ -9,21 +9,28 @@ import {EditUserDetailsComponent} from "./auth/edit-user-details.component";
 import {SignupDataEntryComponent} from "./auth/admins/signup-data-entry.component";
 import {SelectPaperComponent} from "./paper/select/select-paper.component";
 import {ReviewComponent} from "./paper/attempt/review/review.component";
+import {CreateClassGroupComponent} from "./auth/create-class-group.component";
+import {ResetPasswordComponent} from "./auth/reset-password/reset-password.component";
+import {NewlyAddedPapersComponent} from "./paper/newly-added-papers.component";
+import {AttemptHistoryComponent} from "./paper/attempt/attempt-history.component";
 
 const APP_ROUTES : Routes = [
+  // {path : '', redirectTo : '/x', pathMatch : 'full'},
+  {path : '', component : NewlyAddedPapersComponent},
   {path : 'login', component : LoginComponent},
+  {path : 'login/reset', component : ResetPasswordComponent},
+  {path : 'login/reset/:token', component : ResetPasswordComponent},
   {path : 'signup', component : SignupComponent},
   {path : 'admin/signup', component : SignupDataEntryComponent},
   {path : ':username/edit', component : EditUserDetailsComponent},
   {path : 'paper', component : SelectPaperComponent},
   {path : 'paper/create', component : CreatePaperComponent},
   {path : 'paper/create/:paper_id', component : CreatePaperComponent},
-  {path : 'paper/attempt' , component : AttemptComponent},
+  {path : 'paper/attempt' , component : AttemptHistoryComponent},
   {path : 'paper/attempt/:id' , component : AttemptComponent},
   {path : 'paper/attempt/review/:id' , component : ReviewComponent},
   {path : 'paper/:paper_id' , component: ViewPaperComponent},//redirectTo : '/paper/:paper_id/1'},
   {path : 'paper/:paper_id/:id' , component : ViewPaperComponent},
-
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

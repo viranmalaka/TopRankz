@@ -8,6 +8,10 @@ var LocalStrategy = require('passport-local');
 var jwt = require('jsonwebtoken');
 var multer = require('multer');
 var path = require('path');
+var bycript = require('bcryptjs');
+var nodemailer = require('nodemailer');
+var async = require('async');
+var crypto = require('crypto');
 
 var storage = multer.diskStorage({
   destination : function (req, file, cb) {
@@ -48,6 +52,11 @@ router.post('/login',
     });
   });
 
+
+router.get('/logout', function (req, res) {
+  req.logout();
+  res.jsonp({success : true});
+});
 
 /**
  * SignUp post router
@@ -105,6 +114,96 @@ router.post('/signup', function (req, res) {
     });
   }
 });
+
+
+
+
+router.post('/reset_password', function (req, res) {
+  async.waterfall([
+    function(done) {
+      crypto.randomBytes(20, function(err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+    function(token, done) {
+      User.findOne({ email: req.body.email }, function(err, user) {
+        if (!user) {
+          return res.jsonp({success : false, msg : 'No such email found'});
+        }
+
+        user.reset_password_token = token;
+        user.reset_password_expires = Date.now() + 3600000; // 1 hour
+
+        user.save(function(err) {
+          done(err, token, user);
+        });
+      });
+    },
+    function(token, user, done) {
+      var smtpTransport = nodemailer.createTransport({
+        service: 'SendGrid',
+        auth: {
+          user: 'viran',
+          pass: 'sendgrid1'
+        }
+      });
+      var mailOptions = {
+        to: user.email,
+        from: 'toprankz123@gmail.com',
+        subject: 'TopRankz Password Reset',
+        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+        'http://' + req.headers.host + '/login/reset/' + token + '\n\n' +
+        'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function(err) {
+        res.jsonp({success : true, msg : 'An e-mail has been sent to ' + user.email + ' with further instructions.'});
+        done(err, 'done');
+      });
+    }
+  ], function(err) {
+    if (err) return next(err);
+    res.jsonp({success : false, msg : 'error'});
+  });
+});
+
+router.get('/check_password_token', function (req, res) {
+  User.findOne({
+    reset_password_token: req.query['token'],
+    reset_password_expires: { $gt: Date.now() }
+  }, function(err, user) {
+    if (!user) {
+      return res.jsonp({success :false, msg : 'Password reset token is invalid or has expired'})
+    }
+    res.jsonp({success : true});
+  });
+});
+
+router.post('/update_password', function (req, res) {
+  async.waterfall([
+    function(done) {
+      User.findOne({ reset_password_token: req.body.token, reset_password_expires: { $gt: Date.now() } }, function(err, user) {
+        if (!user) {
+          return res.jsonp({success : false});
+        }
+
+        user.password = req.body.password;
+        user.reset_password_expires = undefined;
+        user.reset_password_token = undefined;
+
+        user.save(function(err, savedUser) {
+          usrCntl.updatePasswords(savedUser, function () {
+            res.jsonp({success : true});
+          })
+        });
+      });
+    }
+  ], function(err) {
+    res.redirect('/');
+  });
+});
+
 
 /**
  * check a user toke whether a valid token or not
@@ -204,6 +303,19 @@ router.post('/post_profile_picture', upload.single('profImg'), function (req, re
       });
     }
   });
+});
+
+router.get('/search_teachers', function (req, res) {
+  if(req.query['q']){
+    usrCntl.searchTeachers(req.query['q'], function (suc, results) {
+      res.jsonp({
+        success : suc,
+        teachers : results
+      });
+    })
+  }else{
+    res.jsonp({success : false});
+  }
 });
 
 //<editor-fold desc="Passport Things">

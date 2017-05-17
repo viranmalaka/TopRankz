@@ -38,6 +38,7 @@ import {AttemptService} from "../attempt.service";
       [totalTime]="paper.time_limit" [selectedQue]="selectedQue" [viewCount]="viewedCount"
       [class.hideMe]="!(state=='Q')" (changeQ)="changeQuestion($event)"
       (onSubmit)="submitAttempt()"
+      (onAnswerSheet)="state='A'" (onFinalSubmit)="onFinishAttemptClick()"
       ></app-questions-dash>
     
     <app-attempt-answer-sheet *ngIf="state=='A' || questionDashBoardShowing"
@@ -54,9 +55,9 @@ import {AttemptService} from "../attempt.service";
   </div>
   <div class="image content">
     <div class="description">
-      <div class="ui header">We've auto-chosen a profile image for you.</div>
-      <p>We've grabbed the following image from the <a href="https://www.gravatar.com" target="_blank">gravatar</a> image associated with your registered e-mail address.</p>
-      <p>Is it okay to use this photo?</p>
+      <div class="ui header">Are you sure? you are going to submit the answers.</div>
+      <p>This can not be un done. Click Submit Paper to submit the answers. Then the results will be displayed<p>
+      <p>If you don't want to submit, click No.</p>
     </div>
   </div>
   <div class="actions">
@@ -90,7 +91,7 @@ export class AttemptComponent implements OnInit{
   startedAtServer;
   startedAtClient;
   viewedCount = 0;
-  time;
+  time = 0;
   questionDashBoardShowing = false;
   questionAnswerSheetShowing = false;
   attemptID;
@@ -138,6 +139,10 @@ export class AttemptComponent implements OnInit{
         this.router.navigate(['login']);
       }
     });
+
+    $(window).bind('beforeunload', function () {
+      confirm('The changes will not be saved unless you save them.')
+    })
   }
 
   startAttempt(){
@@ -148,18 +153,37 @@ export class AttemptComponent implements OnInit{
         //     this.submitFinal();
         //   }
         // });
-        this.startedAtServer = res['time'];
-        this.started = true;
-        this.changeQuestion(1);
-        Observable.timer(1000,1000).subscribe(t => {
-          this.time = t;
-        });
-        this.questionDashBoardShowing = true;
-        this.state = "Q";
-        this.attemptID = res['attemptID'];
+
+        if(res.finish){
+          this.router.navigate(['paper', 'attempt','review',res['attemptID']]);
+        }else{
+          if(res.resume){
+            if(res.givenAns != undefined){
+              for(let i = 0; i < res.givenAns.length; i++){
+                this.questions[i]['viewAt'] = res.givenAns[i]['viewAt'];
+                this.questions[i]['lastEdit'] = res.givenAns[i]['viewAt'];
+                this.questions[i]['givenAnswer'] = res.givenAns[i]['givenAnswer'];
+              }
+            }
+          }
+          this.startedAtServer = new Date(res['time']);
+          this.time = parseInt("" + ((new Date()).getTime() - this.startedAtServer.getTime())/1000);
+
+          this.started = true;
+          this.changeQuestion(1);
+          Observable.timer(1000,1000).subscribe(t => {
+            this.time += 1;
+            if(this.time > this.paper.time_limit * 60){
+              this.submitFinal();
+            }
+          });
+          this.questionDashBoardShowing = true;
+          this.state = "Q";
+          this.attemptID = res['attemptID'];
+        }
+
       }
     });
-
   }
 
   changeQuestion(n){
@@ -201,6 +225,9 @@ export class AttemptComponent implements OnInit{
     }).subscribe(res => {
       if(res.success){
         toastr.success('submitted data success');
+        this.router.navigate(['../review', this.attemptID], {relativeTo: this.route})
+      }else{
+        toastr.error('Error');
       }
     });
   }

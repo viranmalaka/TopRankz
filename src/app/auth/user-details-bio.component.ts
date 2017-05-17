@@ -102,6 +102,7 @@ export class UserDetailsBioComponent implements OnInit , AfterViewInit{
 
   constructor(private otherService : OtherService, private authService : AuthService) {
     this.authService.getExtendedUser().subscribe(res => {
+      console.log(res);
       this.extendedUser = res['eUser'];
       this.user = res['user'];
       this.detailsForm = this.initForm();

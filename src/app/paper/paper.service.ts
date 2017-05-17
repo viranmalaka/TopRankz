@@ -116,6 +116,9 @@ export class PaperService {
       .map((res: Response) => res.json());
   }
 
-
+  getNewlyAddedPapers(){
+    return this._http.get(this.paperDomain + "get_new_added")
+      .map((res: Response) => res.json());
+  }
 
 }

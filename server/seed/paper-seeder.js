@@ -21,14 +21,24 @@ var paperNames = [
   '2343 - A/L science',
   '2012 - A/L chemistry',
   '2342 - O/L buddhism',
-  '2342 - A/L physics',
-  '2323 - O/L history',
-  'dfaidsfasfasd',
-  'asdfasdfasdfawe',
-  'adfaeasdfaeae',
-  'asdfeasdfase'
+  '2342 - A/L physics 01',
+  '2323 - O/L history 02',
+  '2323 - O/L history 03',
+  '2323 - O/L history 04',
+  '2323 - O/L history 05',
+  '2323 - O/L history 06',
+  '2323 - O/L history 07',
+  '2323 - O/L history 08',
+  '2323 - O/L history 09',
+  '2323 - O/L history 10',
+  '2323 - Theory Of Com',
+  '2323 - Programming Language',
+  '2323 - Artificial Intelligent',
+  'Test 1',
+  'Test 2',
+  'Test 3',
+  'Test 4'
 ];
-
 
 function setSubject(next) {
   Subject.find().select('_id').exec(function (err, subs){
@@ -37,36 +47,34 @@ function setSubject(next) {
 }
 
 function createPaper(names, subjects, user,  index, next) {
-  console.log('create paper', index);
   if(names.length == index){
     next(names);
   }else{
-    var x = random(0,2);
+    var x = random(0,5);
     var p = new Paper({
       name : names[index],
       medium : 'E',                        // {'S','E','T'}
       subject: subjects[x]._id,
-      time_limit: 80,   // in minutes
+      time_limit: 40,   // in minutes
       unit_mark : 1,
       questions : 20,
       finished : true,
       numAnswer : 4,
       mixOrder : true,
-      addedBy: user,
+      addedBy: user[index % user.length]._id,
       descriptionText : "this is the description",
       isPassPaper : true
     });
 
     p.save(function (err, newPaper) {
-      console.log(newPaper);
       createPaper(names, subjects, user,  index + 1, next);
     });
   }
 }
 
 setSubject(function (subjects) {
-  User.find({acc_type : 'D'}, function (err, users) {
-    createPaper(paperNames, subjects, users[0]._id, 0, function (papers) {
+  User.find({acc_type : {$ne :'S'}}).select('_id').exec(function (err, users) {
+    createPaper(paperNames, subjects, users, 0, function (papers) {
       papers.forEach(function (e) {
         console.log('done');
       })

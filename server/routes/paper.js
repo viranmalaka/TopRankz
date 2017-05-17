@@ -160,5 +160,36 @@ router.post('/finish_attempt', function (req, res) {
 
 });
 
+router.get('/get_papers_of_teacher', function (req, res) {
+  if(req.user){
+    if(req.user.acc_type == 'T'){
+
+    }
+  }
+});
+
+router.get('/get_new_added', function (req, res) {
+  var Paper = require('../models/paper');
+
+  Paper.find({}, function (err, papers) {
+    if(err){
+      console.log(err);
+      throw err;
+    }else{
+      var output = [];
+      while(output.length < 12){
+        var ran = parseInt((Math.random()* 10000000) % papers.length + "");
+        if(output.indexOf(papers[ran]) < 0){
+          output.push(papers[ran]);
+        }
+      }
+      res.jsonp({
+        success : true,
+        papers : output
+      })
+    }
+  })
+});
+
 module.exports = router;
 

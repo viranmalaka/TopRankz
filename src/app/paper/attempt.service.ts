@@ -25,7 +25,7 @@ export class AttemptService {
   }
 
   saveAttemptFinished(data){
-    return this._http.post(this.attemptDomain + 'save_attempt_finish', data)
+    return this._http.post(this.attemptDomain + 'save_attempt_final', data)
       .map((res : Response) => res.json());
   }
 
@@ -37,6 +37,11 @@ export class AttemptService {
   getReview(attemptID){
     return this._http.get(this.attemptDomain + 'get_review?attemptID=' + attemptID)
       .map((res: Response) => res.json());
+  }
+
+  getAttemptHistory(){
+    return this._http.get(this.attemptDomain + 'attempt_history')
+      .map((res : Response) => res.json());
   }
 
 }

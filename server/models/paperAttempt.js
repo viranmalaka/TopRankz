@@ -12,7 +12,7 @@ var paperAttempt = new schema({
     student : {type: schema.ObjectId,ref : 'Student'},
     paper : {type: schema.ObjectId, ref : 'Paper'},
     answers : {type : [{}]},                       // {qId, answer, viewAt, lastEdit}
-    statingTime : {type : Date},
+    startingTime  : {type : Date},
     endingTime : {type :Date}
 });
 

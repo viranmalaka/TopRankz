@@ -9,37 +9,52 @@ const Question = require('../models/question');
 const Subject = require('../models/subject');
 
 module.exports.startAttempt = function (student, paper, next) {
-  var attempt = new PaperAttempts();
-  attempt.student = student._id;
-  attempt.paper = paper;
-  attempt.startingTime = new Date();
-  attempt.save(function (err, savedAttempt) {
+  Temp.findOne({userId : student._id}, function (err, temps) {
     if(err){
       console.log(err);
       throw err;
     }else{
-      Temp.findOne({userId : student._id}, function (err, temps) {
-        if(err){
-          console.log(err);
-          throw err;
-        }else{
-          var t = new Temp();
-          if(temps){
-            t = temps;
+      if(temps){
+        PaperAttempts.findById(temps.data).populate({path :'paper', select:'time_limit'}).exec(function (err, attempt) {
+          if(err){
+            console.log(err);
+            throw err;
           }else{
+            if(attempt.startingTime.getTime() + attempt.paper.time_limit*60000 < (new Date()).getTime()){
+              console.log('finish the paper');
+              finishAttemptFunction(student, {attemptID : attempt.id}, function () {
+                next(false, attempt.id, true);
+              });
+            }else{
+              next(attempt.startingTime, attempt.id, false, true, attempt.answers);
+            }
+          }
+        })
+      }else{
+        var attempt = new PaperAttempts();
+        attempt.student = student._id;
+        attempt.paper = paper;
+        attempt.startingTime = new Date();
+        attempt.save(function (err, savedAttempt) {
+          if(err){
+            console.log(err);
+            throw err;
+          }else{
+            var t = new Temp();
             t.userId = student._id;
             t.data = savedAttempt._id;
+            t.save(function (err, temp) {
+              if(err){
+                console.log(err);
+                throw err;
+              }else{
+                next(savedAttempt.startingTime, savedAttempt.id);
+              }
+            })
           }
-          t.save(function (err, temp) {
-            if(err){
-              console.log(err);
-              throw err;
-            }else{
-              next(savedAttempt.startingTime, savedAttempt.id);
-            }
-          })
-        }
-      });
+        });
+      }
+
     }
   });
 };
@@ -63,7 +78,7 @@ module.exports.saveAttemptTemp = function (data, next) {
   });
 };
 
-module.exports.finishAttempt = function (data, next) {
+var finishAttemptFunction = function (user, data, next) {
   PaperAttempts.findOne({id : data.attemptID}, function (err, att) {
     if(err){
       console.log(err);
@@ -75,12 +90,17 @@ module.exports.finishAttempt = function (data, next) {
           console.log(err);
           throw err;
         }else{
-          next();
+          console.log(user._id);
+          Temp.remove({userId : user._id}, function (e, x) {
+            next(true);
+          });
         }
       })
     }
   })
 };
+
+module.exports.finishAttempt = finishAttemptFunction;
 
 module.exports.setTimer = function (data, next) {
   console.log(data);
@@ -146,3 +166,41 @@ function populateQuestions(arr, userID, i, next) {
 }
 
 
+module.exports.getAttemptHistory = function (user, next) {
+  PaperAttempts.find({student : user._id})
+    .populate({path :'paper', select : 'name questions'})
+    // .populate({path : 'answers', populate : {path : 'qId', select : 'correct'}})
+    .exec(function (err, atmpts) {
+    if(err){
+      console.log(err);
+      throw err;
+    }else{
+      eachAttempts(atmpts, 0, function (data) {
+        next(data);
+      })
+    }
+  })
+};
+
+function eachAttempts(arr, i, next) {
+  if(arr.length == i){
+    next(arr);
+  }else{
+    eachQuestion(arr[i].answers, 0, function (data) {
+      arr[i].answers = data;
+      eachAttempts(arr, i + 1, next);
+    });
+  }
+}
+
+function eachQuestion(arr, index, next) {
+  if(arr.length == index){
+    next(arr);
+  }else{
+    Question.findById(arr[index].qId).select('correct').exec(function (err, que) {
+      var r = que.correct.indexOf("" + (arr[index].givenAnswer - 1)) > -1;
+      arr[index] = r;
+      eachQuestion(arr, index + 1, next);
+    });
+  }
+}

@@ -36,7 +36,7 @@
           <div class="fifteen wide column">
             <div class="ui grid">
               <div class="row" *ngFor="let ans of que.qId.answers">
-                <div class="one wide column" [class.green]="que.qId.correct.indexOf(test('' + (ans.id-1))) > -1">
+                <div class="one wide column" [class.green]="que.qId.correct.indexOf('' + (ans.id-1) ) > -1">
                   <div class="ui radio disabled checkbox">
                     <input type="radio" name="answerFor{{que.qId.questionNumber}}"
                            class="hidden" [checked]="checkAnswer(ans.id, que.givenAnswer)"/>

@@ -3,37 +3,41 @@
  */
 var schCtrl = require('../controllers/schoolController');
 var mongoose = require('mongoose');
-var chai = require('chai');
+var expect = require('chai').expect;
+
 
 describe('School', function() {
-  it('get all district should return an array', function() {
+  it('get all district should return an array', function(done) {
     schCtrl.getAllDistricts(function (val) {
-      chai.should(val).to.be.a('null');
+      expect(val).to.be.a('array');
+      done();
     })
   });
 
-  it('get all district not to be null', function () {
+  it('get all district should length of 25', function (done) {
     schCtrl.getAllDistricts(function (val) {
-      chai.expect(val).not.to.be(null);
+      expect(val).to.have.length.within(24, 26);
+      done();
     })
   });
 
-  it('get all school should return an array', function() {
+  it('get all school should return an array', function(done) {
     schCtrl.getAllSchools(function (val) {
-      chai.expect(val).to.be.a('array');
+      expect(val).to.be.a('array');
+      done();
     })
   });
 
-  it('get all school not to be null', function () {
+  it('get all school should be length of 25', function (done) {
     schCtrl.getAllSchools(function (val) {
-      chai.expect(val).not.to.be.a('null');
+      expect(val).to.have.length.above(2000);
+      done();
     })
   });
 
   it('get schools by district', function () {
-    schCtrl.getAllSchoolsByDistricts(1, function (val) {
-      console.log(val);
-      chai.expect(val).not.to.be(null);
+    schCtrl.getAllSchoolsByDistricts("Ampara", function (val) {
+      expect(val).to.be.a('array');
     })
   })
 });

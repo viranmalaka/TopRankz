@@ -4,10 +4,13 @@
       <img src="assets/prof-pic/{{
           user.profile_picture == undefined ? 'demo-user-picture.png' : user.profile_picture
       }}" alt="" class="ui image" id="profImg">
-      <label class="fluid ui blue basic button" for='imgUpload'>Change</label>
+      <label class="fluid ui blue basic button" for='imgUpload' *ngIf="editMode">Change</label>
       <input type="file" class="inputfile" id="imgUpload" name='imgUpload' (change)="changeImg($event)"
             accept=".jpg, .png, .jpge">
-      <div class="ui vertical fluid tabular menu">
+
+      <!--<a style="cursor:pointer" (click)="editMode = !editMode; activeTab = 'view'">{{editMode ? "Stop Edit" : "Edit Details"}}</a>-->
+
+      <div class="ui vertical fluid tabular menu" *ngIf="editMode">
         <a class="item" id="mnuBio"
            (click)="activeTab = 'bio'" [class.active]="activeTab == 'bio'">Bio</a>
         <a class="item" id="mnuEnroll" *ngIf="user.acc_type == 'S'"
@@ -22,6 +25,16 @@
       </div>
       <div *ngIf="activeTab == 'enroll'">
         <app-user-details-enroll></app-user-details-enroll>
+      </div>
+      <div *ngIf="activeTab == 'class' && user.acc_type == 'S'">
+        <app-user-details-class-group></app-user-details-class-group>
+      </div>
+      <div *ngIf="activeTab == 'class' && user.acc_type == 'T'">
+        <app-create-class-group></app-create-class-group>
+      </div>
+
+      <div *ngIf="activeTab == 'view'">
+        <app-user-profile></app-user-profile>
       </div>
     </div>
   </div>

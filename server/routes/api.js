@@ -13,5 +13,6 @@ router.use('/school', require('./school'));
 router.use('/subject', require('./subject'));
 router.use('/attempt', require('./attempt'));
 router.use('/question', require('./question'));
+router.use('/class_group', require('./classGroup'));
 
 module.exports = router;

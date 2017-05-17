@@ -24,7 +24,6 @@ export class AnswerSheetComponent implements OnInit , AfterViewInit, OnChanges{
 
   ngAfterViewInit(){
     $('.ui.checkbox').checkbox();
-    console.log(this.numberOfAnswers/2);
   }
 
   ngOnChanges(){
@@ -36,10 +35,6 @@ export class AnswerSheetComponent implements OnInit , AfterViewInit, OnChanges{
       .fill(0).map((x,i) => Math.floor(this.numberOfQuestions/2) + 1 + i);
 
     this.arrayOfAnswer = Array(this.numberOfAnswers).fill(0).map((x,i) => i + 1);
-
-    console.log(this.arrayOfAnswer);
-    console.log(this.arrayOfQuestion1);
-    console.log(this.arrayOfQuestion2);
 
   }
 

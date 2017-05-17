@@ -28,6 +28,12 @@ import { PaperListComponent } from './paper/select/paper-list.component';
 import { PaperCardComponent } from './paper/select/paper-card.component';
 import { AttemptAnswerSheetComponent } from './paper/attempt/attempt-answer-sheet.component';
 import { ReviewComponent } from './paper/attempt/review/review.component';
+import { UserProfileComponent } from './auth/user-profile/user-profile.component';
+import { UserDetailsClassGroupComponent } from './auth/user-details-class-group.component';
+import { CreateClassGroupComponent } from './auth/create-class-group.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { NewlyAddedPapersComponent } from './paper/newly-added-papers.component';
+import { AttemptHistoryComponent } from './paper/attempt/attempt-history.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +60,13 @@ import { ReviewComponent } from './paper/attempt/review/review.component';
     PaperListComponent,
     PaperCardComponent,
     AttemptAnswerSheetComponent,
-    ReviewComponent
+    ReviewComponent,
+    UserProfileComponent,
+    UserDetailsClassGroupComponent,
+    CreateClassGroupComponent,
+    ResetPasswordComponent,
+    NewlyAddedPapersComponent,
+    AttemptHistoryComponent
   ],
   imports: [
     BrowserModule,

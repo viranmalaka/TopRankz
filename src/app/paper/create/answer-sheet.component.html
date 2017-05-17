@@ -16,7 +16,7 @@
           <div class="ui checkbox">
             <input type="checkbox" class="hidden"
                     [ngModel]="checkedThisAns(q - 1, n)"
-                    (change)="toggleThisAns(q -1 , n)"/>
+                    (blur)="toggleThisAns(q -1 , n)"/>
           </div>
         </td>
       </tr>
@@ -38,7 +38,7 @@
           <div class="ui checkbox">
             <input type="checkbox" class="hidden"
                   [ngModel]="checkedThisAns(q - 1, n)"
-                  (change)="toggleThisAns(q-1 , n)"/>
+                  (blur)="toggleThisAns(q-1 , n)"/>
           </div>
         </td>
       </tr>

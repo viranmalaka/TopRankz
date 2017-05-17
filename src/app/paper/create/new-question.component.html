@@ -22,7 +22,7 @@
               <div class="ui checkbox">
                 <input type="checkbox" id="chkAns{{question.answers[n].id}}" class="" tabindex="-1"
                     [ngModel]="checkedThisAns(question.answers[n].id)"
-                    (change)="toggleThisAns(question.answers[n].id)"/>
+                    (blur)="toggleThisAns(question.answers[n].id)"/>
                 <label>{{('0' + question.answers[n].id).slice(-2)}}</label>
               </div>
             </div>
@@ -37,19 +37,19 @@
     <div class="five wide column">
       <div id="topicField" class="field">
         <label>Topics</label>
-        <select id="topics" multiple="" class="ui dropdown" (change)="onTest()">
+        <select id="topics" multiple="" class="ui dropdown">
           <option value="">select Topics Here</option>
           <option *ngFor="let t of topicsArray" data-value="{{t.id}}">{{t['english']}}</option>
         </select>
       </div>
       <div class="field">
         <label>Tags</label>
-        <div class="ui fluid multiple search selection dropdown">
-          <input id="tags" name="tags" type="hidden" (change)="onTagsChanged()"/>
+        <div class="ui fluid multiple search selection dropdown" id="tags">
+          <input name="tags" type="hidden"/>
           <i class="dropdown icon"></i>
           <div class="default text">Select Tags</div>
           <div class="menu">
-            <div *ngFor="let t of tagsArray" data-value='t' class="item">{{t}}</div>
+            <div *ngFor="let t of tagsArray" attr.data-value='{{t}}' class="item">{{t}}</div>
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
         <div class="ui checkbox">
           <input type="checkbox" name="canMix" class="hidden"
                  [ngModel]="question.mixOrder"
-                  (change)="question.mixOrder = !question.mixOrder"/>
+                  (blur)="question.mixOrder = !question.mixOrder"/>
           <label>Mix the answer order.</label>
         </div>
       </div>
@@ -67,3 +67,4 @@
     </div>
   </div>
 </div>
+

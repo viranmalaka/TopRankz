@@ -5,29 +5,30 @@
       <i class="search icon"></i>
     </div>
   </div>
+
+  <a class="item" routerLink="/paper">Papers</a>
+  <a class="item" *ngIf="user.acc_type == 'T'">Class Group</a>
+  <a class="item" *ngIf="user.acc_type == 'S'" routerLink="/paper/attempt">Attempt History</a>
+  <a class="item" *ngIf="user.acc_type == 'T' && user.acc_type == 'D'" routerLink="/paper/create">Create Paper</a>
+
   <div class="right menu colhidden">
 
-    <div class="ui dropdown item labeled icon">
+    <div class="ui dropdown item labeled icon" *ngIf="false">
       <i class="bell icon"></i>
       <div class="ui red label mini circular">6</div>
     </div>
     <div class="ui dropdown item">
-      Language <i class="dropdown icon"></i>
+      {{user.username}} <i class="dropdown icon"></i>
       <div class="menu">
-        <a class="item"><i class="united kingdom flag"></i>English</a>
-        <a class="item"><i class="turkey flag"></i>Turkish</a>
-        <a class="item"><i class="spain flag"></i>Spanish</a>
+        <a class="item" *ngIf="!checkLogin" routerLink="/login">Log in</a>
+        <a class="item" *ngIf="!checkLogin" routerLink="/singup">Sign up</a>
+        <a class="item" *ngIf="checkLogin" (click)="logOut()">Log out</a>
       </div>
     </div>
     <div class="ui dropdown item">
-      <img class="ui mini circular image" src="assets/prof-pic/demo-user-picture.png" alt="label-image">
+      <img class="ui mini circular image" src="assets/prof-pic/{{user.profile_picture ? user.profile_picture : 'demo-user-picture.png'}}" alt="label-image">
       <div class="menu">
-        <a class="item" href="mail.html">Inbox</a>
-        <a class="item" href="profile.html">Profile</a>
-        <a class="item" href="settings.html">Settings</a>
-        <div class="ui divider"></div>
-        <a class="item">Need Help?</a>
-        <a class="item" href="login.html">Sign Out</a>
+        <a class="item" *ngIf="checkLogin" routerLink="/{{user.username}}/edit">Settings</a>
       </div>
     </div>
     <a class="item labeled rightsidebar computer only">
